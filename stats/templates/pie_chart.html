@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagramme en camembert</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Répartition des fruits</h2>
+    <canvas id="myPieChart" width="400" height="400"></canvas>
+
+    <script>
+        fetch('/chart-data/')
+            .then(response => response.json())
+            .then(data => {
+
+                const canvas = document.getElementById('myPieChart');
+                canvas.width = 400;
+                canvas.height = 400;
+                const ctx = canvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)'
+                            ]
+                        }]
+                    },
+                });
+            });
+    </script>
+</body>
+</html>
