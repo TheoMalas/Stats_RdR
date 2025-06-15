@@ -50,3 +50,4 @@ ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
   labs(title = paste0("Répartition des échantillons par produit (%), N=",nrow(data))) +
   theme_void() +
   guides(fill = guide_legend(reverse = TRUE))
+ggsave("output/pie_chart_all_molecules.png")
