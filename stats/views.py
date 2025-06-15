@@ -14,5 +14,3 @@ def index(request):
         return FileResponse(open(image_path, 'rb'), content_type='image/png')
     else:
         return JsonResponse({"error": "Le fichier image n'existe pas."}, status=500)
-    
-    return HttpResponse("Test")
