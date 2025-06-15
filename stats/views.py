@@ -6,10 +6,10 @@ import os
 
 
 def index(request):
-    subprocess.Popen(["Rscript","scriptR/simple.R"])
+    subprocess.Popen(["Rscript","scriptR/Pie_chart_all_molecules.R"])
 
     # Lecture du fichier image généré
-    image_path = "output/output.png"
+    image_path = "output/pie_chart_all_molecules.png"
     if os.path.exists(image_path):
         return FileResponse(open(image_path, 'rb'), content_type='image/png')
     else:
