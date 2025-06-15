@@ -1,7 +1,7 @@
 png("output/output.png", width=800, height=600)
 
 # Define 2 vectors
-cars <- c(1, 3, 6, 4, 9)
+cars <- c(1, 3, 6, 4, 15)
 trucks <- c(2, 5, 4, 5, 12)
 
 # Calculate range from 0 to max value of cars and trucks
