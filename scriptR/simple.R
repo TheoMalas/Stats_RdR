@@ -28,7 +28,7 @@ lines(trucks, type="o", pch=22, lty=2, col="red")
 
 # Create a title with a red, bold/italic font
 title(main="Autos", col.main="red", font.main=4)
-
+# 
 # Label the x and y axes with dark green text
 title(xlab="Days", col.lab=rgb(0,0.5,0))
 title(ylab="Total", col.lab=rgb(0,0.5,0))

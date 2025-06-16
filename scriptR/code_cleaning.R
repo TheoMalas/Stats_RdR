@@ -43,7 +43,7 @@ correct_dict <- list(
   NEH = c("N-ethylHexedrone","N-Ethylhexedrone"),
   Prégabaline = c("pregabaline", "prégabaline", "Prégabaline"),
   `RC opioids: cychlorphine`=c("RC opioids: cyclorphine "),
-  sildenafil = c(" sildénafil")
+  sildénafil = c(" sildénafil")
 )
 
 correct_df <- bind_rows(lapply(names(correct_dict), function(nom_correct) {
@@ -99,24 +99,25 @@ familles_psychotropes <- list(
   Amphétamines = c("Amphétamines", "Speed", "Méthamphétamine", "fluoroamphetamine", 
     "2FMA", "2-fluoro-méthamphétamine", "4-FMA", "3FA", "Methylphénidate",
     "Modafinil", "3-MMA","Fénéthylline", "Dextroamphetamine sulfate", "MDMA et Amphétamines", "Synthacaïne", "Bromantane"),
-  Opioïdes = c("Morphine", "Héroïne", "Codéine", "Oxycodone", "Tramadol", "méthadone","Opium", "RC opioids: cychlorphine", "RC opioids: protonitazène", "dérivé opiciacé", "Fentanyl"),
+  Opioïdes = c("Morphine", "Héroïne", "Codéine", "Oxycodone", "Tramadol", "méthadone","Opium", "RC opioids: cychlorphine", "RC opioids: protonitazène", "dérivé opiciacé", "Fentanyl","opioides "),
   Cannabinoïdes = c("Cannabis (THC/CBD)", "cannabinoïde de synthèse", "JWH-210"),
   Benzodiazépines_et_similaires = c("Alprazolam", "Clonazepam", "Diazepam", "Bromazolam", "Norflurazepam", "Pyrazolam", "Flubromazepam", "Flubrotizolam", "DeschloroEtizoolam", "RC Benzo: Rilmazafone", "Gidazepam"),
   Dissociatifs = c("Kétamine", "2-Oxo-PCE", "3-MeO-PCE HCL", "DMXE", "3-HO-PCP"),
   Hallucinogènes = c("LSD", "DMT", "5-MeO-DALT Freebase", "Mescaline", "2C-B", "2C-E", "2C-EF", "4-HO-MET", "DOB", "MiPT"),
   GABAergiques_non_benzo = c("GHB", "GBL"),
-  Cathinones = c("3-MMC", "2-MMC", "3-CMC", "4-MMC (mephedrone)", "4-CMC", "NEP", "Alpha-PiHP", "4BMC", "NEH","euthylone")
+  Cathinones = c("3-MMC", "2-MMC", "3-CMC", "4-MMC (mephedrone)", "4-CMC", "NEP", "Alpha-PiHP", "4BMC", "NEH","euthylone"),
+  Cocaïne = c("Cocaïne"),
+  MDMA = c("MDMA"),
+  `Crack/Freebase (cocaine base)` = c("Crack/Freebase (cocaine base)")
 )
 familles_psychotropes_df <- bind_rows(lapply(names(familles_psychotropes), function(nom_famille) {
-  data.frame(init = familles_psychotropes[[nom_famille]], famille_0 = nom_famille, stringsAsFactors = FALSE)
+  data.frame(init = familles_psychotropes[[nom_famille]], famille = nom_famille, stringsAsFactors = FALSE)
 }))
 
 
 
 data_f <- data_canonique %>%
-  left_join(familles_psychotropes_df, by = c("molecule_simp" = "init")) %>%
-  mutate(famille = ifelse(is.na(famille_0), molecule_simp, famille_0)) %>%
-  select(-famille_0)
+  left_join(familles_psychotropes_df, by = c("molecule_simp" = "init"))
 
 
 # 2. Write the cleaned data into the MySQL database

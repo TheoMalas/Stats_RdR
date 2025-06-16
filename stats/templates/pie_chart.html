@@ -5,7 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h2>Répartition des fruits</h2>
+    <h2>Répartition des molécules</h2>
     <canvas id="myPieChart" width="400" height="400"></canvas>
 
     <script>
@@ -23,11 +23,6 @@
                         labels: data.labels,
                         datasets: [{
                             data: data.data,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(54, 162, 235, 0.6)',
-                                'rgba(255, 206, 86, 0.6)'
-                            ]
                         }]
                     },
                 });
