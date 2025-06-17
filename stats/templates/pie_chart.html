@@ -6,27 +6,67 @@
 </head>
 <body>
     <h2>Répartition des molécules</h2>
+
+    <label for="dateInput">Choisir une date de début :</label>
+    <input type="date" id="date_debut">
+    <label for="dateInput">Choisir une date de fin :</label>
+    <input type="date" id="date_fin">
+    <p>Choisir les familles : Problème pour les fammilles qui n'ont qu'une molécule</p>
+    <label><input type="checkbox" name="famille" value="Cathinones"> Cathinones</label><br>
+    <label><input type="checkbox" name="famille" value="MDMA"> MDMA</label><br>
+    <label><input type="checkbox" name="famille" value="Cocaïne"> Cocaïne</label><br>
+    <label><input type="checkbox" name="famille" value="Dissociatifs"> Dissociatifs</label><br>
+    <label><input type="checkbox" name="famille" value="Amphétamines"> Amphétamines</label><br>
+    <label><input type="checkbox" name="famille" value="Opioïdes"> Opioïdes</label><br>
+    <label><input type="checkbox" name="famille" value="Cannabinoïdes"> Cannabinoïdes</label><br>
+    <label><input type="checkbox" name="famille" value="Hallucinogènes"> Hallucinogènes</label><br>
+    <label><input type="checkbox" name="famille" value="Crack/Freebase (cocaine base)"> Crack/Freebase (cocaine base)</label><br>
+    <label><input type="checkbox" name="famille" value="Benzodiazépines_et_similaires"> Benzodiazépines et similaires</label><br>
+    <label><input type="checkbox" name="famille" value="GABAergiques_non_benzo"> GABAergiques non-benzo</label><br>
+    <button onclick="loadChart()">Charger</button>
+
     <canvas id="myPieChart" width="400" height="400"></canvas>
 
     <script>
-        fetch('/chart-data/')
-            .then(response => response.json())
-            .then(data => {
+        let pieChart = null;
 
-                const canvas = document.getElementById('myPieChart');
-                canvas.width = 400;
-                canvas.height = 400;
-                const ctx = canvas.getContext('2d');
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            data: data.data,
-                        }]
-                    },
+        function loadChart() {
+            const date_debut = document.getElementById('date_debut').value;
+            const date_fin = document.getElementById('date_fin').value;
+            //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
+            const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
+                                     .map(cb => cb.value);
+            const params = new URLSearchParams();
+            if (date_debut) params.append('date_debut', date_debut);
+            if (date_fin) params.append('date_fin', date_fin);
+            if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+            
+            const url = '/chart-data/' + (params.toString() ? '?' + params.toString() : '');
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('myPieChart').getContext('2d');
+
+                    if (pieChart) {
+                        pieChart.destroy(); // détruire l'ancien graphique s'il existe
+                    }
+
+                    pieChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.data,
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                            }]
+                        },
+                    });
                 });
-            });
+        }
+
+        // Optionnel : charger un graphique par défaut à l'ouverture
+        window.onload = loadChart;
     </script>
 </body>
 </html>
