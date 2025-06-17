@@ -17,6 +17,22 @@ dbListTables(con)
 data <- dbReadTable(con, "resultats_analyse_cleaned")
 dbDisconnect(con)
 data = data %>% mutate(date=as.Date(date))
+################################################################################
+# Selection de la fenêtre de temps et des familles #############################
+################################################################################
+
+args <- commandArgs(trailingOnly = TRUE)
+
+date_debut <- as.Date(args[1])
+date_fin <- as.Date(args[2])
+data = data %>% 
+  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+
+if (length(args)>2){
+  familles_vec <- args[3:length(args)]  # vecteur de familles
+  data = data %>% filter(famille %in% familles_vec)
+}
+
 
 ################################################################################
 # Évolution en prop sur l'approvisionnement ####################################

@@ -24,6 +24,18 @@ black_list_percent=c("NQ","NQ ","")
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
+# Selection de la fenêtre de temps et des familles #############################
+################################################################################
+
+args <- commandArgs(trailingOnly = TRUE)
+
+date_debut <- as.Date(args[1])
+date_fin <- as.Date(args[2])
+data = data %>% 
+  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+
+
+################################################################################
 # Evolution of the purity ######################################################
 ################################################################################
 

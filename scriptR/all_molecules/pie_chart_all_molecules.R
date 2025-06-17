@@ -19,7 +19,7 @@ data <- dbReadTable(con, "resultats_analyse_cleaned")
 dbDisconnect(con)
 data = data %>% mutate(date=as.Date(date))
 ################################################################################
-# Selection de la fenêtre de temps #############################################
+# Selection de la fenêtre de temps et des familles #############################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
