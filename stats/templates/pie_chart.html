@@ -55,9 +55,9 @@
                     pieChart = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: data.labels,
+                            labels: Array.isArray(data.labels) ? data.labels : [ data.labels ],
                             datasets: [{
-                                data: data.data,
+                                data: Array.isArray(data.data) ? data.data : [ data.data ],
                                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
                             }]
                         },
