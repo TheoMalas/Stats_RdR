@@ -1,6 +1,7 @@
 library(DBI)
 library(RMySQL)
 library(tidyverse)
+library(jsonlite)
 
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")

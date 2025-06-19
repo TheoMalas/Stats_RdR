@@ -128,7 +128,7 @@
             if (date_fin) params.append('date_fin', date_fin);
             if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
             
-            const url = '/chart-data/' + (params.toString() ? '?' + params.toString() : '');
+            const url = '/chart-data-supply/' + (params.toString() ? '?' + params.toString() : '');
             
             fetch(url)
                 .then(response => response.json())
