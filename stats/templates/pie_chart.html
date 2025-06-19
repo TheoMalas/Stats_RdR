@@ -37,13 +37,10 @@
             <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'pie_chart' %}">Pie Data</a>
+                <a class="nav-link" href="{% url 'molecules_view' %}">Molécules</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'pie_chart' %}">Time Data</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'pie_chart' %}">Histograms</a>
+                <a class="nav-link" href="{% url 'supply_view' %}">Supply</a>
                 </li>
             </ul>
             </div>
@@ -162,7 +159,8 @@
             if (date_fin) params.append('date_fin', date_fin);
             if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
             
-            const url = '/chart-data-supply/' + (params.toString() ? '?' + params.toString() : '');
+            const fetchUrl = "{{ fetch_url }}";
+            const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
             
             fetch(url)
                 .then(response => response.json())

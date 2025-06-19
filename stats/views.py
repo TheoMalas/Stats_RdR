@@ -60,5 +60,12 @@ def chart_data_supply(request):
       data = json.load(f)
   return JsonResponse(data)
 
-def pie_chart_view(request):
-    return render(request, 'pie_chart.html')
+def molecules_view(request):
+    return render(request, 'pie_chart.html', { 
+        'fetch_url' : 'chart-data'
+    })
+
+def supply_view(request):
+    return render(request, 'pie_chart.html', { 
+        'fetch_url' : 'chart-data-supply'
+    })
