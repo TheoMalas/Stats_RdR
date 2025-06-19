@@ -1,31 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
     <title>Diagramme en camembert</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        canvas {
+            border: 1px solid #dee2e6;
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <h2>Répartition des molécules</h2>
+    <div class="container py-5">
+        <h2 class="text-center mb-5">Répartition des molécules</h2>
+        <div class="row g-4">
+            <!-- Colonne gauche : Formulaire -->
+            <div class="col-md-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Remplir le formulaire</h5>
+                    </div>
+                    <div class="card-body">
+                        <div>
 
-    <label for="dateInput">Choisir une date de début :</label>
-    <input type="date" id="date_debut">
-    <label for="dateInput">Choisir une date de fin :</label>
-    <input type="date" id="date_fin">
-    <p>Choisir les familles : Problème pour les fammilles qui n'ont qu'une molécule</p>
-    <label><input type="checkbox" name="famille" value="Cathinones"> Cathinones</label><br>
-    <label><input type="checkbox" name="famille" value="MDMA"> MDMA</label><br>
-    <label><input type="checkbox" name="famille" value="Cocaïne"> Cocaïne</label><br>
-    <label><input type="checkbox" name="famille" value="Dissociatifs"> Dissociatifs</label><br>
-    <label><input type="checkbox" name="famille" value="Amphétamines"> Amphétamines</label><br>
-    <label><input type="checkbox" name="famille" value="Opioïdes"> Opioïdes</label><br>
-    <label><input type="checkbox" name="famille" value="Cannabinoïdes"> Cannabinoïdes</label><br>
-    <label><input type="checkbox" name="famille" value="Hallucinogènes"> Hallucinogènes</label><br>
-    <label><input type="checkbox" name="famille" value="Crack/Freebase (cocaine base)"> Crack/Freebase (cocaine base)</label><br>
-    <label><input type="checkbox" name="famille" value="Benzodiazépines_et_similaires"> Benzodiazépines et similaires</label><br>
-    <label><input type="checkbox" name="famille" value="GABAergiques_non_benzo"> GABAergiques non-benzo</label><br>
-    <button onclick="loadChart()">Charger</button>
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Choisir une date de début :</label>
+                                <input type="date" class="form-control" id="date_debut">
+                            </div>
 
-    <canvas id="myPieChart" width="400" height="400"></canvas>
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Choisir une date de fin :</label>
+                                <input type="date" class="form-control" id="date_fin">
+                            </div>
+                           
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Cathinones</label>
+                                <input type="checkbox" name="famille" value="Cathinones"> 
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">MDMA</label>
+                                <input type="checkbox" name="famille" value="MDMA"> 
+                            </div>
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Cocaïne</label>
+                                <input type="checkbox" name="famille" value="Cocaïne"> 
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Dissociatifs</label>
+                                <input type="checkbox" name="famille" value="Dissociatifs">
+                            </div>
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Amphétamines</label>
+                                <input type="checkbox" name="famille" value="Amphétamines">
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Opioïdes</label>
+                                <input type="checkbox" name="famille" value="Opioïdes"> 
+                            </div>
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Cannabinoïdes</label>
+                                <input type="checkbox" name="famille" value="Cannabinoïdes"> 
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Hallucinogènes</label>
+                                <input type="checkbox" name="famille" value="Hallucinogènes">
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Crack/Freebase (cocaine base)</label>
+                                <input type="checkbox" name="famille" value="Crack/Freebase (cocaine base)">
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Benzodiazépines_et_similaires</label>
+                                <input type="checkbox" name="famille" value="Benzodiazépines_et_similaires">
+                            </div>
+
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">GABAergiques_non_benzo</label>
+                                <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
+                            </div>
+
+                            <button onclick="loadChart()" class="btn btn-primary w-100">Envoyer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne droite : Canvas -->
+            <div class="col-md-7">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Aperçu sur le Canvas</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <canvas id="myPieChart" width="400" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         let pieChart = null;
