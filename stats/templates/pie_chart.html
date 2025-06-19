@@ -28,7 +28,6 @@
                     </div>
                     <div class="card-body">
                         <div>
-
                             <div class="mb-3">
                                 <label for="nom" class="form-label">Choisir une date de début :</label>
                                 <input type="date" class="form-control" id="date_debut">
@@ -104,6 +103,7 @@
                         <h5 class="mb-0">Aperçu sur le Canvas</h5>
                     </div>
                     <div class="card-body text-center">
+                        <p id="totalObservations"></p>
                         <canvas id="myPieChart" width="400" height="400"></canvas>
                     </div>
                 </div>
@@ -134,7 +134,8 @@
                 .then(response => response.json())
                 .then(data => {
                     const ctx = document.getElementById('myPieChart').getContext('2d');
-
+                    const total = data.count;
+                    document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
                     if (pieChart) {
                         pieChart.destroy(); // détruire l'ancien graphique s'il existe
                     }
@@ -142,9 +143,9 @@
                     pieChart = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: Array.isArray(data.labels) ? data.labels : [ data.labels ],
+                            labels: data.labels,
                             datasets: [{
-                                data: Array.isArray(data.data) ? data.data : [ data.data ],
+                                data: data.data,
                                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
                             }]
                         },

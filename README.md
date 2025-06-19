@@ -35,7 +35,8 @@ Ce projet est une application Django permettant d’exécuter des scripts **R** 
 * Python 3.10+
 * Django 4.x+
 * R (et `Rscript`) installés sur le système
-* Bibliothèques R nécessaires (`ggplot2`, `dplyr`, etc.)
+* Bibliothèques R nécessaires (`RMySQL`, `DBI`, `tidyverse`, `jsonlite`)
+
 
 ### Étapes
 
