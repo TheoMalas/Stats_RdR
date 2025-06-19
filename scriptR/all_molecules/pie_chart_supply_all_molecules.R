@@ -1,6 +1,6 @@
 library(DBI)
 library(RMySQL)
-library(tidyverse)
+library(dplyr)
 library(jsonlite)
 
 user <- Sys.getenv("USER")
