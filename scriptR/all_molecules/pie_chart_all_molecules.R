@@ -27,7 +27,7 @@ args <- commandArgs(trailingOnly = TRUE)
 date_debut <- as.Date(args[1])
 date_fin <- as.Date(args[2])
 data = data %>% 
-  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+ filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
 
 if (length(args)>2){
   familles_vec <- args[3:length(args)]  # vecteur de familles
@@ -72,7 +72,7 @@ json_obj <- list(
   data = df_fin$pourcent
 )
 
-write_json(json_obj, "output/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
+write_json(json_obj, "output/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
 
 #ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
 #  geom_col(width = 1) +

@@ -52,12 +52,29 @@ df_pie <- df_pie_0 %>%
   arrange(somme) %>%
   mutate(categorie_label = factor(categorie_label, levels = categorie_label))
 
-N=nrow(df_pie_0)
 
-ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
-  geom_col(width = 1) +
-  coord_polar(theta = "y") +
-  labs(title = paste0("Répartition des échantillons par mode d'approvisionnement (%), N=",N),
-       fill = "Mode d'approvisionnement") +
-  theme_void() +
-  guides(fill = guide_legend(reverse = TRUE))
+df_fin = df_pie %>% select(categorie_label, pourcent)
+
+# Convertir en liste nommée
+df_list <- setNames(as.list(df_fin$pourcent), df_fin$categorie_label)
+
+# Conversion au format souhaité
+json_obj <- list(
+  labels = as.character(df_fin$categorie_label),
+  data = df_fin$pourcent
+)
+
+write_json(json_obj, "output/pie_chart_all_molecules_supply.json", pretty = TRUE, auto_unbox = FALSE)
+
+
+
+
+#N=nrow(df_pie_0)
+
+#ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
+#  geom_col(width = 1) +
+#  coord_polar(theta = "y") +
+#  labs(title = paste0("Répartition des échantillons par mode d'approvisionnement (%), N=",N),
+#       fill = "Mode d'approvisionnement") +
+#  theme_void() +
+#  guides(fill = guide_legend(reverse = TRUE))

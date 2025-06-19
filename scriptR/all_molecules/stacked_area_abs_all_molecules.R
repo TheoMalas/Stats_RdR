@@ -77,14 +77,16 @@ order=data_evol_abs %>%
 
 data_evol_abs = data_evol_abs %>% mutate(molecule_simp = factor(molecule_simp, levels = unlist(order)))
 
-N=nrow(data_bimestre %>% filter(date_bimestre > "2023-04-01" & date_bimestre < max(date_bimestre, na.rm=T)))
 
-ggplot(data_evol_abs, aes(x = date_bimestre, y = abs, fill = molecule_simp)) +
-  geom_area(position = "stack", color = "white", size = 0.2) +
-  labs(
-    title = paste0("Évolution du nombre d'échantillons par produit attendu, N=",N),
-    x = "Bimestre",
-    y = "Nombre d'échantillons",
-    fill = "Produit attendu"
-  ) +
-  theme_minimal(base_size = 14)
+
+#N=nrow(data_bimestre %>% filter(date_bimestre > "2023-04-01" & date_bimestre < max(date_bimestre, na.rm=T)))
+
+#ggplot(data_evol_abs, aes(x = date_bimestre, y = abs, fill = molecule_simp)) +
+#  geom_area(position = "stack", color = "white", size = 0.2) +
+#  labs(
+#    title = paste0("Évolution du nombre d'échantillons par produit attendu, N=",N),
+#    x = "Bimestre",
+#    y = "Nombre d'échantillons",
+#    fill = "Produit attendu"
+#  ) +
+#  theme_minimal(base_size = 14)
