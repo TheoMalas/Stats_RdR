@@ -60,6 +60,19 @@ def chart_data_supply(request):
       data = json.load(f)
   return JsonResponse(data)
 
+def chart_data_cocaine_coupe(request):
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
+  default_start = "2022-06-22" #first analysis done
+  date_debut = request.GET.get("date_debut", default_start)
+  date_fin = request.GET.get("date_fin", default_end)
+
+  cmd=["Rscript","scriptR/cocaine/diagram_coupe_cocaine.R",date_debut,date_fin]
+  subprocess.run(cmd)
+  json_file_path = os.path.join(settings.BASE_DIR, 'output/coupe_cocaine.json')
+  with open(json_file_path, 'r') as f:
+      data = json.load(f)
+  return JsonResponse(data)
+
 def molecules_view(request):
     return render(request, 'pie_chart.html', { 
         'fetch_url' : 'chart-data'
@@ -68,4 +81,9 @@ def molecules_view(request):
 def supply_view(request):
     return render(request, 'pie_chart.html', { 
         'fetch_url' : 'chart-data-supply'
+    })
+  
+def cocaine_view(request):
+      return render(request, 'pie_chart.html', { 
+      'fetch_url' : 'chart-data-cocaine-coupe'
     })
