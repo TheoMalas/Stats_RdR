@@ -27,12 +27,12 @@ data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcent
 # Selection de la fenêtre de temps et des familles #############################
 ################################################################################
 
-#args <- commandArgs(trailingOnly = TRUE)
+args <- commandArgs(trailingOnly = TRUE)
 
-#date_debut <- as.Date(args[1])
-#date_fin <- as.Date(args[2])
-#data = data %>% 
-#  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+date_debut <- as.Date(args[1])
+date_fin <- as.Date(args[2])
+data = data %>% 
+  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
 
 ################################################################################
 # Histogramme des produits de coupe ############################################
@@ -85,13 +85,14 @@ pourcentage_non_nuls <- pourcentage_non_nuls %>%
   arrange(desc(pourcentage_non_nul))
 
 ################################################################################
-
+N=nrow(data)
 # Conversion au format souhaité
 json_obj <- list(
   labels_presence_coupe = as.character(df_fin_presence_coupe$categorie_label),
   data_presence_coupe = df_fin_presence_coupe$pourcent,
   labels_prod_coupe = as.character(pourcentage_non_nuls$prod),
-  data_prod_coupe = pourcentage_non_nuls$pourcentage_non_nul
+  data_prod_coupe = pourcentage_non_nuls$pourcentage_non_nul,
+  count = N
 )
 
 # Export en JSON

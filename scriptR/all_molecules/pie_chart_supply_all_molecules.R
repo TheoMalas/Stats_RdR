@@ -59,10 +59,12 @@ df_fin = df_pie %>% select(categorie_label, pourcent)
 # Convertir en liste nommée
 df_list <- setNames(as.list(df_fin$pourcent), df_fin$categorie_label)
 
+N=nrow(data)
 # Conversion au format souhaité
 json_obj <- list(
   labels = as.character(df_fin$categorie_label),
-  data = df_fin$pourcent
+  data = df_fin$pourcent,
+  count=N
 )
 
 write_json(json_obj, "output/pie_chart_supply_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)

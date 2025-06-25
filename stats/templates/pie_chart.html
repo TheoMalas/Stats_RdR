@@ -50,7 +50,6 @@
         </div>
         </nav>
 
-
     <div class="container py-5">
         <h2 class="text-center mb-5">Répartition des molécules</h2>
         <div class="row g-4">
@@ -124,7 +123,7 @@
                                 <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
                             </div>
 
-                            <button onclick="loadChart()" class="btn btn-primary w-100">Envoyer</button>
+                            <button onclick="loadChart(); loadBarChart();" class="btn btn-primary w-100">Envoyer</button>
                         </div>
                     </div>
                 </div>
@@ -139,6 +138,7 @@
                     <div class="card-body text-center">
                         <p id="totalObservations"></p>
                         <canvas id="myPieChart" width="400" height="400"></canvas>
+                        <canvas id="myBarChart" width="400" height="400"></canvas>
                     </div>
                 </div>
             </div>
@@ -165,31 +165,121 @@
             const fetchUrl = "{{ fetch_url }}";
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
             
-            fetch(url)
+            if (fetchUrl=='chart-data'||fetchUrl=='chart-data-supply'){
+              fetch(url)
+                  .then(response => response.json())
+                  .then(data => {
+                      const ctx = document.getElementById('myPieChart').getContext('2d');
+                      const total = data.count;
+                      document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+                      if (pieChart) {
+                          pieChart.destroy(); // détruire l'ancien graphique s'il existe
+                      }
+  
+                      pieChart = new Chart(ctx, {
+                          type: 'pie',
+                          data: {
+                              labels: data.labels,
+                              datasets: [{
+                                  data: data.data,
+                                  backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                              }]
+                          },
+                      });
+                  });
+              }
+            if (fetchUrl=='chart-data-cocaine-coupe'){
+              fetch(url)
+                  .then(response => response.json())
+                  .then(data => {
+                      const ctx = document.getElementById('myPieChart').getContext('2d');
+                      const total = data.count;
+                      document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+                      if (pieChart) {
+                          pieChart.destroy(); // détruire l'ancien graphique s'il existe
+                      }
+  
+                      pieChart = new Chart(ctx, {
+                          type: 'pie',
+                          data: {
+                              labels: data.labels_presence_coupe,
+                              datasets: [{
+                                  data: data.data_presence_coupe,
+                                  backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                              }]
+                          },
+                      });
+                  });
+              
+            }
+        }
+        let barChart = null;
+
+        function loadBarChart() {
+            const date_debut = document.getElementById('date_debut').value;
+            const date_fin = document.getElementById('date_fin').value;
+            //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
+            const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
+                                     .map(cb => cb.value);
+            const params = new URLSearchParams();
+            if (date_debut) params.append('date_debut', date_debut);
+            if (date_fin) params.append('date_fin', date_fin);
+            if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+            
+            const fetchUrl = "{{ fetch_url }}";
+            const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+            if (fetchUrl == 'chart-data-cocaine-coupe'){
+              fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    const ctx = document.getElementById('myPieChart').getContext('2d');
-                    const total = data.count;
-                    document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
-                    if (pieChart) {
-                        pieChart.destroy(); // détruire l'ancien graphique s'il existe
-                    }
-
-                    pieChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{
-                                data: data.data,
-                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                            }]
-                        },
-                    });
+                  const ctx = document.getElementById('myBarChart').getContext('2d');
+                if (barChart) {
+                          barChart.destroy(); // détruire l'ancien graphique s'il existe
+                      }
+                barChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                          labels: data.labels_prod_coupe,
+                          datasets: [{
+                              label: 'Proportion de produits retrouvés',
+                              data: data.data_prod_coupe,
+                              backgroundColor: '#36A2EB',
+                          }]
+                      },
+                      options: {
+                          indexAxis: 'y', // Affiche les barres horizontalement
+                          responsive: true,
+                          scales: {
+                              x: {
+                                  beginAtZero: true,
+                                  title: {
+                                      display: true,
+                                      text: 'Proportion'
+                                  }
+                              },
+                              y: {
+                                  title: {
+                                      display: true,
+                                      text: 'Produits'
+                                  }
+                              }
+                          },
+                          plugins: {
+                              legend: {
+                                  display: false // Si tu veux juste un titre simple
+                              }
+                           }
+                      }
                 });
+                });
+            }
         }
 
         // Optionnel : charger un graphique par défaut à l'ouverture
-        window.onload = loadChart;
+        window.onload = () => {
+    loadChart();
+    loadBarChart();
+};
     </script>
 </body>
 </html>
