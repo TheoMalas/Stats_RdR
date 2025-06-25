@@ -1,17 +1,19 @@
 library(DBI)
 library(RMySQL)
-library(tidyverse)
+library(dplyr)
 
 CLIENT_LOCAL_FILES <- 128  # This constant is not predefined in RMySQL
 
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")
+host <- Sys.getenv("HOST")
+port <- as.integer(Sys.getenv("PORT"))
 
 
 con <- dbConnect(RMySQL::MySQL(),
                  dbname = "db_psycho_test",
-                 host = "localhost",
-                 port = 3306,
+                 host = host,
+                 port = port,
                  user = user,
                  password = pwd,
                  client.flag = CLIENT_LOCAL_FILES)
