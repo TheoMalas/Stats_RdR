@@ -45,6 +45,9 @@
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'cocaine_view' %}">Cocaïne</a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'stacked_area_prop_all_molecules' %}">Évolution toutes molécules</a>
+                </li>
             </ul>
             </div>
         </div>
@@ -123,7 +126,7 @@
                                 <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
                             </div>
 
-                            <button onclick="loadChart(); loadBarChart();" class="btn btn-primary w-100">Envoyer</button>
+                            <button onclick="loadChart(); loadBarChart(); loadAreaStackedChart();" class="btn btn-primary w-100">Envoyer</button>
                         </div>
                     </div>
                 </div>
@@ -137,8 +140,9 @@
                     </div>
                     <div class="card-body text-center">
                         <p id="totalObservations"></p>
-                        <canvas id="myPieChart" width="400" height="400"></canvas>
-                        <canvas id="myBarChart" width="400" height="400"></canvas>
+                        <canvas id="myPieChart" width="400" height="400" style="display:none"></canvas>
+                        <canvas id="myBarChart" width="400" height="400" style="display:none"></canvas>
+                        <canvas id="myAreaStackedChart" width="400" height="400" style="display:none"></canvas>
                     </div>
                 </div>
             </div>
@@ -152,6 +156,8 @@
         let pieChart = null;
 
         function loadChart() {
+          
+            console.log("test");
             const date_debut = document.getElementById('date_debut').value;
             const date_fin = document.getElementById('date_fin').value;
             //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
@@ -169,6 +175,7 @@
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
+                      document.getElementById('myPieChart').style.display = 'block';
                       const ctx = document.getElementById('myPieChart').getContext('2d');
                       const total = data.count;
                       document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
@@ -193,6 +200,7 @@
                   .then(response => response.json())
                   .then(data => {
                       const ctx = document.getElementById('myPieChart').getContext('2d');
+                      document.getElementById('myPieChart').style.display = 'block';
                       const total = data.count;
                       document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
                       if (pieChart) {
@@ -233,6 +241,7 @@
                 .then(response => response.json())
                 .then(data => {
                   const ctx = document.getElementById('myBarChart').getContext('2d');
+                  document.getElementById('myBarChart').style.display = 'block';
                 if (barChart) {
                           barChart.destroy(); // détruire l'ancien graphique s'il existe
                       }
@@ -275,10 +284,72 @@
             }
         }
 
+        let areaStackedChart = null;
+
+        function loadAreaStackedChart() {
+            const date_debut = document.getElementById('date_debut').value;
+            const date_fin = document.getElementById('date_fin').value;
+            //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
+            const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
+                                     .map(cb => cb.value);
+            const params = new URLSearchParams();
+            if (date_debut) params.append('date_debut', date_debut);
+            if (date_fin) params.append('date_fin', date_fin);
+            if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+            const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+            const fetchUrl = "{{ fetch_url }}";
+            const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+            console.log("test 1");
+            console.log(fetchUrl);
+            if (fetchUrl=='chart-stacked-area-prop-all-molecules'){
+              fetch(url)
+                  .then(response => response.json())
+                  .then(data => {
+                    
+                    console.log(data);
+                  const ctx = document.getElementById('myAreaStackedChart').getContext('2d');
+                  document.getElementById('myAreaStackedChart').style.display = 'block';
+                  if (areaStackedChart) {
+                            areaStackedChart.destroy(); // détruire l'ancien graphique s'il existe
+                        }
+                  areaStackedChart = new Chart(ctx, {
+                      type: 'line',
+                      data: data,
+                      options: {
+                          responsive: true,
+                          scales: {
+                              x: {
+                                  stacked: true,
+                                  title: {
+                                      display: true,
+                                      text: 'Période'
+                                  }
+                              },
+                              y: {
+                                  stacked: true,
+                                  beginAtZero: true,
+                                  title: {
+                                      display: true,
+                                      text: 'Proportion'
+                                  }
+                              }
+                          },
+                          plugins: {
+                              legend: {
+                                  display: true
+                              }
+                          }
+                      }
+                  });
+              });
+            }
+        }
+
         // Optionnel : charger un graphique par défaut à l'ouverture
         window.onload = () => {
     loadChart();
     loadBarChart();
+    loadAreaStackedChart()
 };
     </script>
 </body>

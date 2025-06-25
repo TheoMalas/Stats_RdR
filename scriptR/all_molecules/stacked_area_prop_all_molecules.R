@@ -70,8 +70,7 @@ data_evol <- data_bimestre %>%
   group_by(date_bimestre, molecule_simp) %>%
   summarise(prop = n() / first(n_total), .groups = "drop") %>%
   complete(date_bimestre, molecule_simp, fill = list(prop = 0)) %>%
-  arrange(date_bimestre, molecule_simp) %>% 
-  filter(date_bimestre > "2023-04-01" & date_bimestre < max(date_bimestre, na.rm=T))
+  arrange(date_bimestre, molecule_simp)
 
 
 order=data_evol %>% 
@@ -83,17 +82,37 @@ order=data_evol %>%
 data_evol <- data_evol %>% 
   mutate(molecule_simp = factor(molecule_simp, levels = unlist(order)))
 
-N=nrow(data_bimestre %>% filter(date_bimestre > "2023-04-01" & date_bimestre < max(date_bimestre, na.rm=T)))  
+N=nrow(data)
 
-ggplot(data_evol, aes(x = date_bimestre, y = prop, fill = molecule_simp)) +
-  geom_area(position = "stack", color = "white", size = 0.2) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(
-    title = paste0("Évolution des parts par produit attendu, N=",N),
-    x = "Bimestre",
-    y = "Part relative",
-    fill = "Produit attendu"
-  ) +
-  theme_minimal(base_size = 14)
+prod_vec=unique(data_evol$molecule_simp)
+
+# Génération de la liste des datasets
+datasets_list <- lapply(prod_vec, function(prod_i) {
+  list(
+    label = as.character(prod_i),
+    data = (data_evol %>% filter(molecule_simp == prod_i))$prop,
+    fill = "origin"
+  )
+})
+
+# Objet JSON final
+json_obj <- list(
+  labels = as.character(unique(data_evol$date_bimestre)),
+  datasets = datasets_list,
+  count = N
+)
+
+write_json(json_obj, "output/stacked_area_prop_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
+
+#ggplot(data_evol, aes(x = date_bimestre, y = prop, fill = molecule_simp)) +
+#  geom_area(position = "stack", color = "white", size = 0.2) +
+#  scale_y_continuous(labels = scales::percent_format()) +
+#  labs(
+#    title = paste0("Évolution des parts par produit attendu, N=",N),
+#    x = "Bimestre",
+#    y = "Part relative",
+#    fill = "Produit attendu"
+#  ) +
+#  theme_minimal(base_size = 14)
 
 #ggsave("stacked_area_prop.pdf")
