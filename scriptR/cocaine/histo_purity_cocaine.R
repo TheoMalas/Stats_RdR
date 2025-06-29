@@ -39,14 +39,42 @@ data = data %>%
 ################################################################################
 # Histogramme des puretés ######################################################
 ################################################################################
+tranches <- tibble(classe = seq(0, 100, by = 5))
 
-ggplot(data, aes(x = pourcentage)) +
-  geom_histogram(binwidth = 5, fill = "firebrick2", color = "white", boundary = 0, closed = "left") +
-  scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, by = 10)) +
-  labs(
-    title = paste0("Distribution de la pureté de la cocaïne (en équivalent base), N=",nrow(data)),
-    x = "Pureté (%)",
-    y = "Occurence"
-  ) +
-  geom_vline(xintercept = 100*ratio_base_sel, linetype="dashed")+
-  theme_minimal(base_size = 14)
+data_histo <- data %>%
+  select(pourcentage) %>% 
+  mutate(classe = cut(pourcentage,
+                      breaks = seq(0, 105, by = 5),
+                      include.lowest = TRUE,
+                      right = FALSE,  # [x, y[
+                      labels = seq(0, 100, by = 5))) %>%
+  count(classe, name = "occurence") %>%
+  mutate(classe = as.integer(as.character(classe))) %>% 
+  right_join(tranches, by = "classe") %>%
+  replace_na(list(frequence = 0)) %>%
+  arrange(classe)
+
+ratio_base_sel = 303.352/(303.352+35.453)
+
+N=sum(data_histo$occurence)
+
+json_obj <- list(
+  labels = as.character(data_histo$classe),
+  data = data_histo$occurence,
+  ratio_base_sel = ratio_base_sel*100,
+  count = N
+)
+
+# Export en JSON
+write_json(json_obj, "output/histo_purity_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
+
+#ggplot(data, aes(x = pourcentage)) +
+#  geom_histogram(binwidth = 5, fill = "firebrick2", color = "white", boundary = 0, closed = "left") +
+#  scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, by = 10)) +
+#  labs(
+#    title = paste0("Distribution de la pureté de la cocaïne (en équivalent base), N=",nrow(data)),
+#    x = "Pureté (%)",
+#    y = "Occurence"
+#  ) +
+#  geom_vline(xintercept = 100*ratio_base_sel, linetype="dashed")+
+#  theme_minimal(base_size = 14)

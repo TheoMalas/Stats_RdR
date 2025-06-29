@@ -76,7 +76,7 @@ data_evol <- data_bimestre %>%
 order=data_evol %>% 
   filter(date_bimestre==max(date_bimestre, na.rm=T)) %>%
   mutate(temp=ifelse(molecule_simp=="Autres",-1,prop)) %>% 
-  arrange(temp) %>% 
+  arrange(desc(temp)) %>% 
   select(molecule_simp)
 
 data_evol <- data_evol %>% 
@@ -84,7 +84,7 @@ data_evol <- data_evol %>%
 
 N=nrow(data)
 
-prod_vec=unique(data_evol$molecule_simp)
+prod_vec=levels(data_evol$molecule_simp)
 
 # Génération de la liste des datasets
 datasets_list <- lapply(prod_vec, function(prod_i) {

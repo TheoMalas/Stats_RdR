@@ -38,6 +38,7 @@ data = data %>%
 ################################################################################
 # Evolution of the purity ######################################################
 ################################################################################
+ratio_base_sel = 303.352/(303.352+35.453) 
 
 Delta=15
 
@@ -46,13 +47,33 @@ data_cocaine_lis <- data %>%
   mutate(moyenne_glissante = sapply(date, function(d) {
     mean(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
   }))%>%
-  filter(date >= min(date) + Delta, date <= max(date) - Delta)
+  filter(date >= min(date) + Delta, date <= max(date) - Delta) %>% 
+  select(date,moyenne_glissante)
 
+# Génération de la liste des datasets
+datasets_list <-list(list(
+    label = "",
+    data = data_cocaine_lis$moyenne_glissante,
+    fill = "false"
+  ))
 
-ggplot(data_cocaine_lis, aes(x = date, y = moyenne_glissante)) +
-  geom_point() +
-  geom_line() +
-  labs(x = "Date",
-       y = "Pureté de la cocaïne (équivalent base) en %",
-       title = paste0("Évolution lissée sur 1 mois de la pureté de la cocaïne, N=",nrow(data))) +
-  theme_minimal()
+N=nrow(data)
+
+# Objet JSON final
+json_obj <- list(
+  labels = as.character(data_cocaine_lis$date),
+  datasets = datasets_list,
+  ratio_base_sel = ratio_base_sel*100,
+  count = N
+)
+
+# Export en JSON
+write_json(json_obj, "output/evol_purity_cocaine.json", pretty = TRUE, auto_unbox = TRUE)
+
+#ggplot(data_cocaine_lis, aes(x = date, y = moyenne_glissante)) +
+#  geom_point() +
+#  geom_line() +
+#  labs(x = "Date",
+#       y = "Pureté de la cocaïne (équivalent base) en %",
+#       title = paste0("Évolution lissée sur 1 mois de la pureté de la cocaïne, N=",nrow(data))) +
+#  theme_minimal()

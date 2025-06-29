@@ -48,6 +48,12 @@
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'stacked_area_prop_all_molecules' %}">Évolution toutes molécules</a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Histo Pureté cocaïne</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'evol_purity_cocaine_view' %}">Evol Pureté cocaïne</a>
+                </li>
             </ul>
             </div>
         </div>
@@ -157,7 +163,7 @@
 
         function loadChart() {
           
-            console.log("test");
+            
             const date_debut = document.getElementById('date_debut').value;
             const date_fin = document.getElementById('date_fin').value;
             //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
@@ -236,6 +242,7 @@
             
             const fetchUrl = "{{ fetch_url }}";
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+  
             if (fetchUrl == 'chart-data-cocaine-coupe'){
               fetch(url)
                 .then(response => response.json())
@@ -282,6 +289,53 @@
                 });
                 });
             }
+            if (fetchUrl == 'chart-purity-cocaine'){
+              fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                  const ctx = document.getElementById('myBarChart').getContext('2d');
+                  document.getElementById('myBarChart').style.display = 'block';
+                  const total = data.count;
+                  document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+                if (barChart) {
+                          barChart.destroy(); // détruire l'ancien graphique s'il existe
+                      }
+                barChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                          labels: data.labels,
+                          datasets: [{
+                              label: 'Proportion de produits retrouvés',
+                              data: data.data,
+                              backgroundColor: '#36A2EB',
+                          }]
+                      },
+                      options: {
+                          responsive: true,
+                          scales: {
+                              x: {
+                                  beginAtZero: true,
+                                  title: {
+                                      display: true,
+                                      text: 'Pourcentage de pureté'
+                                  }
+                              },
+                              y: {
+                                  title: {
+                                      display: true,
+                                      text: 'Occurences'
+                                  }
+                              }
+                          },
+                          plugins: {
+                              legend: {
+                                  display: false // Si tu veux juste un titre simple
+                              }
+                           }
+                      }
+                });
+                });
+            }
         }
 
         let areaStackedChart = null;
@@ -299,16 +353,63 @@
             const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
             const fetchUrl = "{{ fetch_url }}";
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
-            console.log("test 1");
-            console.log(fetchUrl);
+            
+            
             if (fetchUrl=='chart-stacked-area-prop-all-molecules'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
                     
-                    console.log(data);
+                    
                   const ctx = document.getElementById('myAreaStackedChart').getContext('2d');
                   document.getElementById('myAreaStackedChart').style.display = 'block';
+                  const total = data.count;
+                  document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+                  if (areaStackedChart) {
+                            areaStackedChart.destroy(); // détruire l'ancien graphique s'il existe
+                        }
+                  areaStackedChart = new Chart(ctx, {
+                      type: 'line',
+                      data: data,
+                      options: {
+                          responsive: true,
+                          scales: {
+                              x: {
+                                  stacked: true,
+                                  title: {
+                                      display: true,
+                                      text: 'Période'
+                                  }
+                              },
+                              y: {
+                                  stacked: true,
+                                  beginAtZero: true,
+                                  title: {
+                                      display: true,
+                                      text: 'Proportion'
+                                  }
+                              }
+                          },
+                          plugins: {
+                              legend: {
+                                  display: true
+                              }
+                          }
+                      }
+                  });
+              });
+            }
+            console.log(fetchUrl)
+            if (fetchUrl=='chart-evol-purity-cocaine'){
+              fetch(url)
+                  .then(response => response.json())
+                  .then(data => {
+                    
+                    
+                  const ctx = document.getElementById('myAreaStackedChart').getContext('2d');
+                  document.getElementById('myAreaStackedChart').style.display = 'block';
+                  const total = data.count;
+                  document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
                   if (areaStackedChart) {
                             areaStackedChart.destroy(); // détruire l'ancien graphique s'il existe
                         }
