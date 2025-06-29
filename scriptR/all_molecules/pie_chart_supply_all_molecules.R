@@ -5,12 +5,14 @@ library(jsonlite)
 
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")
+host <- Sys.getenv("HOST")
+port <- as.integer(Sys.getenv("PORT"))
 
 
 con <- dbConnect(RMySQL::MySQL(),
                  dbname = "db_psycho_test",
-                 host = "localhost",
-                 port = 3306,
+                 host = host,
+                 port = port,
                  user = user,
                  password = pwd)
 
