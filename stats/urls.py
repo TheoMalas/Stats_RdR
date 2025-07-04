@@ -16,4 +16,6 @@ urlpatterns = [
     path('purity-cocaine/', views.purity_cocaine_view, name='purity_cocaine_view'),
     path('chart-evol-purity-cocaine/', views.chart_evol_purity_cocaine, name='chart_evol_purity_cocaine'),
     path('evol-purity-cocaine/', views.evol_purity_cocaine_view, name='evol_purity_cocaine_view'),
+    path('chart-histo-comprime-mdma/', views.chart_histo_comprime_mdma, name='chart_histo_comprime_mdma'),
+    path('histo-comprime-mdma/', views.histo_comprime_mdma_view, name='histo_comprime_mdma_view'),
   ]

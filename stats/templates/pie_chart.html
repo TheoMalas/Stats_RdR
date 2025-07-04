@@ -54,6 +54,9 @@
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'evol_purity_cocaine_view' %}">Evol Pureté cocaïne</a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'histo_comprime_mdma_view' %}">Histo Comprimé MDMA</a>
+                </li>
             </ul>
             </div>
         </div>
@@ -93,7 +96,22 @@
                                 <label for="nom" class="form-label">Cocaïne</label>
                                 <input type="checkbox" name="famille" value="Cocaïne"> 
                             </div>
-
+                            
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Héroïne</label>
+                                <input type="checkbox" name="famille" value="Héroïne">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Kétamine</label>
+                                <input type="checkbox" name="famille" value="Kétamine">
+                            </div>
+                            
+                            <div class="mb-1">
+                                <label for="nom" class="form-label">Speed</label>
+                                <input type="checkbox" name="famille" value="Speed">
+                            </div>
+                            
                             <div class="mb-1">
                                 <label for="nom" class="form-label">Dissociatifs</label>
                                 <input type="checkbox" name="famille" value="Dissociatifs">
@@ -123,12 +141,12 @@
                             </div>
 
                             <div class="mb-1">
-                                <label for="nom" class="form-label">Benzodiazépines_et_similaires</label>
+                                <label for="nom" class="form-label">Benzodiazépines et similaires</label>
                                 <input type="checkbox" name="famille" value="Benzodiazépines_et_similaires">
                             </div>
 
                             <div class="mb-1">
-                                <label for="nom" class="form-label">GABAergiques_non_benzo</label>
+                                <label for="nom" class="form-label">GABAergiques non benzo</label>
                                 <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
                             </div>
 
@@ -289,7 +307,7 @@
                 });
                 });
             }
-            if (fetchUrl == 'chart-purity-cocaine'){
+            if (fetchUrl == 'chart-purity-cocaine'|| fetchUrl == 'chart-histo-comprime-mdma'){
               fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -317,7 +335,7 @@
                                   beginAtZero: true,
                                   title: {
                                       display: true,
-                                      text: 'Pourcentage de pureté'
+                                      text: fetchUrl=='chart-histo-comprime-mdma' ? 'Dosage des comprimés (mg)' : 'Pourcentage de pureté'
                                   }
                               },
                               y: {
@@ -355,7 +373,7 @@
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
             
             
-            if (fetchUrl=='chart-stacked-area-prop-all-molecules'){
+            if (fetchUrl=='chart-stacked-area-prop-all-molecules'||fetchUrl=='chart-data-supply'||fetchUrl=='chart-data'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
@@ -370,7 +388,10 @@
                         }
                   areaStackedChart = new Chart(ctx, {
                       type: 'line',
-                      data: data,
+                      data: {
+                        labels: data.labels_area,
+                        datasets: data.datasets_area
+                          },
                       options: {
                           responsive: true,
                           scales: {

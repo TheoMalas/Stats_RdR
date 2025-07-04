@@ -142,3 +142,23 @@ def chart_evol_purity_cocaine(request):
   with open(json_file_path, 'r') as f:
       data = json.load(f)
   return JsonResponse(data)
+
+def histo_comprime_mdma_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-histo-comprime-mdma'
+  })
+  
+def chart_histo_comprime_mdma(request):
+  print("test")
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
+  default_start = "2022-06-22" #first analysis done
+  date_debut = request.GET.get("date_debut", default_start)
+  date_fin = request.GET.get("date_fin", default_end)
+  
+      
+  cmd=["Rscript","scriptR/mdma/histo_comprime_MDMA.R",date_debut,date_fin]
+  subprocess.run(cmd)
+  json_file_path = os.path.join(settings.BASE_DIR, 'output/histo_comprime_mdma.json')
+  with open(json_file_path, 'r') as f:
+      data = json.load(f)
+  return JsonResponse(data)

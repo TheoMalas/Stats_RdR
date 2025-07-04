@@ -3,7 +3,7 @@ library(RMySQL)
 library(dplyr)
 library(jsonlite)
 library(lubridate)
-library(tidyr)
+
 
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")
@@ -61,8 +61,7 @@ data_evol_approvisionnement <- data_bimestre %>%
   group_by(date_bimestre, provenance) %>%
   summarise(prop = n() / first(n_total), .groups = "drop") %>%
   complete(date_bimestre, provenance, fill = list(prop = 0)) %>%
-  arrange(date_bimestre, provenance) %>% 
-  filter(date_bimestre > "2023-11-01" & date_bimestre < max(date_bimestre, na.rm=T))
+  arrange(date_bimestre, provenance)
 
 order=data_evol_approvisionnement %>% 
   filter(date_bimestre==max(date_bimestre, na.rm=T)) %>%
@@ -76,14 +75,3 @@ data_evol_approvisionnement <- data_evol_approvisionnement %>%
 N=nrow(data_bimestre %>%
          filter(provenance != "Produits de coupe et commentaires :" & !is.na(provenance)) %>%
          filter(date_bimestre > "2023-11-01" & date_bimestre < max(date_bimestre, na.rm=T))) 
-
-ggplot(data_evol_approvisionnement, aes(x = date_bimestre, y = prop, fill = provenance)) +
-  geom_area(position = "stack", color = "white", size = 0.2) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(
-    title = paste0("Évolution des parts par mode d'approvisionnement, N=", N),
-    x = "Bimestre",
-    y = "Part relative",
-    fill = "Mode d'approvisionnement"
-  ) +
-  theme_minimal(base_size = 14)

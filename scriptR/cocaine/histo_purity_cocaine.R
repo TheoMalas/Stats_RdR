@@ -53,7 +53,7 @@ data_histo <- data %>%
   count(classe, name = "occurence") %>%
   mutate(classe = as.integer(as.character(classe))) %>% 
   right_join(tranches, by = "classe") %>%
-  replace_na(list(frequence = 0)) %>%
+  mutate(occurence = ifelse(is.na(occurence), 0, occurence)) %>% 
   arrange(classe)
 
 ratio_base_sel = 303.352/(303.352+35.453)

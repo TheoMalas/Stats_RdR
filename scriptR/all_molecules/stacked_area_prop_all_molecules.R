@@ -3,7 +3,7 @@ library(RMySQL)
 library(dplyr)
 library(jsonlite)
 library(lubridate)
-library(tidyr)
+
 
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")
@@ -66,14 +66,20 @@ data_bimestre <- data %>%
     date_bimestre = floor_date(date, "year") + months((bimestre - 1) * 2)  # Calculer le premier jour du bimestre
   )
 
+grille <- expand.grid(
+  date_bimestre = unique(data_bimestre$date_bimestre),
+  molecule_simp = unique(c(list_focus, "Autres"))
+)
+
 data_evol <- data_bimestre %>%
-  mutate(molecule_simp = ifelse(molecule_simp %in% list_focus,molecule_simp,"Autres")) %>%
+  mutate(molecule_simp = ifelse(molecule_simp %in% list_focus, molecule_simp, "Autres")) %>%
   group_by(date_bimestre) %>%
   mutate(n_total = n()) %>%
   ungroup() %>%
   group_by(date_bimestre, molecule_simp) %>%
   summarise(prop = n() / first(n_total), .groups = "drop") %>%
-  complete(date_bimestre, molecule_simp, fill = list(prop = 0)) %>%
+  right_join(grille, by = c("date_bimestre", "molecule_simp")) %>%
+  mutate(prop = ifelse(is.na(prop), 0, prop)) %>%
   arrange(date_bimestre, molecule_simp)
 
 
@@ -101,8 +107,8 @@ datasets_list <- lapply(prod_vec, function(prod_i) {
 
 # Objet JSON final
 json_obj <- list(
-  labels = as.character(unique(data_evol$date_bimestre)),
-  datasets = datasets_list,
+  labels_area = as.character(unique(data_evol$date_bimestre)),
+  datasets_area = datasets_list,
   count = N
 )
 

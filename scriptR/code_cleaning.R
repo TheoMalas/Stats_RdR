@@ -2,6 +2,18 @@ library(DBI)
 library(RMySQL)
 library(dplyr)
 
+# user <- Sys.getenv("USER")
+# pwd <- Sys.getenv("PASSWORD")
+# 
+# 
+# con <- dbConnect(RMySQL::MySQL(),
+#                 dbname = "db_psycho_test",
+#                 host     = "localhost",    # Ajouté si tu es en local
+#                 port     = 3306,           # Port par défaut MySQL
+#                 user = user,
+#                 password = pwd,
+#                 local_infile = 1)  # active LOAD DATA LOCAL INFILE)
+
 CLIENT_LOCAL_FILES <- 128  # This constant is not predefined in RMySQL
 
 user <- Sys.getenv("USER")
@@ -98,19 +110,22 @@ data_canonique <- data_correct %>%
 
 
 familles_psychotropes <- list(
-  Amphétamines = c("Amphétamines", "Speed", "Méthamphétamine", "fluoroamphetamine", 
+  Amphétamines = c("Amphétamines", "Méthamphétamine", "fluoroamphetamine", 
     "2FMA", "2-fluoro-méthamphétamine", "4-FMA", "3FA", "Methylphénidate",
     "Modafinil", "3-MMA","Fénéthylline", "Dextroamphetamine sulfate", "MDMA et Amphétamines", "Synthacaïne", "Bromantane"),
-  Opioïdes = c("Morphine", "Héroïne", "Codéine", "Oxycodone", "Tramadol", "méthadone","Opium", "RC opioids: cychlorphine", "RC opioids: protonitazène", "dérivé opiciacé", "Fentanyl","opioides "),
-  Cannabinoïdes = c("Cannabis (THC/CBD)", "cannabinoïde de synthèse", "JWH-210"),
   Benzodiazépines_et_similaires = c("Alprazolam", "Clonazepam", "Diazepam", "Bromazolam", "Norflurazepam", "Pyrazolam", "Flubromazepam", "Flubrotizolam", "DeschloroEtizoolam", "RC Benzo: Rilmazafone", "Gidazepam"),
-  Dissociatifs = c("Kétamine", "2-Oxo-PCE", "3-MeO-PCE HCL", "DMXE", "3-HO-PCP"),
-  Hallucinogènes = c("LSD", "DMT", "5-MeO-DALT Freebase", "Mescaline", "2C-B", "2C-E", "2C-EF", "4-HO-MET", "DOB", "MiPT"),
-  GABAergiques_non_benzo = c("GHB", "GBL"),
+  Cannabinoïdes = c("Cannabis (THC/CBD)", "cannabinoïde de synthèse", "JWH-210"),
   Cathinones = c("3-MMC", "2-MMC", "3-CMC", "4-MMC (mephedrone)", "4-CMC", "NEP", "Alpha-PiHP", "4BMC", "NEH","euthylone"),
   Cocaïne = c("Cocaïne"),
+  `Crack/Freebase (cocaine base)` = c("Crack/Freebase (cocaine base)"),
+  Dissociatifs = c("2-Oxo-PCE", "3-MeO-PCE HCL", "DMXE", "3-HO-PCP"),
+  GABAergiques_non_benzo = c("GHB", "GBL"),
+  Hallucinogènes = c("LSD", "DMT", "5-MeO-DALT Freebase", "Mescaline", "2C-B", "2C-E", "2C-EF", "4-HO-MET", "DOB", "MiPT"),
+  Héroïne = c("Héroïne"),
+  Kétamine = c("Kétamine"),
+  Speed = c("Speed"),
   MDMA = c("MDMA"),
-  `Crack/Freebase (cocaine base)` = c("Crack/Freebase (cocaine base)")
+  Opioïdes = c("Morphine", "Codéine", "Oxycodone", "Tramadol", "méthadone","Opium", "RC opioids: cychlorphine", "RC opioids: protonitazène", "dérivé opiciacé", "Fentanyl","opioides ")
 )
 familles_psychotropes_df <- bind_rows(lapply(names(familles_psychotropes), function(nom_famille) {
   data.frame(init = familles_psychotropes[[nom_famille]], famille = nom_famille, stringsAsFactors = FALSE)
