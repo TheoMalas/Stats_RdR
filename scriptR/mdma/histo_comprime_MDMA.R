@@ -87,6 +87,27 @@ data_histo <- data_comprime %>%
   arrange(classe)
 
 ################################################################################
+# Evolution moyenne et variance ################################################
+################################################################################
+
+Delta=15
+
+data_mean_lis <- data_comprime %>%
+  arrange(date) %>%
+  mutate(moyenne_glissante = sapply(date, function(d) {
+    mean(dose[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+  }))%>%
+  filter(date >= min(date) + Delta, date <= max(date) - Delta) %>% 
+  select(date,moyenne_glissante)
+
+# Génération de la liste des datasets
+datasets_list <-list(list(
+  label = "",
+  data = data_mean_lis$moyenne_glissante,
+  fill = "false"
+))
+
+################################################################################
 # Export en JSON ###############################################################
 ################################################################################
 
@@ -95,7 +116,9 @@ N=sum(data_histo$occurence)
 json_obj <- list(
   labels = as.character(data_histo$classe),
   data = data_histo$occurence,
+  labels_line = as.character(data_mean_lis$date),
+  datasets_line = datasets_list,
   count = N
 )
 
-write_json(json_obj, "output/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = TRUE)

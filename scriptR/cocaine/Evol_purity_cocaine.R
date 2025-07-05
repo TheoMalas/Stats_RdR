@@ -63,8 +63,8 @@ N=nrow(data)
 
 # Objet JSON final
 json_obj <- list(
-  labels = as.character(data_cocaine_lis$date),
-  datasets = datasets_list,
+  labels_line = as.character(data_cocaine_lis$date),
+  datasets_line = datasets_list,
   ratio_base_sel = ratio_base_sel*100,
   count = N
 )

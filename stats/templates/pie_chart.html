@@ -373,7 +373,7 @@
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
             
             
-            if (fetchUrl=='chart-stacked-area-prop-all-molecules'||fetchUrl=='chart-data-supply'||fetchUrl=='chart-data'){
+            if (fetchUrl=='chart-stacked-area-prop-all-molecules'||fetchUrl=='chart-data-supply'||fetchUrl=='chart-data'||fetchUrl=='chart-data-cocaine-coupe'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
@@ -421,7 +421,7 @@
               });
             }
             console.log(fetchUrl)
-            if (fetchUrl=='chart-evol-purity-cocaine'){
+            if (fetchUrl=='chart-evol-purity-cocaine'|| fetchUrl == 'chart-histo-comprime-mdma'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
@@ -436,7 +436,10 @@
                         }
                   areaStackedChart = new Chart(ctx, {
                       type: 'line',
-                      data: data,
+                      data: {
+                        labels: data.labels_line,
+                        datasets: data.datasets_line
+                          },
                       options: {
                           responsive: true,
                           scales: {
@@ -452,7 +455,7 @@
                                   beginAtZero: false,
                                   title: {
                                       display: true,
-                                      text: 'Pureté'
+                                      text: fetchUrl=='chart-histo-comprime-mdma' ? 'Dosage des comprimés (mg)' : 'Pourcentage de pureté'
                                   }
                               }
                           },
