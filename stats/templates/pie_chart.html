@@ -91,11 +91,11 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="heroineDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'heroine_view' %}">Héroïne</a>
-                </li>
-                <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté héroïne</a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'heroine_view' %}">Héroïne coupe</a>
+                </li>                
           </ul>
         </li>
         
@@ -226,7 +226,11 @@
                                 <label for="nom" class="form-label">GABAergiques non benzo</label>
                                 <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
                             </div>
-
+                            <div class="mb-3">
+                              <label for="range_val" class="form-label">Nombre de jours pour moyenner :</label>
+                              <input type="range" class="form-range" min="1" max="30" id="range_val" value="15" oninput="rangeOutput.value = range_val.value">
+                              <output id="rangeOutput" class="ms-2">15</output>
+                            </div>
                             <button onclick="loadChart(); loadBarChart(); loadAreaStackedChart();" class="btn btn-primary w-100">Envoyer</button>
                         </div>
                     </div>
@@ -438,12 +442,14 @@
         function loadAreaStackedChart() {
             const date_debut = document.getElementById('date_debut').value;
             const date_fin = document.getElementById('date_fin').value;
+            const range = document.getElementById('range_val').value;
             //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
             const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
                                      .map(cb => cb.value);
             const params = new URLSearchParams();
             if (date_debut) params.append('date_debut', date_debut);
             if (date_fin) params.append('date_fin', date_fin);
+            if (range) params.append('range', range);
             if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
             const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
             const fetchUrl = "{{ fetch_url }}";

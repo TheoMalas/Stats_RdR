@@ -124,13 +124,17 @@ def purity_cocaine_view(request):
   'fetch_url' : 'chart-purity-cocaine'
   })
 def chart_purity_cocaine(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/cocaine/histo_purity_cocaine.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/cocaine/histo_purity_cocaine.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/cocaine/histo_purity_cocaine.json')
   with open(json_file_path, 'r') as f:
@@ -142,13 +146,17 @@ def purity_heroine_view(request):
   'fetch_url' : 'chart-purity-heroine'
   })
 def chart_purity_heroine(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/heroine/histo_purity_heroine.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/heroine/histo_purity_heroine.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/heroine/histo_purity_heroine.json')
   with open(json_file_path, 'r') as f:
@@ -160,13 +168,17 @@ def purity_mdma_view(request):
   'fetch_url' : 'chart-purity-mdma'
   })
 def chart_purity_mdma(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/mdma/histo_purity_mdma.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/mdma/histo_purity_mdma.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/mdma/histo_purity_mdma.json')
   with open(json_file_path, 'r') as f:
@@ -178,13 +190,17 @@ def purity_3mmc_view(request):
   'fetch_url' : 'chart-purity-3mmc'
   })
 def chart_purity_3mmc(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/3mmc/histo_purity_3mmc.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/3mmc/histo_purity_3mmc.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/3mmc/histo_purity_3mmc.json')
   with open(json_file_path, 'r') as f:
@@ -196,13 +212,17 @@ def purity_ketamine_view(request):
   'fetch_url' : 'chart-purity-ketamine'
   })
 def chart_purity_ketamine(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/ketamine/histo_purity_ketamine.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/ketamine/histo_purity_ketamine.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/ketamine/histo_purity_ketamine.json')
   with open(json_file_path, 'r') as f:
@@ -214,18 +234,23 @@ def purity_speed_view(request):
   'fetch_url' : 'chart-purity-speed'
   })
 def chart_purity_speed(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/speed/histo_purity_speed.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/speed/histo_purity_speed.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/speed/histo_purity_speed.json')
   with open(json_file_path, 'r') as f:
       data = json.load(f)
   return JsonResponse(data)
+
 
 def evol_purity_cocaine_view(request):
   return render(request, 'pie_chart.html', {
@@ -245,20 +270,22 @@ def chart_evol_purity_cocaine(request):
       data = json.load(f)
   return JsonResponse(data)
 
-
 def histo_comprime_mdma_view(request):
   return render(request, 'pie_chart.html', {
   'fetch_url' : 'chart-histo-comprime-mdma'
   })
 def chart_histo_comprime_mdma(request):
-  print("test")
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   date_fin = request.GET.get("date_fin", default_end)
   
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
       
-  cmd=["Rscript","scriptR/mdma/histo_comprime_MDMA.R",date_debut,date_fin]
+  cmd=["Rscript","scriptR/mdma/histo_comprime_MDMA.R",date_debut,date_fin,Delta]
   subprocess.run(cmd)
   json_file_path = os.path.join(settings.BASE_DIR, 'output/mdma/histo_comprime_mdma.json')
   with open(json_file_path, 'r') as f:

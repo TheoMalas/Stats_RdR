@@ -37,6 +37,7 @@ date_fin <- as.Date(args[2])
 data = data %>% 
   filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
 
+Delta=15#as.numeric(args[3])
 
 ################################################################################
 # Histogramme des puretés ######################################################
@@ -64,7 +65,7 @@ ratio_base_sel = 303.352/(303.352+35.453)
 # Evolution of the purity ######################################################
 ################################################################################
 
-Delta=15
+
 
 data_cocaine_lis <- data %>%
   arrange(date) %>%
