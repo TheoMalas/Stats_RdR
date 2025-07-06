@@ -25,17 +25,23 @@
             <strong>Travail en cours&nbsp;!</strong> Certaines fonctionnalités peuvent ne pas être disponibles.
         </div>
     </div>
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mes Données</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-            aria-controls="navbarContent" aria-expanded="false" aria-label="Afficher le menu">
-            <span class="navbar-toggler-icon"></span>
-            </button>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Mes Données</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Afficher le menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav ms-auto">
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto">
+
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="allDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Toutes molécules
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="allDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'molecules_view' %}">Molécules</a>
                 </li>
@@ -43,40 +49,96 @@
                 <a class="nav-link" href="{% url 'supply_view' %}">Supply</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'cocaine_view' %}">Cocaïne</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'heroine_view' %}">Héroïne</a>
-                </li>
-                <li class="nav-item">
                 <a class="nav-link" href="{% url 'stacked_area_prop_all_molecules' %}">Évolution toutes molécules</a>
                 </li>
+          </ul>
+        </li>
+
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="cocaineDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cocaïne
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cocaineDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Pureté cocaïne</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté héroïne</a>
+                <a class="nav-link" href="{% url 'cocaine_view' %}">Cocaïne coupe</a>
                 </li>
+          </ul>
+        </li>
+        
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="mdmaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            MDMA
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="mdmaDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_mdma_view' %}">Pureté MDMA</a>
                 </li>
                 <li class="nav-item">
+                <a class="nav-link" href="{% url 'histo_comprime_mdma_view' %}">Histo Comprimé MDMA</a>
+                </li>
+          </ul>
+        </li>
+
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="heroineDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Héroïne
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="heroineDropdown">
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'heroine_view' %}">Héroïne</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté héroïne</a>
+                </li>
+          </ul>
+        </li>
+        
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="3mmcDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            3-MMC
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="3mmcDropdown">
+                <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_3mmc_view' %}">Pureté 3-MMC</a>
                 </li>
+          </ul>
+        </li>
+        
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="ketamineDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Kétamine
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="ketamineDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_ketamine_view' %}">Pureté kétamine</a>
                 </li>
+          </ul>
+        </li>
+
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="speedDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Speed
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="speedDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_speed_view' %}">Pureté speed</a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'histo_comprime_mdma_view' %}">Histo Comprimé MDMA</a>
-                </li>
-            </ul>
-            </div>
-        </div>
-        </nav>
+          </ul>
+        </li>
 
+      </ul>
+    </div>
+  </div>
+</nav>
     <div class="container py-5">
         <h2 class="text-center mb-5">Répartition des molécules</h2>
         <div class="row g-4">
