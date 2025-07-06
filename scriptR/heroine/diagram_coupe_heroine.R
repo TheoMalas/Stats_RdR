@@ -21,9 +21,10 @@ dbListTables(con)
 data <- dbReadTable(con, "resultats_analyse_cleaned")
 dbDisconnect(con)
 data = data %>% mutate(date=as.Date(date))
-data = data %>% filter(molecule_simp=="Cocaïne")
+data = data %>% filter(molecule_simp=="Héroïne")
 
-black_list_percent=c("NQ","NQ ","")
+black_list_percent=c("NQ")
+data = data %>% mutate(pourcentage = gsub(",", ".", sub(".*?(\\d+[\\.,]?\\d*)%.*", "\\1", pourcentage)))
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
@@ -64,7 +65,7 @@ df_fin_presence_coupe = df_pie_presence_coupe %>% select(categorie_label, pource
 
 # Second chart: histogramme avec barres à l'horizontale, une ligne par produit de coupe, rangé par ordre décroissant
 
-liste_prod_coupe = c("paracetamol","cafeine","levamisole","phenacetine","hydroxyzine", "lidocaine","procaine")
+liste_prod_coupe = c("paracetamol","X6MAM","cafeine","papaverine","dextrometorphane")
 
 data_coupe = data %>% filter(presencecoupe==1) %>%  select(all_of(liste_prod_coupe),date)
 
@@ -153,5 +154,5 @@ json_obj <- list(
 )
 
 # Export en JSON
-write_json(json_obj, "output/cocaine/coupe_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/heroine/coupe_heroine.json", pretty = TRUE, auto_unbox = FALSE)
 

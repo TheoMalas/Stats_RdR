@@ -46,13 +46,28 @@
                 <a class="nav-link" href="{% url 'cocaine_view' %}">Cocaïne</a>
                 </li>
                 <li class="nav-item">
+                <a class="nav-link" href="{% url 'heroine_view' %}">Héroïne</a>
+                </li>
+                <li class="nav-item">
                 <a class="nav-link" href="{% url 'stacked_area_prop_all_molecules' %}">Évolution toutes molécules</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Histo Pureté cocaïne</a>
+                <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Pureté cocaïne</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'evol_purity_cocaine_view' %}">Evol Pureté cocaïne</a>
+                <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté héroïne</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_mdma_view' %}">Pureté MDMA</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_3mmc_view' %}">Pureté 3-MMC</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_ketamine_view' %}">Pureté kétamine</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_speed_view' %}">Pureté speed</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'histo_comprime_mdma_view' %}">Histo Comprimé MDMA</a>
@@ -219,7 +234,7 @@
                       });
                   });
               }
-            if (fetchUrl=='chart-data-cocaine-coupe'){
+            if (fetchUrl=='chart-data-cocaine-coupe'||fetchUrl=='chart-data-heroine-coupe'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
@@ -261,7 +276,7 @@
             const fetchUrl = "{{ fetch_url }}";
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
   
-            if (fetchUrl == 'chart-data-cocaine-coupe'){
+            if (fetchUrl == 'chart-data-cocaine-coupe'||fetchUrl=='chart-data-heroine-coupe'){
               fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -307,7 +322,7 @@
                 });
                 });
             }
-            if (fetchUrl == 'chart-purity-cocaine'|| fetchUrl == 'chart-histo-comprime-mdma'){
+            if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'|| fetchUrl == 'chart-histo-comprime-mdma'){
               fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -373,7 +388,7 @@
             const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
             
             
-            if (fetchUrl=='chart-stacked-area-prop-all-molecules'||fetchUrl=='chart-data-supply'||fetchUrl=='chart-data'||fetchUrl=='chart-data-cocaine-coupe'){
+            if (fetchUrl=='chart-stacked-area-prop-all-molecules'||fetchUrl=='chart-data-supply'||fetchUrl=='chart-data'||fetchUrl=='chart-data-cocaine-coupe'||fetchUrl=='chart-data-heroine-coupe'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
@@ -421,7 +436,7 @@
               });
             }
             console.log(fetchUrl)
-            if (fetchUrl=='chart-evol-purity-cocaine'|| fetchUrl == 'chart-histo-comprime-mdma'){
+            if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'|| fetchUrl == 'chart-histo-comprime-mdma'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {

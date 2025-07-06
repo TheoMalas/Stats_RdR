@@ -64,7 +64,7 @@ json_obj <- list(
   data = df_fin$pourcent
 )
 
-write_json(json_obj, "output/pie_chart_cocaine_supply.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/cocaine/pie_chart_cocaine_supply.json", pretty = TRUE, auto_unbox = FALSE)
 
 
 #N=nrow(df_pie_0)

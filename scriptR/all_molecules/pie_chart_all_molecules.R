@@ -132,7 +132,7 @@ json_obj <- list(
   count=N
 )
 
-write_json(json_obj, "output/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/all/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
 
 #ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
 #  geom_col(width = 1) +

@@ -70,7 +70,7 @@ json_obj <- list(
 )
 
 # Export en JSON
-write_json(json_obj, "output/evol_purity_cocaine.json", pretty = TRUE, auto_unbox = TRUE)
+write_json(json_obj, "output/cocaine/evol_purity_cocaine.json", pretty = TRUE, auto_unbox = TRUE)
 
 #ggplot(data_cocaine_lis, aes(x = date, y = moyenne_glissante)) +
 #  geom_point() +

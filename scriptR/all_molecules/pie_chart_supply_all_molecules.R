@@ -130,7 +130,7 @@ json_obj <- list(
   count=N
 )
 
-write_json(json_obj, "output/pie_chart_supply_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/all/pie_chart_supply_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
 
 
 

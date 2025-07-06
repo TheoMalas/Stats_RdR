@@ -121,4 +121,4 @@ json_obj <- list(
   count = N
 )
 
-write_json(json_obj, "output/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = TRUE)
+write_json(json_obj, "output/mdma/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = TRUE)

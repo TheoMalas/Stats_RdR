@@ -112,7 +112,7 @@ json_obj <- list(
   count = N
 )
 
-write_json(json_obj, "output/stacked_area_prop_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
+write_json(json_obj, "output/all/stacked_area_prop_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
 
 #ggplot(data_evol, aes(x = date_bimestre, y = prop, fill = molecule_simp)) +
 #  geom_area(position = "stack", color = "white", size = 0.2) +

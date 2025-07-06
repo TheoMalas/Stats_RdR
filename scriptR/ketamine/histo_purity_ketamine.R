@@ -21,9 +21,9 @@ data <- dbReadTable(con, "resultats_analyse_cleaned")
 dbDisconnect(con)
 
 data = data %>% mutate(date=as.Date(date))
-data = data %>% filter(molecule_simp=="Cocaïne")
+data = data %>% filter(molecule_simp=="Kétamine")
 
-black_list_percent=c("NQ","NQ ","")
+black_list_percent=c("NQ","deschlorokétamine","2-FDCK","")
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
@@ -56,7 +56,7 @@ data_histo <- data %>%
   mutate(occurence = ifelse(is.na(occurence), 0, occurence)) %>% 
   arrange(classe)
 
-ratio_base_sel = 303.352/(303.352+35.453)
+ratio_base_sel = 237.725/(237.725+35.453)
 
 
 
@@ -66,7 +66,7 @@ ratio_base_sel = 303.352/(303.352+35.453)
 
 Delta=15
 
-data_cocaine_lis <- data %>%
+data_lis <- data %>%
   arrange(date) %>%
   mutate(moyenne_glissante = sapply(date, function(d) {
     mean(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
@@ -77,7 +77,7 @@ data_cocaine_lis <- data %>%
 # Génération de la liste des datasets
 datasets_list <-list(list(
   label = "",
-  data = data_cocaine_lis$moyenne_glissante,
+  data = data_lis$moyenne_glissante,
   fill = "false"
 ))
 
@@ -92,14 +92,14 @@ N=sum(data_histo$occurence)
 json_obj <- list(
   labels = as.character(data_histo$classe),
   data = data_histo$occurence,
-  labels_line = as.character(data_cocaine_lis$date),
+  labels_line = as.character(data_lis$date),
   datasets_line = datasets_list,
   ratio_base_sel = ratio_base_sel*100,
   count = N
 )
 
 # Export en JSON
-write_json(json_obj, "output/cocaine/histo_purity_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/ketamine/histo_purity_ketamine.json", pretty = TRUE, auto_unbox = FALSE)
 
 #ggplot(data, aes(x = pourcentage)) +
 #  geom_histogram(binwidth = 5, fill = "firebrick2", color = "white", boundary = 0, closed = "left") +
