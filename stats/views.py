@@ -252,6 +252,52 @@ def chart_purity_speed(request):
   return JsonResponse(data)
 
 
+def purity_cannabis_THC_resine_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-cannabis-THC-resine'
+  })
+def chart_purity_cannabis_THC_resine(request):
+  default_start = "2022-06-22" #first analysis done
+  date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
+  date_fin = request.GET.get("date_fin", default_end)
+  
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
+      
+  cmd=["Rscript","scriptR/cannabis/histo_purity_cannabis_THC_resine.R",date_debut,date_fin,Delta]
+  subprocess.run(cmd)
+  json_file_path = os.path.join(settings.BASE_DIR, 'output/cannabis/histo_purity_cannabis_THC_resine.json')
+  with open(json_file_path, 'r') as f:
+      data = json.load(f)
+  return JsonResponse(data)
+
+def purity_cannabis_THC_herbe_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-cannabis-THC-herbe'
+  })
+def chart_purity_cannabis_THC_herbe(request):
+  default_start = "2022-06-22" #first analysis done
+  date_debut = request.GET.get("date_debut", default_start)
+  
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
+  date_fin = request.GET.get("date_fin", default_end)
+  
+  default_Delta = "15"
+  Delta=str(request.GET.get("range", default_Delta))
+  
+      
+  cmd=["Rscript","scriptR/cannabis/histo_purity_cannabis_THC_herbe.R",date_debut,date_fin,Delta]
+  print(cmd)
+  subprocess.run(cmd)
+  json_file_path = os.path.join(settings.BASE_DIR, 'output/cannabis/histo_purity_cannabis_THC_herbe.json')
+  with open(json_file_path, 'r') as f:
+      data = json.load(f)
+  return JsonResponse(data)
+
+
 def evol_purity_cocaine_view(request):
   return render(request, 'pie_chart.html', {
   'fetch_url' : 'chart-evol-purity-cocaine'

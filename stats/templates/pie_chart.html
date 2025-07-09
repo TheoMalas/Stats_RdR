@@ -135,6 +135,21 @@
           </ul>
         </li>
 
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="cannabisDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cannabis
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cannabisDropdown">
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_cannabis_THC_resine_view' %}">Pourcentage THC résine</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_cannabis_THC_herbe_view' %}">Pourcentage THC herbe</a>
+                </li>
+          </ul>
+        </li>
+
       </ul>
     </div>
   </div>
@@ -388,7 +403,7 @@
                 });
                 });
             }
-            if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'|| fetchUrl == 'chart-histo-comprime-mdma'){
+            if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'||fetchUrl == 'chart-purity-cannabis-THC-resine'||fetchUrl == 'chart-purity-cannabis-THC-herbe'|| fetchUrl == 'chart-histo-comprime-mdma'){
               fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -504,7 +519,7 @@
               });
             }
             console.log(fetchUrl)
-            if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'|| fetchUrl == 'chart-histo-comprime-mdma'){
+            if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'||fetchUrl == 'chart-purity-cannabis-THC-resine'||fetchUrl == 'chart-purity-cannabis-THC-herbe'|| fetchUrl == 'chart-histo-comprime-mdma'){
               fetch(url)
                   .then(response => response.json())
                   .then(data => {
