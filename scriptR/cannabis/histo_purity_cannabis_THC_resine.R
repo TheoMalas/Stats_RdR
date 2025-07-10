@@ -95,6 +95,9 @@ json_obj <- list(
   count = N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/cannabis", recursive = TRUE, showWarnings = FALSE)
+
 # Export en JSON
 write_json(json_obj, "output/cannabis/histo_purity_cannabis_THC_resine.json", pretty = TRUE, auto_unbox = FALSE)
 

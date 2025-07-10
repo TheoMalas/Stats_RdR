@@ -97,6 +97,8 @@ json_obj <- list(
   count = N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/ketamine", recursive = TRUE, showWarnings = FALSE)
 # Export en JSON
 write_json(json_obj, "output/ketamine/histo_purity_ketamine.json", pretty = TRUE, auto_unbox = FALSE)
 

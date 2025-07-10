@@ -130,6 +130,9 @@ json_obj <- list(
   count=N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
+
 write_json(json_obj, "output/all/pie_chart_supply_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
 
 

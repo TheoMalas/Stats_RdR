@@ -112,6 +112,8 @@ json_obj <- list(
   count = N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
 write_json(json_obj, "output/all/stacked_area_prop_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
 
 #ggplot(data_evol, aes(x = date_bimestre, y = prop, fill = molecule_simp)) +

@@ -64,6 +64,8 @@ json_obj <- list(
   data = df_fin$pourcent
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/cocaine", recursive = TRUE, showWarnings = FALSE)
 write_json(json_obj, "output/cocaine/pie_chart_cocaine_supply.json", pretty = TRUE, auto_unbox = FALSE)
 
 
