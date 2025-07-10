@@ -99,11 +99,17 @@ def runScript(scriptID, args):
 
   return JsonResponse(data)
 
-def chart_data(request):
+def get_dates(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
   date_fin = request.GET.get("date_fin", default_end)
+
+  return date_debut, date_fin
+
+def chart_data(request):
+ 
+  date_debut, date_fin = get_dates(request)
   
   # Paramètre types (liste séparée par virgules dans l’URL)
   familles_str = request.GET.get("familles")
@@ -115,11 +121,8 @@ def chart_data(request):
   return runScript("all/pie_chart_all_molecules", [date_debut, date_fin] + familles_list)
   
 def chart_data_supply(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  date_fin = request.GET.get("date_fin", default_end)
-
+  date_debut, date_fin = get_dates(request)
+  
   # Paramètre types (liste séparée par virgules dans l’URL)
   familles_str = request.GET.get("familles")
   if isinstance(familles_str, str):
@@ -130,26 +133,15 @@ def chart_data_supply(request):
   return runScript("all/pie_chart_supply_all_molecules", [date_debut, date_fin] + familles_list)
 
 def chart_data_cocaine_coupe(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  date_fin = request.GET.get("date_fin", default_end)
-
+  date_debut, date_fin = get_dates(request)
   return runScript("cocaine/diagram_coupe_cocaine", [date_debut, date_fin])
 
 def chart_data_heroine_coupe(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  date_fin = request.GET.get("date_fin", default_end)
-
+  date_debut, date_fin = get_dates(request)
   return runScript("heroine/diagram_coupe_heroine", [date_debut, date_fin])
 
 def chart_stacked_area_prop_all_molecules(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  default_start = "2023-03-01" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  date_fin = request.GET.get("date_fin", default_end)
+  date_debut, date_fin = get_dates(request)
 
   # Paramètre types (liste séparée par virgules dans l’URL)
   familles_str = request.GET.get("familles")
@@ -161,11 +153,7 @@ def chart_stacked_area_prop_all_molecules(request):
   return runScript("all/stacked_area_prop_all_molecules", [date_debut, date_fin] + familles_list)
 
 def chart_purity_cocaine(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
+  date_debut, date_fin = get_dates(request)  
   
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
@@ -173,103 +161,68 @@ def chart_purity_cocaine(request):
   return runScript("cocaine/histo_purity_cocaine", [date_debut, date_fin, Delta])
 
 def chart_purity_heroine(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("heroine/histo_purity_heroine", [date_debut, date_fin, Delta])
 
 def chart_purity_mdma(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("mdma/histo_purity_mdma", [date_debut, date_fin, Delta])
 
 def chart_purity_3mmc(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("3mmc/histo_purity_3mmc", [date_debut, date_fin, Delta])
 
 def chart_purity_ketamine(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("ketamine/histo_purity_ketamine", [date_debut, date_fin, Delta])
 
 def chart_purity_speed(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("speed/histo_purity_speed", [date_debut, date_fin, Delta])
 
 def chart_purity_cannabis_THC_resine(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("cannabis/histo_purity_cannabis_THC_resine", [date_debut, date_fin, Delta])
 
 def chart_purity_cannabis_THC_herbe(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
   return runScript("cannabis/histo_purity_cannabis_THC_herbe", [date_debut, date_fin, Delta])
 
 def chart_evol_purity_cocaine(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  date_fin = request.GET.get("date_fin", default_end)
-  
+  date_debut, date_fin = get_dates(request)
+
   return runScript("cocaine/Evol_purity_cocaine", [date_debut, date_fin])
 
 def chart_histo_comprime_mdma(request):
-  default_start = "2022-06-22" #first analysis done
-  date_debut = request.GET.get("date_debut", default_start)
-  
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-  date_fin = request.GET.get("date_fin", default_end)
+  date_debut, date_fin = get_dates(request)
   
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
