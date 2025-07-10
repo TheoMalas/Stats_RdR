@@ -7,6 +7,8 @@ from django.conf import settings
 import json
 import subprocess
 import os
+import shutil
+
 from datetime import datetime
 
 default_Delta = 15
@@ -92,14 +94,41 @@ def evol_purity_cocaine_view(request):
 
 def runScript(scriptID, args):
 
+  outputPath = 'output/' + scriptID + '.json'
+
+  cachedData = basicCache(outputPath)
+  if cachedData != None:
+      return JsonResponse(cachedData)
+
   cmd=["Rscript","scriptR/" + scriptID + ".R"] + args
   subprocess.run(cmd)
 
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/' + scriptID + '.json')
+  json_file_path = os.path.join(settings.BASE_DIR, outputPath)
   with open(json_file_path, 'r') as f:
       data = json.load(f)
 
   return JsonResponse(data)
+
+def basicCache(path):
+
+  if not os.path.exists(path):
+    return None
+
+  json_file_path = os.path.join(settings.BASE_DIR, path)
+  with open(json_file_path, 'r') as f:
+      data = json.load(f)
+
+  return data
+
+def cleanCache(request):
+
+  path = os.path.join(settings.BASE_DIR, 'output')
+
+  if not os.path.exists(path):
+    return HttpResponse(status = 201)
+
+  shutil.rmtree(path)
+  return HttpResponse(status = 200)
 
 def get_dates(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today

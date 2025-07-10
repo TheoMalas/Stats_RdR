@@ -14,6 +14,20 @@
             width: 100%;
             height: auto;
         }
+
+        #cleanCache {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #cleanCache:hover {
+            background-color: darkred;
+        }
     </style>
 </head>
 <body>
@@ -28,11 +42,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Mes Données</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-        aria-controls="navbarContent" aria-expanded="false" aria-label="Afficher le menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
+      <button id="cleanCache">cleanCache</button>
+      
     <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav ms-auto">
 
@@ -574,6 +585,14 @@
     loadBarChart();
     loadAreaStackedChart()
 };
+    </script>
+
+    <script>
+
+        document.getElementById("cleanCache").addEventListener("click", function() {
+        fetch("cleanCache", {vmethod: "GET", mode: "no-cors" });
+        });
+    
     </script>
 </body>
 </html>
