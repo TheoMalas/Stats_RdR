@@ -153,5 +153,5 @@ json_obj <- list(
 )
 
 # Export en JSON
-write_json(json_obj, "output/cocaine/coupe_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
+write_json(json_obj, "output/cocaine/diagram_coupe_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
 

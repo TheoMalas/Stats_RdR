@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from django.http import FileResponse
 from django.http import JsonResponse
 
 from django.shortcuts import render
@@ -10,34 +9,111 @@ import subprocess
 import os
 from datetime import datetime
 
+# FrontEnd
+
 def molecules_view(request):
-    return render(request, 'pie_chart.html', { 
-        'fetch_url' : 'chart-data'
-    })
-def chart_data(request):
-    default_end = datetime.today().strftime('%Y-%m-%d') #set to today
-    default_start = "2022-06-22" #first analysis done
-    date_debut = request.GET.get("date_debut", default_start)
-    date_fin = request.GET.get("date_fin", default_end)
-    
-    # Paramètre types (liste séparée par virgules dans l’URL)
-    familles_str = request.GET.get("familles")
-    if isinstance(familles_str, str):
-        familles_list = familles_str.split(",")
-    else:
-        familles_list = []
-    cmd=["Rscript","scriptR/all_molecules/pie_chart_all_molecules.R",date_debut,date_fin] + familles_list
-    subprocess.run(cmd)
-    json_file_path = os.path.join(settings.BASE_DIR, 'output/all/pie_chart_all_molecules.json')
-    with open(json_file_path, 'r') as f:
-        data = json.load(f)
-    return JsonResponse(data)
-  
-  
+  return render(request, 'pie_chart.html', { 
+      'fetch_url' : 'chart-data'
+  })
+
 def supply_view(request):
+  return render(request, 'pie_chart.html', { 
+      'fetch_url' : 'chart-data-supply'
+  })
+
+def cocaine_view(request):
     return render(request, 'pie_chart.html', { 
-        'fetch_url' : 'chart-data-supply'
-    })
+    'fetch_url' : 'chart-data-cocaine-coupe'
+  })
+
+def heroine_view(request):
+    return render(request, 'pie_chart.html', { 
+    'fetch_url' : 'chart-data-heroine-coupe'
+  })
+
+def stacked_area_prop_all_molecules_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-stacked-area-prop-all-molecules'
+  })
+
+def purity_cocaine_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-cocaine'
+  })
+
+def purity_mdma_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-mdma'
+  })
+
+def purity_heroine_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-heroine'
+  })
+
+def purity_3mmc_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-3mmc'
+  })
+
+def purity_ketamine_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-ketamine'
+  })
+
+def purity_speed_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-speed'
+  })
+
+def purity_cannabis_THC_resine_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-cannabis-THC-resine'
+  })
+
+def purity_cannabis_THC_herbe_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-purity-cannabis-THC-herbe'
+  })
+
+def histo_comprime_mdma_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-histo-comprime-mdma'
+  })
+
+def evol_purity_cocaine_view(request):
+  return render(request, 'pie_chart.html', {
+  'fetch_url' : 'chart-evol-purity-cocaine'
+  })
+
+# BackEnd
+
+def runScript(scriptID, args):
+
+  cmd=["Rscript","scriptR/" + scriptID + ".R"] + args
+  subprocess.run(cmd)
+
+  json_file_path = os.path.join(settings.BASE_DIR, 'output/' + scriptID + '.json')
+  with open(json_file_path, 'r') as f:
+      data = json.load(f)
+
+  return JsonResponse(data)
+
+def chart_data(request):
+  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
+  default_start = "2022-06-22" #first analysis done
+  date_debut = request.GET.get("date_debut", default_start)
+  date_fin = request.GET.get("date_fin", default_end)
+  
+  # Paramètre types (liste séparée par virgules dans l’URL)
+  familles_str = request.GET.get("familles")
+  if isinstance(familles_str, str):
+    familles_list = familles_str.split(",")
+  else:
+    familles_list = []
+  
+  return runScript("all/pie_chart_all_molecules", [date_debut, date_fin] + familles_list)
+  
 def chart_data_supply(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
@@ -50,54 +126,25 @@ def chart_data_supply(request):
       familles_list = familles_str.split(",")
   else:
       familles_list = []
-  cmd=["Rscript","scriptR/all_molecules/pie_chart_supply_all_molecules.R",date_debut,date_fin] + familles_list
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/all/pie_chart_supply_all_molecules.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
 
+  return runScript("all/pie_chart_supply_all_molecules", [date_debut, date_fin] + familles_list)
 
-def cocaine_view(request):
-      return render(request, 'pie_chart.html', { 
-      'fetch_url' : 'chart-data-cocaine-coupe'
-    })
 def chart_data_cocaine_coupe(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
   date_fin = request.GET.get("date_fin", default_end)
 
-  cmd=["Rscript","scriptR/cocaine/diagram_coupe_cocaine.R",date_debut,date_fin]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/cocaine/coupe_cocaine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("cocaine/diagram_coupe_cocaine", [date_debut, date_fin])
 
-
-def heroine_view(request):
-      return render(request, 'pie_chart.html', { 
-      'fetch_url' : 'chart-data-heroine-coupe'
-    })
 def chart_data_heroine_coupe(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
   date_fin = request.GET.get("date_fin", default_end)
 
-  cmd=["Rscript","scriptR/heroine/diagram_coupe_heroine.R",date_debut,date_fin]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/heroine/coupe_heroine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("heroine/diagram_coupe_heroine", [date_debut, date_fin])
 
-
-def stacked_area_prop_all_molecules_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-stacked-area-prop-all-molecules'
-  })
 def chart_stacked_area_prop_all_molecules(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2023-03-01" #first analysis done
@@ -111,18 +158,8 @@ def chart_stacked_area_prop_all_molecules(request):
   else:
       familles_list = []
       
-  cmd=["Rscript","scriptR/all_molecules/stacked_area_prop_all_molecules.R",date_debut,date_fin] + familles_list
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/all/stacked_area_prop_all_molecules.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("all/stacked_area_prop_all_molecules", [date_debut, date_fin] + familles_list)
 
-
-def purity_cocaine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-cocaine'
-  })
 def chart_purity_cocaine(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -133,18 +170,8 @@ def chart_purity_cocaine(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/cocaine/histo_purity_cocaine.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/cocaine/histo_purity_cocaine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("cocaine/histo_purity_cocaine", [date_debut, date_fin, Delta])
 
-def purity_heroine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-heroine'
-  })
 def chart_purity_heroine(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -155,18 +182,8 @@ def chart_purity_heroine(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/heroine/histo_purity_heroine.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/heroine/histo_purity_heroine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("heroine/histo_purity_heroine", [date_debut, date_fin, Delta])
 
-def purity_mdma_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-mdma'
-  })
 def chart_purity_mdma(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -177,18 +194,8 @@ def chart_purity_mdma(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/mdma/histo_purity_mdma.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/mdma/histo_purity_mdma.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("mdma/histo_purity_mdma", [date_debut, date_fin, Delta])
 
-def purity_3mmc_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-3mmc'
-  })
 def chart_purity_3mmc(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -199,18 +206,8 @@ def chart_purity_3mmc(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/3mmc/histo_purity_3mmc.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/3mmc/histo_purity_3mmc.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("3mmc/histo_purity_3mmc", [date_debut, date_fin, Delta])
 
-def purity_ketamine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-ketamine'
-  })
 def chart_purity_ketamine(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -221,18 +218,8 @@ def chart_purity_ketamine(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/ketamine/histo_purity_ketamine.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/ketamine/histo_purity_ketamine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("ketamine/histo_purity_ketamine", [date_debut, date_fin, Delta])
 
-def purity_speed_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-speed'
-  })
 def chart_purity_speed(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -243,19 +230,8 @@ def chart_purity_speed(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/speed/histo_purity_speed.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/speed/histo_purity_speed.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("speed/histo_purity_speed", [date_debut, date_fin, Delta])
 
-
-def purity_cannabis_THC_resine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-cannabis-THC-resine'
-  })
 def chart_purity_cannabis_THC_resine(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -266,18 +242,8 @@ def chart_purity_cannabis_THC_resine(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/cannabis/histo_purity_cannabis_THC_resine.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/cannabis/histo_purity_cannabis_THC_resine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("cannabis/histo_purity_cannabis_THC_resine", [date_debut, date_fin, Delta])
 
-def purity_cannabis_THC_herbe_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-cannabis-THC-herbe'
-  })
 def chart_purity_cannabis_THC_herbe(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -288,38 +254,16 @@ def chart_purity_cannabis_THC_herbe(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/cannabis/histo_purity_cannabis_THC_herbe.R",date_debut,date_fin,Delta]
-  print(cmd)
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/cannabis/histo_purity_cannabis_THC_herbe.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("cannabis/histo_purity_cannabis_THC_herbe", [date_debut, date_fin, Delta])
 
-
-def evol_purity_cocaine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-evol-purity-cocaine'
-  })
 def chart_evol_purity_cocaine(request):
   default_end = datetime.today().strftime('%Y-%m-%d') #set to today
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
   date_fin = request.GET.get("date_fin", default_end)
   
-      
-  cmd=["Rscript","scriptR/cocaine/Evol_purity_cocaine.R",date_debut,date_fin]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/cocaine/evol_purity_cocaine.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("cocaine/Evol_purity_cocaine", [date_debut, date_fin])
 
-def histo_comprime_mdma_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-histo-comprime-mdma'
-  })
 def chart_histo_comprime_mdma(request):
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
@@ -330,10 +274,4 @@ def chart_histo_comprime_mdma(request):
   default_Delta = "15"
   Delta=str(request.GET.get("range", default_Delta))
   
-      
-  cmd=["Rscript","scriptR/mdma/histo_comprime_MDMA.R",date_debut,date_fin,Delta]
-  subprocess.run(cmd)
-  json_file_path = os.path.join(settings.BASE_DIR, 'output/mdma/histo_comprime_mdma.json')
-  with open(json_file_path, 'r') as f:
-      data = json.load(f)
-  return JsonResponse(data)
+  return runScript("mdma/histo_comprime_mdma", [date_debut, date_fin, Delta])
