@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} Test {% endblock %}
+{% block centerText %} Répartition des molécules {% endblock %}
+
+{% block leftPanel %} 
+
+{% include "components/form.html" %}
+
+{% endblock %}
+
+{% block rightPanel %} 
+
+<div class="card-header bg-dark text-white">
+    <h5 class="mb-0">Aperçu sur le Canvas</h5>
+</div>
+<div class="card-body text-center">
+
+    <p id="totalObservations"></p>
+
+    {% include "components/pie_chart.html" with id="myPieChart" pathUrl=fetch_url %}
+    {% include "components/bar_chart.html" with id="myBarChart" pathUrl=fetch_url %}
+    {% include "components/area_stacked_chart.html" with id="myAreaStackedChart" pathUrl=area_stack %}
+    {% include "components/area2_stacked_chart.html" with id="myArea2StackedChart" pathUrl=area2_stack %}
+    {% include "components/area3_stacked_chart.html" with id="myArea3StackedChart" pathUrl=area3_stack %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+<canvas id="{{ id|safe }}" width="400" height="400" style="display:none"></canvas>
+
+{% if area3_stack %}
+        
+<script>
+
+    let area3StackedChart = null;
+
+    function loadArea3StackedChart() {
+        const date_debut = document.getElementById('date_debut').value;
+        const date_fin = document.getElementById('date_fin').value;
+        const range = document.getElementById('range_val').value;
+        //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
+        const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
+                                    .map(cb => cb.value);
+        const params = new URLSearchParams();
+        if (date_debut) params.append('date_debut', date_debut);
+        if (date_fin) params.append('date_fin', date_fin);
+        if (range) params.append('range', range);
+        if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+        const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+        const fetchUrl = "{{ pathUrl }}";
+        const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+        
+
+           fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                
+                
+                const ctx = document.getElementById('{{ id|safe }}').getContext('2d');
+                document.getElementById('{{ id|safe }}').style.display = 'block';
+                const total = data.count;
+                document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+                if (area3StackedChart) {
+                        area3StackedChart.destroy(); // détruire l'ancien graphique s'il existe
+                    }
+                area3StackedChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                    labels: data.labels_area,
+                    datasets: data.datasets_area
+                        },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Période'
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Proportion'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true
+                            }
+                        }
+                    }
+                });
+            });
+    }
+
+    window.addEventListener("load", () => {
+        loadArea3StackedChart();
+    });
+
+</script>
+
+{% endif %}

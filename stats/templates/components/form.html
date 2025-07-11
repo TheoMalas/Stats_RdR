@@ -1,0 +1,91 @@
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Remplir le formulaire</h5>
+    </div>
+    <div class="card-body">
+        <div>
+            <div class="mb-3">
+                <label for="nom" class="form-label">Choisir une date de début :</label>
+                <input type="date" class="form-control" id="date_debut">
+            </div>
+
+            <div class="mb-3">
+                <label for="nom" class="form-label">Choisir une date de fin :</label>
+                <input type="date" class="form-control" id="date_fin">
+            </div>
+            
+            <div class="mb-1">
+                <label for="nom" class="form-label">Cathinones</label>
+                <input type="checkbox" name="famille" value="Cathinones"> 
+            </div>
+
+            <div class="mb-1">
+                <label for="nom" class="form-label">MDMA</label>
+                <input type="checkbox" name="famille" value="MDMA"> 
+            </div>
+            <div class="mb-1">
+                <label for="nom" class="form-label">Cocaïne</label>
+                <input type="checkbox" name="famille" value="Cocaïne"> 
+            </div>
+            
+            <div class="mb-1">
+                <label for="nom" class="form-label">Héroïne</label>
+                <input type="checkbox" name="famille" value="Héroïne">
+            </div>
+            
+            <div class="mb-1">
+                <label for="nom" class="form-label">Kétamine</label>
+                <input type="checkbox" name="famille" value="Kétamine">
+            </div>
+            
+            <div class="mb-1">
+                <label for="nom" class="form-label">Speed</label>
+                <input type="checkbox" name="famille" value="Speed">
+            </div>
+            
+            <div class="mb-1">
+                <label for="nom" class="form-label">Dissociatifs</label>
+                <input type="checkbox" name="famille" value="Dissociatifs">
+            </div>
+            <div class="mb-1">
+                <label for="nom" class="form-label">Amphétamines</label>
+                <input type="checkbox" name="famille" value="Amphétamines">
+            </div>
+
+            <div class="mb-1">
+                <label for="nom" class="form-label">Opioïdes</label>
+                <input type="checkbox" name="famille" value="Opioïdes"> 
+            </div>
+            <div class="mb-1">
+                <label for="nom" class="form-label">Cannabinoïdes</label>
+                <input type="checkbox" name="famille" value="Cannabinoïdes"> 
+            </div>
+
+            <div class="mb-1">
+                <label for="nom" class="form-label">Hallucinogènes</label>
+                <input type="checkbox" name="famille" value="Hallucinogènes">
+            </div>
+
+            <div class="mb-1">
+                <label for="nom" class="form-label">Crack/Freebase (cocaine base)</label>
+                <input type="checkbox" name="famille" value="Crack/Freebase (cocaine base)">
+            </div>
+
+            <div class="mb-1">
+                <label for="nom" class="form-label">Benzodiazépines et similaires</label>
+                <input type="checkbox" name="famille" value="Benzodiazépines_et_similaires">
+            </div>
+
+            <div class="mb-1">
+                <label for="nom" class="form-label">GABAergiques non benzo</label>
+                <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
+            </div>
+            <div class="mb-3">
+                <label for="range_val" class="form-label">Nombre de jours pour moyenner :</label>
+                <input type="range" class="form-range" min="1" max="30" id="range_val" value="15" oninput="rangeOutput.value = range_val.value">
+                <output id="rangeOutput" class="ms-2">15</output>
+            </div>
+            <button onclick="loadChart(); loadBarChart(); loadAreaStackedChart();" class="btn btn-primary w-100">Envoyer</button>
+        </div>
+    </div>
+</div>

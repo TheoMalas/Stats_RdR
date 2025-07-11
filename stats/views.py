@@ -16,77 +16,92 @@ default_Delta = 15
 # FrontEnd
 
 def molecules_view(request):
-  return render(request, 'pie_chart.html', { 
-      'fetch_url' : 'chart-data'
+  return render(request, 'pages/all_molecules.html', { 
+      'fetch_url' : 'chart-data',
+      'area_stack' : 'chart-data',
+      'area3_stack' : 'chart-stacked-area-prop-all-molecules'
   })
 
 def supply_view(request):
-  return render(request, 'pie_chart.html', { 
-      'fetch_url' : 'chart-data-supply'
+  return render(request, 'pages/all_molecules.html', { 
+      'fetch_url' : 'chart-data-supply',
+      'area_stack' : 'chart-data-supply'
   })
 
 def cocaine_view(request):
-    return render(request, 'pie_chart.html', { 
-    'fetch_url' : 'chart-data-cocaine-coupe'
+    return render(request, 'pages/all_molecules.html', { 
+    'fetch_url' : 'chart-data-cocaine-coupe',
+    'area_stack' : 'chart-data-cocaine-coupe'
   })
 
 def heroine_view(request):
-    return render(request, 'pie_chart.html', { 
-    'fetch_url' : 'chart-data-heroine-coupe'
+    return render(request, 'pages/all_molecules.html', { 
+    'fetch_url' : 'chart-data-heroine-coupe',
+    'area_stack' : 'chart-data-heroine-coupe'
   })
 
 def stacked_area_prop_all_molecules_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-stacked-area-prop-all-molecules'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-stacked-area-prop-all-molecules',
+  'area_stack' : 'chart-stacked-area-prop-all-molecules'
   })
 
 def purity_cocaine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-cocaine'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-cocaine',
+  'area2_stack' : 'chart-purity-cocaine'
   })
 
 def purity_mdma_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-mdma'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-mdma',
+  'area2_stack' : 'chart-purity-mdma'
   })
 
 def purity_heroine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-heroine'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-heroine',
+  'area2_stack' : 'chart-purity-heroine'
   })
 
 def purity_3mmc_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-3mmc'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-3mmc',
+  'area2_stack' : 'chart-purity-3mmc'
   })
 
 def purity_ketamine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-ketamine'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-ketamine',
+  'area2_stack' : 'chart-purity-ketamine'
   })
 
 def purity_speed_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-speed'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-speed',
+  'area2_stack' : 'chart-purity-speed'
   })
 
 def purity_cannabis_THC_resine_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-cannabis-THC-resine'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-cannabis-THC-resine',
+  'area2_stack' : 'chart-purity-cannabis-THC-resine'
   })
 
 def purity_cannabis_THC_herbe_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-purity-cannabis-THC-herbe'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-purity-cannabis-THC-herbe',
+  'area2_stack': 'chart-purity-cannabis-THC-herbe'
   })
 
 def histo_comprime_mdma_view(request):
-  return render(request, 'pie_chart.html', {
-  'fetch_url' : 'chart-histo-comprime-mdma'
+  return render(request, 'pages/all_molecules.html', {
+  'fetch_url' : 'chart-histo-comprime-mdma',
+  'area2_stack' : 'chart-histo-comprime-mdma'
   })
 
 def evol_purity_cocaine_view(request):
-  return render(request, 'pie_chart.html', {
+  return render(request, 'pages/all_molecules.html', {
   'fetch_url' : 'chart-evol-purity-cocaine'
   })
 
