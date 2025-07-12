@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} {{molecule_name}} {% endblock %}
+{% block centerText %} Statistique sur la pureté de {{molecule_name}} {% endblock %}
+
+{% block leftPanel %} 
+
+{% include "components/form.html" %}
+
+{% endblock %}
+
+{% block rightPanel %} 
+
+<div class="card-header bg-dark text-white">
+    <h5 class="mb-0">Aperçu sur le Canvas</h5>
+</div>
+<div class="card-body text-center">
+
+    <p id="totalObservations"></p>
+
+    {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data%} 
+    {% include "components/line_chart.html" with id="area_chart" chart_data=data%}  
+    
+</div>
+
+{% endblock %}
