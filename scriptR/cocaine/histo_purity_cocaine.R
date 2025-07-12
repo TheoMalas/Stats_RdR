@@ -99,6 +99,9 @@ json_obj <- list(
   count = N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/cocaine", recursive = TRUE, showWarnings = FALSE)
+
 # Export en JSON
 write_json(json_obj, "output/cocaine/histo_purity_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
 

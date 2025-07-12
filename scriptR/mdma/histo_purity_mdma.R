@@ -97,6 +97,8 @@ json_obj <- list(
   count = N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/mdma", recursive = TRUE, showWarnings = FALSE)
 # Export en JSON
 write_json(json_obj, "output/mdma/histo_purity_mdma.json", pretty = TRUE, auto_unbox = FALSE)
 

@@ -1,0 +1,92 @@
+<canvas id="{{ id|safe }}" width="400" height="400" style="display:none"></canvas>
+
+{% if area2_stack %}
+
+<script>
+
+    let area2StackedChart = null;
+
+    function loadArea2StackedChart() {
+
+        console.log("Test");
+
+        const date_debut = document.getElementById('date_debut').value;
+        const date_fin = document.getElementById('date_fin').value;
+        const range = document.getElementById('range_val').value;
+        //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
+        const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
+                                    .map(cb => cb.value);
+        const params = new URLSearchParams();
+        if (date_debut) params.append('date_debut', date_debut);
+        if (date_fin) params.append('date_fin', date_fin);
+        if (range) params.append('range', range);
+        if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+        const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+        const fetchUrl = "{{ pathUrl }}";
+        const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+     
+                console.log("Test2");
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                
+                        console.log("Test3");
+
+                const ctx = document.getElementById('{{ id|safe }}').getContext('2d');
+                document.getElementById('{{ id|safe }}').style.display = 'block';
+                const total = data.count;
+                document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+                if (area2StackedChart) {
+                        areaStackedChart.destroy(); // détruire l'ancien graphique s'il existe
+                    }
+
+                            console.log("Test4");
+                            console.log(data.datasets_line);
+                area2StackedChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                    labels: data.labels_line,
+                    datasets: data.datasets_line
+                        },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Période'
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: fetchUrl=='chart-histo-comprime-mdma' ? 'Dosage des comprimés (mg)' : 'Pourcentage de pureté'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            });
+    }
+
+    window.addEventListener("load", () => {
+        loadArea2StackedChart();
+
+        const button = document.getElementById("sendButton");
+        if (button) {
+            button.addEventListener("click", loadArea2StackedChart);
+        }
+    });
+
+</script>
+
+{% endif %}

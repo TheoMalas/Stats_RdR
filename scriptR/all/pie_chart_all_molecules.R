@@ -132,6 +132,9 @@ json_obj <- list(
   count=N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
+
 write_json(json_obj, "output/all/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
 
 #ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +

@@ -1,0 +1,125 @@
+<canvas id="{{ id|safe }}" width="400" height="400" style="display:none"></canvas>
+
+<script>
+   
+   let barChart = null;
+
+    function loadBarChart() {
+        const date_debut = document.getElementById('date_debut').value;
+        const date_fin = document.getElementById('date_fin').value;
+        //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
+        const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
+                                    .map(cb => cb.value);
+        const params = new URLSearchParams();
+        if (date_debut) params.append('date_debut', date_debut);
+        if (date_fin) params.append('date_fin', date_fin);
+        if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+        
+        const fetchUrl = "{{ pathUrl }}";
+        const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+
+        if (fetchUrl == 'chart-data-cocaine-coupe'||fetchUrl=='chart-data-heroine-coupe'){
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('{{ id|safe }}').getContext('2d');
+                document.getElementById('{{ id|safe }}').style.display = 'block';
+            if (barChart) {
+                        barChart.destroy(); // détruire l'ancien graphique s'il existe
+                    }
+            barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels_prod_coupe,
+                        datasets: [{
+                            label: 'Proportion de produits retrouvés',
+                            data: data.data_prod_coupe,
+                            backgroundColor: '#36A2EB',
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y', // Affiche les barres horizontalement
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Proportion'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Produits'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Si tu veux juste un titre simple
+                            }
+                        }
+                    }
+            });
+            });
+        }
+        if (fetchUrl == 'chart-purity-cocaine'||fetchUrl == 'chart-purity-heroine'||fetchUrl == 'chart-purity-mdma'||fetchUrl == 'chart-purity-3mmc'||fetchUrl == 'chart-purity-ketamine'||fetchUrl == 'chart-purity-speed'||fetchUrl == 'chart-purity-cannabis-THC-resine'||fetchUrl == 'chart-purity-cannabis-THC-herbe'|| fetchUrl == 'chart-histo-comprime-mdma'){
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('{{ id|safe }}').getContext('2d');
+                document.getElementById('{{ id|safe }}').style.display = 'block';
+                const total = data.count;
+                document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
+            if (barChart) {
+                        barChart.destroy(); // détruire l'ancien graphique s'il existe
+                    }
+            barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Proportion de produits retrouvés',
+                            data: data.data,
+                            backgroundColor: '#36A2EB',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: fetchUrl=='chart-histo-comprime-mdma' ? 'Dosage des comprimés (mg)' : 'Pourcentage de pureté'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Occurences'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Si tu veux juste un titre simple
+                            }
+                        }
+                    }
+            });
+            });
+        }
+    }
+
+    window.addEventListener("load", () => {
+        loadBarChart();
+
+        const button = document.getElementById("sendButton");
+        if (button) {
+            button.addEventListener("click", loadBarChart);
+        }
+    });
+
+</script>

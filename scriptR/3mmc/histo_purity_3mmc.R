@@ -97,6 +97,9 @@ json_obj <- list(
   count = N
 )
 
+# Créer les dossiers si nécessaire
+dir.create("output/3mmc", recursive = TRUE, showWarnings = FALSE)
+
 # Export en JSON
 write_json(json_obj, "output/3mmc/histo_purity_3mmc.json", pretty = TRUE, auto_unbox = FALSE)
 

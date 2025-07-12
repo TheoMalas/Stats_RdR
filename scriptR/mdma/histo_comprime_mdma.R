@@ -121,4 +121,7 @@ json_obj <- list(
   count = N
 )
 
+
+# Créer les dossiers si nécessaire
+dir.create("output/mdma", recursive = TRUE, showWarnings = FALSE)
 write_json(json_obj, "output/mdma/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = TRUE)
