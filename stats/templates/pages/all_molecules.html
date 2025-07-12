@@ -21,8 +21,8 @@
     </p>
 
     {% include "components/pie_chart.html" with id="pie_chart" chart_data=all_molecules_data%}
-    {% include "components/area_stacked_chart.html" with id="area_chart_1" chart_data=all_molecules_data%}  
-    {% include "components/area_stacked_chart.html" with id="area_chart_2" chart_data=area_all_molecules_data%}    
+    {% include "components/area_stacked_chart.html" with id="area_chart_1" chart_data=all_molecules_data is_stacked='true' %}  
+    {% include "components/area_stacked_chart.html" with id="area_chart_2" chart_data=area_all_molecules_data is_stacked='true'%}    
 </div>
 
 {% endblock %}
