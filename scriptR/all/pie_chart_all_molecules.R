@@ -1,42 +1,23 @@
-library(DBI)
-library(RMySQL)
 library(dplyr)
 library(jsonlite)
 library(lubridate)
 
-user <- Sys.getenv("USER")
-pwd <- Sys.getenv("PASSWORD")
-host <- Sys.getenv("HOST")
-port <- as.integer(Sys.getenv("PORT"))
+source("scriptR/util/utilities.R")
 
-
-con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
-                 host = host,
-                 port = port,
-                 user = user,
-                 password = pwd)
-
-dbListTables(con)
-data <- dbReadTable(con, "resultats_analyse_cleaned")
-dbDisconnect(con)
-data = data %>% mutate(date=as.Date(date))
+data = load_data()
 ################################################################################
 # Selection de la fenêtre de temps et des familles #############################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
-
-date_debut <- as.Date(args[1])
-date_fin <- as.Date(args[2])
-data = data %>% 
- filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+data = filter_data(data,args)
 
 if (length(args)>2){
   familles_vec <- args[3:length(args)]  # vecteur de familles
   data = data %>% filter(famille %in% familles_vec)
 }
 
+print(args)
 ################################################################################
 # Pie chart sur le produit #####################################################
 ################################################################################
