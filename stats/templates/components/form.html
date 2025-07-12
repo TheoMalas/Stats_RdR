@@ -89,3 +89,24 @@
         </div>
     </div>
 </div>
+
+<script>
+    
+    document.getElementById('sendButton').addEventListener('click', function () {
+        const date_debut = document.getElementById('date_debut').value;
+        const date_fin = document.getElementById('date_fin').value;
+        const range = document.getElementById('range_val').value;
+        const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked')).map(cb => cb.value);
+
+        const params = new URLSearchParams();
+        if (date_debut) params.set('date_debut', date_debut);
+        if (date_fin) params.set('date_fin', date_fin);
+        if (range) params.set('range', range);
+        if (selectedFamilles.length > 0) params.set('familles', selectedFamilles.join(','));
+
+        const newUrl = window.location.pathname + '?' + params.toString();
+
+        // Modifie l'URL dans la barre d'adresse sans recharger la page
+        window.location = newUrl;
+    });
+</script>
