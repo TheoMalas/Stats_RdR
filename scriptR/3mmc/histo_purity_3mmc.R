@@ -60,13 +60,3 @@ dir.create("output/3mmc", recursive = TRUE, showWarnings = FALSE)
 # Export en JSON
 write_json(json_obj, "output/3mmc/histo_purity_3mmc.json", pretty = TRUE, auto_unbox = FALSE)
 
-#ggplot(data, aes(x = pourcentage)) +
-#  geom_histogram(binwidth = 5, fill = "firebrick2", color = "white", boundary = 0, closed = "left") +
-#  scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, by = 10)) +
-#  labs(
-#    title = paste0("Distribution de la pureté de la cocaïne (en équivalent base), N=",nrow(data)),
-#    x = "Pureté (%)",
-#    y = "Occurence"
-#  ) +
-#  geom_vline(xintercept = 100*ratio_base_sel, linetype="dashed")+
-#  theme_minimal(base_size = 14)

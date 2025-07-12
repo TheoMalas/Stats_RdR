@@ -1,43 +1,17 @@
-library(DBI)
-library(RMySQL)
 library(dplyr)
 library(jsonlite)
 library(lubridate)
 
+source("scriptR/util/utilities.R")
 
-user <- Sys.getenv("USER")
-pwd <- Sys.getenv("PASSWORD")
-host <- Sys.getenv("HOST")
-port <- as.integer(Sys.getenv("PORT"))
-
-
-con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
-                 host = host,
-                 port = port,
-                 user = user,
-                 password = pwd)
-
-dbListTables(con)
-data <- dbReadTable(con, "resultats_analyse_cleaned")
-dbDisconnect(con)
-data = data %>% mutate(date=as.Date(date))
+data = load_data()
 ################################################################################
 # Selection de la fenêtre de temps et des familles #############################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
-
-date_debut <- as.Date(args[1])
-date_fin <- as.Date(args[2])
-data = data %>% 
-  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
-
-if (length(args)>2){
-  familles_vec <- args[3:length(args)]  # vecteur de familles
-  data = data %>% filter(famille %in% familles_vec)
-}
-
+print(args)
+data = filter_data(data,args)
 
 ################################################################################
 # Évolution des pourcentages ###################################################
@@ -115,16 +89,3 @@ json_obj <- list(
 # Créer les dossiers si nécessaire
 dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
 write_json(json_obj, "output/all/stacked_area_prop_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
-
-#ggplot(data_evol, aes(x = date_bimestre, y = prop, fill = molecule_simp)) +
-#  geom_area(position = "stack", color = "white", size = 0.2) +
-#  scale_y_continuous(labels = scales::percent_format()) +
-#  labs(
-#    title = paste0("Évolution des parts par produit attendu, N=",N),
-#    x = "Bimestre",
-#    y = "Part relative",
-#    fill = "Produit attendu"
-#  ) +
-#  theme_minimal(base_size = 14)
-
-#ggsave("stacked_area_prop.pdf")

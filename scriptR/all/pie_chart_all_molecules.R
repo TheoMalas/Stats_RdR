@@ -10,14 +10,9 @@ data = load_data()
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
+print(args)
 data = filter_data(data,args)
 
-if (length(args)>2){
-  familles_vec <- args[3:length(args)]  # vecteur de familles
-  data = data %>% filter(famille %in% familles_vec)
-}
-
-print(args)
 ################################################################################
 # Pie chart sur le produit #####################################################
 ################################################################################
@@ -117,11 +112,3 @@ json_obj <- list(
 dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
 
 write_json(json_obj, "output/all/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
-
-#ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
-#  geom_col(width = 1) +
-#  coord_polar(theta = "y") +
-#  labs(title = paste0("Répartition des échantillons par produit (%), N=",nrow(data))) +
-#  theme_void() +
-#  guides(fill = guide_legend(reverse = TRUE))
-#ggsave("output/pie_chart_all_molecules.png")

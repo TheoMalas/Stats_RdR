@@ -13,10 +13,6 @@ args <- commandArgs(trailingOnly = TRUE)
 
 data = filter_data(data,args)
 
-if (length(args)>2){
-  familles_vec <- args[3:length(args)]  # vecteur de familles
-  data = data %>% filter(famille %in% familles_vec)
-}
 ################################################################################
 # Pie chart sur mode d'approvisionnement #######################################
 ################################################################################
@@ -113,16 +109,3 @@ json_obj <- list(
 dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
 
 write_json(json_obj, "output/all/pie_chart_supply_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
-
-
-
-
-#N=nrow(df_pie_0)
-
-#ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
-#  geom_col(width = 1) +
-#  coord_polar(theta = "y") +
-#  labs(title = paste0("Répartition des échantillons par mode d'approvisionnement (%), N=",N),
-#       fill = "Mode d'approvisionnement") +
-#  theme_void() +
-#  guides(fill = guide_legend(reverse = TRUE))

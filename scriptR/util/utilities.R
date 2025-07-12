@@ -23,13 +23,22 @@ load_data <- function(){
   return(data)
 }
 
-filter_data <- function(data, args){
-  
-  date_debut <- as.Date(args[1])
-  date_fin <- as.Date(args[2])
+filter_data <- function(data, args_string){
+  args <- strsplit(args_string, " ")[[1]]
+  args_list <- setNames(
+    lapply(strsplit(args, "="), `[`, 2),
+    sapply(strsplit(args, "="), `[`, 1)
+  )
+  # Extraction et conversion
+  date_debut <- as.Date(args_list[["date_debut"]])
+  date_fin   <- as.Date(args_list[["date_fin"]])
   data = data %>% 
     filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
   
+  familles_vec <- strsplit(args_list[["familles_list"]],",")[[1]]
+  if (length(familles_vec)>1){data = data %>% filter(famille %in% familles_vec)}
+  if (length(familles_vec)==1){if(!is.na(familles_vec)){data = data %>% filter(famille %in% familles_vec)}}
+
   return(data)
 }
 

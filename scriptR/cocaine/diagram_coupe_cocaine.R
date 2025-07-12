@@ -86,7 +86,7 @@ evol_coupe <- lapply(cols_coupe_prod, function(coupe_prod) {
   data_bimestre %>%
     group_by(date_bimestre) %>%
     summarise(
-      total_dates = n_distinct(date),
+      total_dates = n(),
       dates_present = sum(!!sym(coupe_prod) > 0, na.rm = TRUE),
       pourcentage_presence = 100 * dates_present / total_dates,
       coupe_prod = coupe_prod,

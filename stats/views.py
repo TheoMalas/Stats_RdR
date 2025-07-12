@@ -19,9 +19,12 @@ def molecules_view(request):
 
   date_debut, date_fin = get_dates(request)
   familles_list = get_familles(request)
-
-  all_molecules_data = runScript("all/pie_chart_all_molecules", [date_debut, date_fin] + familles_list)    
-  area_all_molecules_data = runScript("all/stacked_area_prop_all_molecules", [date_debut, date_fin] + familles_list)
+  familles_str = ",".join(familles_list)
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "familles_list="+familles_str
+  all_molecules_data = runScript("all/pie_chart_all_molecules", args_str)    
+  area_all_molecules_data = runScript("all/stacked_area_prop_all_molecules", args_str)
 
   return render(request, 'pages/all_molecules.html', { 
       'all_molecules_data': all_molecules_data,
@@ -32,7 +35,11 @@ def supply_view(request):
 
   date_debut, date_fin = get_dates(request)
   familles_list = get_familles(request)
-  data = runScript("all/pie_chart_supply_all_molecules", [date_debut, date_fin] + familles_list)
+  familles_str = ",".join(familles_list)
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "familles_list="+familles_str
+  data = runScript("all/pie_chart_supply_all_molecules", args_str)
 
   return render(request, 'pages/supply.html', { 
       'data' : data,
@@ -149,12 +156,13 @@ def histo_comprime_mdma_view(request):
 
 def runScript(scriptID, args):
   outputPath = 'output/' + scriptID + '.json'
-
+  
   cachedData = basicCache(outputPath)
   if cachedData != None:
       return cachedData
-
-  cmd=["Rscript","scriptR/" + scriptID + ".R"] + args
+  print([args])
+  cmd=["Rscript","scriptR/" + scriptID + ".R"] + [args]
+  print(cmd)
   subprocess.run(cmd)
 
   json_file_path = os.path.join(settings.BASE_DIR, outputPath)
