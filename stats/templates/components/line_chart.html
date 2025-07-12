@@ -11,8 +11,8 @@
         new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
             type: 'line',
             data: {
-                labels: data.labels_area,
-                datasets: data.datasets_area
+                labels: data.labels_line,
+                datasets: data.datasets_line
             },
             options: {
                 responsive: true,
@@ -26,16 +26,16 @@
                     },
                     y: {
                         stacked: true,
-                        beginAtZero: true,
+                        beginAtZero: false,
                         title: {
                             display: true,
-                            text: 'Proportion'
+                            text: 'Pourcentage de pureté'
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: true
+                        display: false
                     }
                 }
             }

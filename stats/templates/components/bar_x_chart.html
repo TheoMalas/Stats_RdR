@@ -3,43 +3,45 @@
 {% endwith %}
 
 <canvas id="{{ id|safe }}" width="400" height="400"></canvas>
- 
+
 <script>
     (function() {
 
         const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
         new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: data.labels_area,
-                datasets: data.datasets_area
+                labels: data.labels_prod_coupe,
+                datasets: [{
+                    label: 'Proportion de produits retrouvés',
+                    data: data.data_prod_coupe,
+                    backgroundColor: '#36A2EB',
+                }]
             },
             options: {
+                indexAxis: 'y', // Affiche les barres horizontalement
                 responsive: true,
                 scales: {
                     x: {
-                        stacked: true,
-                        title: {
-                            display: true,
-                            text: 'Période'
-                        }
-                    },
-                    y: {
-                        stacked: true,
                         beginAtZero: true,
                         title: {
                             display: true,
                             text: 'Proportion'
                         }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Produits'
+                        }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: true
+                        display: false // Si tu veux juste un titre simple
                     }
                 }
             }
         });
-
     })();
 </script>

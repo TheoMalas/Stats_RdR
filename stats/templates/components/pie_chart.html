@@ -1,81 +1,23 @@
-<canvas id="{{ id|safe }}" width="400" height="400" style="display:none"></canvas>
+{% with "data_"|add:id as data_id %}
+  {{ chart_data|json_script:data_id }}
+{% endwith %}
+
+<canvas id="{{ id|safe }}" width="400" height="400"></canvas>
 
 <script>
-    let pieChart = null;
-
-    function loadPieChart() {
-         
-        const date_debut = document.getElementById('date_debut').value;
-        const date_fin = document.getElementById('date_fin').value;
-        //const url = `/chart-data/?date_debut=${encodeURIComponent(date_debut)}&date_fin=${encodeURIComponent(date_fin)}`;
-        const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked'))
-                                    .map(cb => cb.value);
-        const params = new URLSearchParams();
-        if (date_debut) params.append('date_debut', date_debut);
-        if (date_fin) params.append('date_fin', date_fin);
-        if (selectedFamilles.length > 0) params.append('familles', selectedFamilles.join(','));
+    (function() {
         
-        const fetchUrl = "{{ pathUrl }}";
-        const url = '/' + fetchUrl + '/' + (params.toString() ? '?' + params.toString() : '');
+        const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
+        new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: data.labels ?? data.labels_presence_coupe,
+                datasets: [{
+                    data: data.data ?? data.data_presence_coupe,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                }]
+            },
+        });
         
-        if (fetchUrl=='chart-data'||fetchUrl=='chart-data-supply'){
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('{{ id|safe }}').style.display = 'block';
-                    const ctx = document.getElementById('{{ id|safe }}').getContext('2d');
-                    const total = data.count;
-                    document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
-                    if (pieChart) {
-                        pieChart.destroy(); // détruire l'ancien graphique s'il existe
-                    }
-
-                    pieChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{
-                                data: data.data,
-                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                            }]
-                        },
-                    });
-                });
-            }
-        if (fetchUrl=='chart-data-cocaine-coupe'||fetchUrl=='chart-data-heroine-coupe'){
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const ctx = document.getElementById('{{ id|safe }}').getContext('2d');
-                    document.getElementById('{{ id|safe }}').style.display = 'block';
-                    const total = data.count;
-                    document.getElementById('totalObservations').textContent =`Nombre total d'observations : ${total}`;
-                    if (pieChart) {
-                        pieChart.destroy(); // détruire l'ancien graphique s'il existe
-                    }
-
-                    pieChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: data.labels_presence_coupe,
-                            datasets: [{
-                                data: data.data_presence_coupe,
-                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                            }]
-                        },
-                    });
-                });
-            
-        }
-    }
-
-    window.addEventListener("load", () => {
-        loadPieChart();
-
-        const button = document.getElementById("sendButton");
-        if (button) {
-            button.addEventListener("click", loadPieChart);
-        }
-    });
-    
+    })();
 </script>
