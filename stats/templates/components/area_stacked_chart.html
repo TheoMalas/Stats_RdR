@@ -72,6 +72,11 @@
 
     window.addEventListener("load", () => {
         loadAreaStackedChart();
+
+        const button = document.getElementById("sendButton");
+        if (button) {
+            button.addEventListener("click", loadAreaStackedChart);
+        }
     });
 
 </script>
