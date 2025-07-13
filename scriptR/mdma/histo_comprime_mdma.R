@@ -9,9 +9,13 @@ data = data %>% filter(molecule_simp=="MDMA")
 # Selection de la fenêtre de temps #############################################
 ################################################################################
 
-args <- commandArgs(trailingOnly = TRUE)
+args_full <- commandArgs(trailingOnly = FALSE)
+args = args_full[grep("--args", args_full)+1]
 
-data = filter_data(data,args)
+data_delta_list = filter_data(data,args)
+
+data=data_delta_list[[1]]
+Delta=data_delta_list[[2]]
 
 
 ################################################################################
@@ -71,8 +75,6 @@ data_histo <- data_comprime %>%
 # Evolution moyenne et variance ################################################
 ################################################################################
 
-Delta=15
-
 data_mean_lis <- data_comprime %>%
   arrange(date) %>%
   mutate(moyenne_glissante = sapply(date, function(d) {
@@ -103,6 +105,5 @@ json_obj <- list(
 )
 
 
-# Créer les dossiers si nécessaire
-dir.create("output/mdma", recursive = TRUE, showWarnings = FALSE)
-write_json(json_obj, "output/mdma/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = TRUE)
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+write_json_perso(json_obj, args_full)

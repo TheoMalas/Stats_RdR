@@ -48,7 +48,11 @@ def supply_view(request):
 def cocaine_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("cocaine/diagram_coupe_cocaine", [date_debut, date_fin])
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "
+    
+  data = runScript("cocaine/diagram_coupe_cocaine", args_str)
 
   return render(request, 'pages/coupe.html', { 
     'data' : data,
@@ -57,7 +61,10 @@ def cocaine_view(request):
 def heroine_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("heroine/diagram_coupe_heroine", [date_debut, date_fin])
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "
+  data = runScript("heroine/diagram_coupe_heroine", args_str)
   
   return render(request, 'pages/coupe.html', { 
     'data' : data,
@@ -65,8 +72,13 @@ def heroine_view(request):
 
 def purity_cocaine_view(request):
 
-  date_debut, date_fin = get_dates(request)  
-  data = runScript("cocaine/histo_purity_cocaine", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  date_debut, date_fin = get_dates(request)
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta  
+  data = runScript("cocaine/histo_purity_cocaine", args_str)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -75,8 +87,13 @@ def purity_cocaine_view(request):
 
 def purity_mdma_view(request):
 
-  date_debut, date_fin = get_dates(request)  
-  data = runScript("mdma/histo_purity_mdma", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  date_debut, date_fin = get_dates(request)
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta 
+  data = runScript("mdma/histo_purity_mdma", args_str)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -86,7 +103,12 @@ def purity_mdma_view(request):
 def purity_heroine_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("heroine/histo_purity_heroine", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta 
+  data = runScript("heroine/histo_purity_heroine", args_str)
 
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -96,7 +118,12 @@ def purity_heroine_view(request):
 def purity_3mmc_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("3mmc/histo_purity_3mmc", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta
+  data = runScript("3mmc/histo_purity_3mmc", args_str)
 
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -106,7 +133,13 @@ def purity_3mmc_view(request):
 def purity_ketamine_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("ketamine/histo_purity_ketamine", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta
+  
+  data = runScript("ketamine/histo_purity_ketamine", args_str)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -116,7 +149,12 @@ def purity_ketamine_view(request):
 def purity_speed_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("speed/histo_purity_speed", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta
+  data = runScript("speed/histo_purity_speed", args_str)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -125,8 +163,13 @@ def purity_speed_view(request):
 
 def purity_cannabis_THC_resine_view(request):
 
-  date_debut, date_fin = get_dates(request)  
-  data = runScript("cannabis/histo_purity_cannabis_THC_resine", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  date_debut, date_fin = get_dates(request)
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta  
+  data = runScript("cannabis/histo_purity_cannabis_THC_resine", args_str)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -136,7 +179,12 @@ def purity_cannabis_THC_resine_view(request):
 def purity_cannabis_THC_herbe_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("cannabis/histo_purity_cannabis_THC_herbe", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta
+  data = runScript("cannabis/histo_purity_cannabis_THC_herbe", args_str)
 
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -146,7 +194,12 @@ def purity_cannabis_THC_herbe_view(request):
 def histo_comprime_mdma_view(request):
 
   date_debut, date_fin = get_dates(request)
-  data = runScript("mdma/histo_comprime_mdma", [date_debut, date_fin, str(request.GET.get("range", default_Delta))])
+  Delta = str(request.GET.get("range", default_Delta))
+  
+  args_str="date_debut="+str(date_debut)+" "\
+    "date_fin="+str(date_fin)+" "\
+    "Delta="+Delta
+  data = runScript("mdma/histo_comprime_mdma", args_str)
     
   return render(request, 'pages/purity.html', { 
     'data' : data,
@@ -155,7 +208,9 @@ def histo_comprime_mdma_view(request):
 # BackEnd
 
 def runScript(scriptID, args):
-  outputPath = 'output/' + scriptID + '.json'
+  json_id = args.replace(" ", "").replace(",", "").replace("=", "")
+  outputPath = 'output/' + scriptID + '_' + json_id + '.json'
+  print(outputPath)
   
   cachedData = basicCache(outputPath)
   if cachedData != None:

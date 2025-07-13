@@ -9,8 +9,9 @@ data = load_data()
 # Selection de la fenêtre de temps et des familles #############################
 ################################################################################
 
-args <- commandArgs(trailingOnly = TRUE)
-print(args)
+#args <- commandArgs(trailingOnly = TRUE)
+args_full <- commandArgs(trailingOnly = FALSE)
+args = args_full[grep("--args", args_full)+1]
 data = filter_data(data,args)
 
 ################################################################################
@@ -86,6 +87,5 @@ json_obj <- list(
   count = N
 )
 
-# Créer les dossiers si nécessaire
-dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
-write_json(json_obj, "output/all/stacked_area_prop_all_molecules.json", pretty = TRUE, auto_unbox = TRUE)
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+write_json_perso(json_obj, args_full)

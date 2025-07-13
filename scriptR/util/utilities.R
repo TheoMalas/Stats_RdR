@@ -34,11 +34,13 @@ filter_data <- function(data, args_string){
   date_fin   <- as.Date(args_list[["date_fin"]])
   data = data %>% 
     filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
-  
+
+  if (!is.null(args_list[["familles_list"]])){
   familles_vec <- strsplit(args_list[["familles_list"]],",")[[1]]
   if (length(familles_vec)>1){data = data %>% filter(famille %in% familles_vec)}
   if (length(familles_vec)==1){if(!is.na(familles_vec)){data = data %>% filter(famille %in% familles_vec)}}
-
+  }
+  if (!is.null(args_list[["Delta"]])){return(list(data,as.numeric(args_list[["Delta"]])))}
   return(data)
 }
 
@@ -78,4 +80,16 @@ datasets_list_evol <- function(data, Delta){
   ))
   labels_line = as.character(data_lis$date)
   return(list(labels_line,datasets_list))
+}
+
+write_json_perso <- function(json_obj,args_full){
+  full_scriptID=sub("--file=", "", args_full[grep("--file=", args_full)])
+  json_folder=paste("output/",sub(".*scriptR/([^/]+)/.*", "\\1", full_scriptID),sep="")
+  dir.create(json_folder, recursive = TRUE, showWarnings = FALSE)
+  
+  
+  scriptID <- sub(".*scriptR/(.*)\\.R", "\\1", full_scriptID)
+  json_id=gsub("[ =,]", "", args)
+  json_path = paste("output/",scriptID,"_",json_id,".json", sep="")
+  write_json(json_obj, json_path, pretty = TRUE, auto_unbox = FALSE)
 }

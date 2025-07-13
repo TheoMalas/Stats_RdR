@@ -14,11 +14,13 @@ data = data %>% filter(! is.na(pourcentage))
 # Selection de la fenêtre de temps #############################################
 ################################################################################
 
-args <- commandArgs(trailingOnly = TRUE)
+args_full <- commandArgs(trailingOnly = FALSE)
+args = args_full[grep("--args", args_full)+1]
 
-data = filter_data(data,args)
+data_delta_list = filter_data(data,args)
 
-Delta=15#as.numeric(args[3])
+data=data_delta_list[[1]]
+Delta=data_delta_list[[2]]
 ################################################################################
 # Histogramme des puretés ######################################################
 ################################################################################
@@ -50,8 +52,5 @@ json_obj <- list(
   count = N
 )
 
-# Créer les dossiers si nécessaire
-dir.create("output/cannabis", recursive = TRUE, showWarnings = FALSE)
-
-# Export en JSON
-write_json(json_obj, "output/cannabis/histo_purity_cannabis_THC_resine.json", pretty = TRUE, auto_unbox = FALSE)
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+write_json_perso(json_obj, args_full)
