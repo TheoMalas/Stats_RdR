@@ -14,13 +14,13 @@ data = data %>% filter(! is.na(pourcentage))
 # Selection de la fenêtre de temps #############################################
 ################################################################################
 
-args_full <- commandArgs(trailingOnly = FALSE)
-args = args_full[grep("--args", args_full)+1]
+args <- commandArgs(trailingOnly = TRUE)
 
-data_delta_list = filter_data(data,args)
+data_delta_outputPath_list = filter_data(data,args)
 
-data=data_delta_list[[1]]
-Delta=data_delta_list[[2]]
+data=data_delta_outputPath_list[[1]]
+Delta=data_delta_outputPath_list[[2]]
+ouputPath=data_delta_outputPath_list[[3]]
 ################################################################################
 # Histogramme des puretés ######################################################
 ################################################################################
@@ -53,4 +53,4 @@ json_obj <- list(
 )
 
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
-write_json_perso(json_obj, args_full)
+write_json_perso(json_obj, outputPath)

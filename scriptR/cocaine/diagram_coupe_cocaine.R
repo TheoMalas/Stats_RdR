@@ -14,10 +14,10 @@ data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcent
 # Selection de la fenêtre de temps #############################################
 ################################################################################
 
-args_full <- commandArgs(trailingOnly = FALSE)
-args = args_full[grep("--args", args_full)+1]
-
-data = filter_data(data,args)
+args <- commandArgs(trailingOnly = TRUE)
+data_outputPath_list = filter_data(data,args)
+data=data_outputPath_list[[1]]
+outputPath=data_outputPath_list[[2]]
 
 ################################################################################
 # Histogramme des produits de coupe ############################################
@@ -135,5 +135,5 @@ json_obj <- list(
 )
 
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
-write_json_perso(json_obj, args_full)
+write_json_perso(json_obj, outputPath)
 

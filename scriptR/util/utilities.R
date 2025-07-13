@@ -29,6 +29,7 @@ filter_data <- function(data, args_string){
     lapply(strsplit(args, "="), `[`, 2),
     sapply(strsplit(args, "="), `[`, 1)
   )
+  
   # Extraction et conversion
   date_debut <- as.Date(args_list[["date_debut"]])
   date_fin   <- as.Date(args_list[["date_fin"]])
@@ -40,8 +41,9 @@ filter_data <- function(data, args_string){
   if (length(familles_vec)>1){data = data %>% filter(famille %in% familles_vec)}
   if (length(familles_vec)==1){if(!is.na(familles_vec)){data = data %>% filter(famille %in% familles_vec)}}
   }
-  if (!is.null(args_list[["Delta"]])){return(list(data,as.numeric(args_list[["Delta"]])))}
-  return(data)
+  outputPath <- args_list[["outputPath"]]
+  if (!is.null(args_list[["Delta"]])){return(list(data,as.numeric(args_list[["Delta"]]),outputPath))}
+  return(list(data, outputPath))
 }
 
 histo_data <- function(data){
@@ -82,14 +84,10 @@ datasets_list_evol <- function(data, Delta){
   return(list(labels_line,datasets_list))
 }
 
-write_json_perso <- function(json_obj,args_full){
-  full_scriptID=sub("--file=", "", args_full[grep("--file=", args_full)])
-  json_folder=paste("output/",sub(".*scriptR/([^/]+)/.*", "\\1", full_scriptID),sep="")
+write_json_perso <- function(json_obj,outputPath){
+  
+  json_folder<-sub("/[^/]*$", "", outputPath)
   dir.create(json_folder, recursive = TRUE, showWarnings = FALSE)
   
-  
-  scriptID <- sub(".*scriptR/(.*)\\.R", "\\1", full_scriptID)
-  json_id=gsub("[ =,]", "", args)
-  json_path = paste("output/",scriptID,"_",json_id,".json", sep="")
-  write_json(json_obj, json_path, pretty = TRUE, auto_unbox = FALSE)
+  write_json(json_obj, outputPath, pretty = TRUE, auto_unbox = FALSE)
 }

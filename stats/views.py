@@ -210,14 +210,14 @@ def histo_comprime_mdma_view(request):
 def runScript(scriptID, args):
   json_id = args.replace(" ", "").replace(",", "").replace("=", "")
   outputPath = 'output/' + scriptID + '_' + json_id + '.json'
-  print(outputPath)
   
+  args = args + " outputPath=" + outputPath
   cachedData = basicCache(outputPath)
   if cachedData != None:
       return cachedData
-  print([args])
+  
   cmd=["Rscript","scriptR/" + scriptID + ".R"] + [args]
-  print(cmd)
+  
   subprocess.run(cmd)
 
   json_file_path = os.path.join(settings.BASE_DIR, outputPath)
