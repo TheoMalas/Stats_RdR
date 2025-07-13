@@ -29,7 +29,7 @@ filter_data <- function(data, args_string){
     lapply(strsplit(args, "="), `[`, 2),
     sapply(strsplit(args, "="), `[`, 1)
   )
-  
+  print(args_list)
   # Extraction et conversion
   date_debut <- as.Date(args_list[["date_debut"]])
   date_fin   <- as.Date(args_list[["date_fin"]])

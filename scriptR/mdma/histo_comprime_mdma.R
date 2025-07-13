@@ -15,7 +15,7 @@ data_delta_outputPath_list = filter_data(data,args)
 
 data=data_delta_outputPath_list[[1]]
 Delta=data_delta_outputPath_list[[2]]
-ouputPath=data_delta_outputPath_list[[3]]
+outputPath=data_delta_outputPath_list[[3]]
 
 ################################################################################
 # Histogramme des dosages de comprimés #########################################
