@@ -61,8 +61,8 @@ names(stars) <- rownames(res)
 datasets_list <- lapply(var_names, function(var_names_i) {
   list(
     "label" = ifelse(var_names_i == "(Intercept)", "Constante (Deep web / dark web)", sub("provenance", "", var_names_i)),
-    "coefficient" = paste(unname(coefs[var_names_i]), unname(stars[var_names_i]),sep=""),
-    "standard_error" = unname(std_errors[var_names_i])
+    "coefficient" = paste(unname(round(coefs[var_names_i],3)), unname(stars[var_names_i]),sep=""),
+    "standard_error" = unname(round(std_errors[var_names_i],3))
   )
 })
 
@@ -74,4 +74,4 @@ json_obj <- list(
 )
 
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
-save_ouput_as_json(json_obj, outputPath)
+save_ouput_as_json(json_obj, outputPath, auto_unbox=TRUE)

@@ -119,10 +119,10 @@ datasets_list_evol <- function(data, Delta){
   return(list(labels_line,datasets_list))
 }
 
-save_ouput_as_json <- function(json_obj,outputPath){
+save_ouput_as_json <- function(json_obj,outputPath, auto_unbox=FALSE){
   
   json_folder<-sub("/[^/]*$", "", outputPath)
   dir.create(json_folder, recursive = TRUE, showWarnings = FALSE)
   
-  write_json(json_obj, outputPath, pretty = TRUE, auto_unbox = FALSE)
+  write_json(json_obj, outputPath, pretty = TRUE, auto_unbox = auto_unbox)
 }

@@ -80,7 +80,7 @@
 
         // Variable (texte)
         const tdVar = document.createElement('td');
-        tdVar.textContent = item.variable;
+        tdVar.textContent = item.label;
         tr.appendChild(tdVar);
 
         // Coefficient (avec éventuelles étoiles)
@@ -101,7 +101,7 @@
         tbody.appendChild(tr);
     });
 
-    document.getElementById('observations').textContent = `Observations : ${data.nb_observation}`;
+    document.getElementById('observations').textContent = `Observations : ${data.nb_obs}`;
     document.getElementById('r2').textContent = `R² : ${data.r_squared}`;
 })();
 </script>
