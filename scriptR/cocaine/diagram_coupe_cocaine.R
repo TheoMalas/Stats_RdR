@@ -124,7 +124,7 @@ datasets_list <- lapply(prod_vec, function(prod_i) {
 
 ################################################################################
 N=nrow(data)
-# Conversion au format souhaité
+#Création de l'objet JSON
 json_obj <- list(
   labels_presence_coupe = as.character(df_fin_presence_coupe$categorie_label),
   data_presence_coupe = df_fin_presence_coupe$pourcent,

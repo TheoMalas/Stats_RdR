@@ -16,10 +16,12 @@
 </div>
 <div class="card-body text-center">
 
-    <p id="totalObservations"></p>
+    <p id="totalObservations">
+        Nombre total d'observations : {{data.count}}
+    </p>
 
     {% include "components/pie_chart.html" with id="pie_chart" chart_data=data%}
-    {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true'%}  
+    {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true'%}
     
 </div>
 
