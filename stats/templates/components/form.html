@@ -80,11 +80,7 @@
                 <label for="nom" class="form-label">GABAergiques non benzo</label>
                 <input type="checkbox" name="famille" value="GABAergiques_non_benzo">
             </div>
-            <div class="mb-3">
-                <label for="range_val" class="form-label">Nombre de jours pour moyenner :</label>
-                <input type="range" class="form-range" min="1" max="30" id="range_val" value="15" oninput="rangeOutput.value = range_val.value">
-                <output id="rangeOutput" class="ms-2">15</output>
-            </div>
+   
             <button id="sendButton" class="btn btn-primary w-100">Envoyer</button>
         </div>
     </div>
@@ -101,7 +97,6 @@
         const params = new URLSearchParams();
         if (date_debut) params.set('date_debut', date_debut);
         if (date_fin) params.set('date_fin', date_fin);
-        if (range) params.set('range', range);
         if (selectedFamilles.length > 0) params.set('familles', selectedFamilles.join(','));
 
         const newUrl = window.location.pathname + '?' + params.toString();
