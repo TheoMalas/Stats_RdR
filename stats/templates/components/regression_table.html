@@ -1,0 +1,84 @@
+ <style>
+    body {
+        font-family: Georgia, serif;
+        margin: 40px;
+        color: #333;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    caption {
+        text-align: left;
+        font-style: italic;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    th, td {
+        border: none;
+        padding: 6px 10px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    .coef {
+        white-space: nowrap;
+    }
+
+    .footer {
+        margin-top: 20px;
+        font-size: 0.95em;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .note {
+        margin-top: 10px;
+        font-style: italic;
+        font-size: 0.9em;
+    }
+
+    .stars {
+        font-weight: bold;
+    }
+</style>
+
+<table>
+  <caption>Dépendent variable : <strong>percentage</strong></caption>
+  <thead>
+    <tr>
+      <th></th>
+      <th class="coef">Coefficient</th>
+      <th class="coef">(Erreur standard)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Dealer de rue (four)</td><td>−1.489</td><td>(2.116)</td></tr>
+    <tr><td>Livreur</td><td>−1.548</td><td>(2.259)</td></tr>
+    <tr><td>Réseaux sociaux en ligne</td><td>−5.771<span class="stars">**</span></td><td>(2.757)</td></tr>
+    <tr><td>Dealer en soirée</td><td>−2.568</td><td>(3.591)</td></tr>
+    <tr><td>Don entre partenaire de conso</td><td>2.071</td><td>(4.073)</td></tr>
+    <tr><td>Boutique en ligne</td><td>−7.188</td><td>(9.510)</td></tr>
+    <tr><td><strong>Constante (Deep Web / Dark Web)</strong></td><td>73.605<span class="stars">***</span></td><td>(1.349)</td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <div>Observations : 418</div>
+  <div>R² : 0.014</div>
+  <div>R² ajusté : −0.001</div>
+  <div class="note">
+    <em>Note :</em> <span class="stars">*</span>p&lt;0.1; <span class="stars">**</span>p&lt;0.05; <span class="stars">***</span>p&lt;0.01
+  </div>
+</div>

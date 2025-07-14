@@ -19,7 +19,9 @@
     <p id="totalObservations"></p>
 
     {% include "components/pie_chart.html" with id="pie_chart" chart_data=data%}
-    {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true'%}  
+    {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true'%}
+
+    {% include "components/regression_table.html" with id="supply_regression" table_data=data %}
     
 </div>
 
