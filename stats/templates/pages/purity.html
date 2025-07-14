@@ -23,6 +23,9 @@
     {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data%} 
     {% include "components/line_chart.html" with id="area_chart" chart_data=data is_stacked='false'%}  
     
+    {% if regression_data %}
+        {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
+    {% endif %}
 </div>
 
 {% endblock %}

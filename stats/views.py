@@ -48,11 +48,9 @@ def supply_view(request):
   }
 
   data = runScript("all/pie_chart_supply_all_molecules", args)
-  data_reg = runScript("cocaine/regression_purity_supply_cocaine", args)
   
   return render(request, 'pages/supply.html', { 
       'data' : data,
-      'regression_data' : data_reg,
   })
 
 def cocaine_view(request):
@@ -97,9 +95,11 @@ def purity_cocaine_view(request):
   }
 
   data = runScript("cocaine/histo_purity_cocaine", args)
+  data_reg = runScript("cocaine/regression_purity_supply_cocaine", args)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'regression_data' : data_reg,
     'molecule_name': "Cocaine",
   })
 
