@@ -1,41 +1,21 @@
-library(DBI)
-library(RMySQL)
 library(dplyr)
 library(jsonlite)
 library(lubridate)
 
-user <- Sys.getenv("USER")
-pwd <- Sys.getenv("PASSWORD")
-host <- Sys.getenv("HOST")
-port <- as.integer(Sys.getenv("PORT"))
+source("scriptR/util/utilities.R")
 
-
-con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
-                 host = host,
-                 port = port,
-                 user = user,
-                 password = pwd)
-
-dbListTables(con)
-data <- dbReadTable(con, "resultats_analyse_cleaned")
-dbDisconnect(con)
-data = data %>% mutate(date=as.Date(date))
+data = load_data()
 ################################################################################
 # Selection de la fenêtre de temps et des familles #############################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
+args_list <- extract_args(args)
+outputPath <- args_list$outputPath
 
-date_debut <- as.Date(args[1])
-date_fin <- as.Date(args[2])
-data = data %>% 
- filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+data <- filter_data(data, args_list)
 
-if (length(args)>2){
-  familles_vec <- args[3:length(args)]  # vecteur de familles
-  data = data %>% filter(famille %in% familles_vec)
-}
+
 
 ################################################################################
 # Pie chart sur le produit #####################################################
@@ -132,15 +112,5 @@ json_obj <- list(
   count=N
 )
 
-# Créer les dossiers si nécessaire
-dir.create("output/all", recursive = TRUE, showWarnings = FALSE)
-
-write_json(json_obj, "output/all/pie_chart_all_molecules.json", pretty = TRUE, auto_unbox = FALSE)
-
-#ggplot(df_pie, aes(x = "", y = somme, fill = categorie_label)) +
-#  geom_col(width = 1) +
-#  coord_polar(theta = "y") +
-#  labs(title = paste0("Répartition des échantillons par produit (%), N=",nrow(data))) +
-#  theme_void() +
-#  guides(fill = guide_legend(reverse = TRUE))
-#ggsave("output/pie_chart_all_molecules.png")
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+save_ouput_as_json(json_obj, outputPath)

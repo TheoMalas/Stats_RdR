@@ -1,41 +1,24 @@
-library(DBI)
-library(RMySQL)
 library(dplyr)
 library(jsonlite)
 library(lubridate)
 
-user <- Sys.getenv("USER")
-pwd <- Sys.getenv("PASSWORD")
-host <- Sys.getenv("HOST")
-port <- as.integer(Sys.getenv("PORT"))
+source("scriptR/util/utilities.R")
 
-
-con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
-                 host = host,
-                 port = port,
-                 user = user,
-                 password = pwd)
-
-dbListTables(con)
-data <- dbReadTable(con, "resultats_analyse_cleaned")
-dbDisconnect(con)
-data = data %>% mutate(date=as.Date(date))
+data = load_data()
 data = data %>% filter(molecule_simp=="Cocaïne")
 
 black_list_percent=c("NQ","NQ ","")
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
-# Selection de la fenêtre de temps et des familles #############################
+# Selection de la fenêtre de temps #############################################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
+args_list <- extract_args(args)
+outputPath <- args_list$outputPath
 
-date_debut <- as.Date(args[1])
-date_fin <- as.Date(args[2])
-data = data %>%
-  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
+data <- filter_data(data, args_list)
 
 ################################################################################
 # Histogramme des produits de coupe ############################################
@@ -105,7 +88,7 @@ evol_coupe <- lapply(cols_coupe_prod, function(coupe_prod) {
   data_bimestre %>%
     group_by(date_bimestre) %>%
     summarise(
-      total_dates = n_distinct(date),
+      total_dates = n(),
       dates_present = sum(!!sym(coupe_prod) > 0, na.rm = TRUE),
       pourcentage_presence = 100 * dates_present / total_dates,
       coupe_prod = coupe_prod,
@@ -152,9 +135,6 @@ json_obj <- list(
   count = N
 )
 
-# Créer les dossiers si nécessaire
-dir.create("output/cocaine", recursive = TRUE, showWarnings = FALSE)
-
-# Export en JSON
-write_json(json_obj, "output/cocaine/diagram_coupe_cocaine.json", pretty = TRUE, auto_unbox = FALSE)
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+save_ouput_as_json(json_obj, outputPath)
 

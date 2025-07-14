@@ -1,37 +1,20 @@
-library(DBI)
-library(RMySQL)
 library(dplyr)
 library(jsonlite)
-library(lubridate)
 
-user <- Sys.getenv("USER")
-pwd <- Sys.getenv("PASSWORD")
-host <- Sys.getenv("HOST")
-port <- as.integer(Sys.getenv("PORT"))
+source("scriptR/util/utilities.R")
 
-
-con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
-                 host = host,
-                 port = port,
-                 user = user,
-                 password = pwd)
-
-dbListTables(con)
-data <- dbReadTable(con, "resultats_analyse_cleaned")
-dbDisconnect(con)
-data = data %>% filter(molecule_simp=="MDMA") %>% mutate(date=as.Date(date)) 
+data = load_data()
+data = data %>% filter(molecule_simp=="MDMA")
 ################################################################################
-# Selection de la fenêtre de temps et des familles #############################
+# Selection de la fenêtre de temps #############################################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
+args_list <- extract_args(args)
+outputPath <- args_list$outputPath
+Delta <- args_list$Delta
 
-date_debut <- as.Date(args[1])
-date_fin <- as.Date(args[2])
-data = data %>%
-   filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
-
+data <- filter_data(data, args_list)
 
 ################################################################################
 # Histogramme des dosages de comprimés #########################################
@@ -90,8 +73,6 @@ data_histo <- data_comprime %>%
 # Evolution moyenne et variance ################################################
 ################################################################################
 
-Delta=15
-
 data_mean_lis <- data_comprime %>%
   arrange(date) %>%
   mutate(moyenne_glissante = sapply(date, function(d) {
@@ -122,6 +103,5 @@ json_obj <- list(
 )
 
 
-# Créer les dossiers si nécessaire
-dir.create("output/mdma", recursive = TRUE, showWarnings = FALSE)
-write_json(json_obj, "output/mdma/histo_comprime_mdma.json", pretty = TRUE, auto_unbox = TRUE)
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+save_ouput_as_json(json_obj, outputPath)
