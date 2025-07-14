@@ -14,12 +14,11 @@ data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcent
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
+args_list <- extract_args(args)
+outputPath <- args_list$outputPath
+Delta <- args_list$Delta
 
-data_delta_outputPath_list = filter_data(data,args)
-
-data=data_delta_outputPath_list[[1]]
-Delta=data_delta_outputPath_list[[2]]
-outputPath=data_delta_outputPath_list[[3]]
+data <- filter_data(data, args_list)
 ################################################################################
 # Histogramme des puretés ######################################################
 ################################################################################
@@ -53,4 +52,4 @@ json_obj <- list(
 )
 
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
-write_json_perso(json_obj, outputPath)
+save_ouput_as_json(json_obj, outputPath)

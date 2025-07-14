@@ -23,27 +23,42 @@ load_data <- function(){
   return(data)
 }
 
-filter_data <- function(data, args_string){
+extract_args <- function(args_string){
   args <- strsplit(args_string, " ")[[1]]
   args_list <- setNames(
     lapply(strsplit(args, "="), `[`, 2),
     sapply(strsplit(args, "="), `[`, 1)
   )
-  print(args_list)
-  # Extraction et conversion
+  # Extraction
   date_debut <- as.Date(args_list[["date_debut"]])
   date_fin   <- as.Date(args_list[["date_fin"]])
+  outputPath <- args_list[["outputPath"]]
+  if (!is.null(args_list[["familles_list"]])){
+  familles_vec <- strsplit(args_list[["familles_list"]],",")[[1]]}
+  else{familles_vec <- NULL}
+  if (!is.null(args_list[["Delta"]])){Delta=as.numeric(args_list[["Delta"]])}
+  else{Delta<- NULL}
+  return(list(
+    date_debut = date_debut,
+    date_fin = date_fin,
+    outputPath = outputPath,
+    familles_list = familles_vec,
+    Delta = Delta
+  ))
+  
+}
+filter_data <- function(data, args_list){
+  date_debut <- args_list$date_debut
+  date_fin   <- args_list$date_fin
+  familles_vec <- args_list$familles_list
+  
+  # Filtre
   data = data %>% 
     filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
-
-  if (!is.null(args_list[["familles_list"]])){
-  familles_vec <- strsplit(args_list[["familles_list"]],",")[[1]]
   if (length(familles_vec)>1){data = data %>% filter(famille %in% familles_vec)}
   if (length(familles_vec)==1){if(!is.na(familles_vec)){data = data %>% filter(famille %in% familles_vec)}}
-  }
-  outputPath <- args_list[["outputPath"]]
-  if (!is.null(args_list[["Delta"]])){return(list(data,as.numeric(args_list[["Delta"]]),outputPath))}
-  return(list(data, outputPath))
+
+  return(data)
 }
 
 histo_data <- function(data){
@@ -68,23 +83,43 @@ histo_data <- function(data){
 datasets_list_evol <- function(data, Delta){
   data_lis <- data %>%
     arrange(date) %>%
-    mutate(moyenne_glissante = sapply(date, function(d) {
-      mean(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
-    }))%>%
-    filter(date >= min(date) + Delta, date <= max(date) - Delta) %>% 
-    select(date,moyenne_glissante)
+    mutate(
+      moyenne_glissante = sapply(date, function(d) {
+        mean(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+      }),
+      ecart_type_glissant = sapply(date, function(d) {
+        sd(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+      }),
+      borne_sup = moyenne_glissante + ecart_type_glissant,
+      borne_inf = moyenne_glissante - ecart_type_glissant) %>%
+    filter(date >= min(date) + Delta, date <= max(date) - Delta) %>%
+    select(date, moyenne_glissante, borne_sup, borne_inf)
+
   
+
   # Génération de la liste des datasets
-  datasets_list <-list(list(
-    label = "",
+  datasets_list <-list(
+    list(
+    label = "moyenne glissante",
     data = data_lis$moyenne_glissante,
     fill = "false"
-  ))
+    ),
+    list(
+    label = "borne sup",
+    data = data_lis$borne_sup,
+    fill = "false"
+    ),
+    list(
+    label = "borne inf",
+    data = data_lis$borne_inf,
+    fill = "false"
+    )
+  )
   labels_line = as.character(data_lis$date)
   return(list(labels_line,datasets_list))
 }
 
-write_json_perso <- function(json_obj,outputPath){
+save_ouput_as_json <- function(json_obj,outputPath){
   
   json_folder<-sub("/[^/]*$", "", outputPath)
   dir.create(json_folder, recursive = TRUE, showWarnings = FALSE)

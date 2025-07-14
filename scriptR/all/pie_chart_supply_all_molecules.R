@@ -10,9 +10,10 @@ data = load_data()
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
-data_outputPath_list = filter_data(data,args)
-data=data_outputPath_list[[1]]
-outputPath=data_outputPath_list[[2]]
+args_list <- extract_args(args)
+outputPath <- args_list$outputPath
+
+data <- filter_data(data, args_list)
 
 ################################################################################
 # Pie chart sur mode d'approvisionnement #######################################
@@ -107,4 +108,4 @@ json_obj <- list(
 )
 
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
-write_json_perso(json_obj, outputPath)
+save_ouput_as_json(json_obj, outputPath)
