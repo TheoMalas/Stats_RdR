@@ -38,12 +38,15 @@ extract_args <- function(args_string){
   else{familles_vec <- NULL}
   if (!is.null(args_list[["Delta"]])){Delta=as.numeric(args_list[["Delta"]])}
   else{Delta<- NULL}
+  if (!is.null(args_list[["mode"]])){mode=args_list[["mode"]]}
+  else{mode<- NULL}
   return(list(
     date_debut = date_debut,
     date_fin = date_fin,
     outputPath = outputPath,
     familles_list = familles_vec,
-    Delta = Delta
+    Delta = Delta,
+    mode = mode
   ))
   
 }
@@ -80,28 +83,45 @@ histo_data <- function(data){
   return(data_histo)
 }
 
-datasets_list_evol <- function(data, Delta){
-  data_lis <- data %>%
-    arrange(date) %>%
-    mutate(
-      moyenne_glissante = sapply(date, function(d) {
-        mean(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
-      }),
-      ecart_type_glissant = sapply(date, function(d) {
-        sd(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
-      }),
-      borne_sup = moyenne_glissante + ecart_type_glissant,
-      borne_inf = moyenne_glissante - ecart_type_glissant) %>%
-    filter(date >= min(date) + Delta, date <= max(date) - Delta) %>%
-    select(date, moyenne_glissante, borne_sup, borne_inf)
-
-  
+datasets_list_evol <- function(data, Delta, mode="moyenne"){
+  if (mode == "moyenne"){
+    data_lis <- data %>%
+      arrange(date) %>%
+      mutate(
+        main = sapply(date, function(d) {
+          mean(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+        }),
+        ecart_type_glissant = sapply(date, function(d) {
+          sd(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+        }),
+        borne_sup = main + ecart_type_glissant,
+        borne_inf = main - ecart_type_glissant) %>%
+      filter(date >= min(date) + Delta, date <= max(date) - Delta) %>%
+      select(date, main, borne_sup, borne_inf)
+    data_lis <- data_lis %>% mutate(borne_inf = ifelse(borne_inf < 0, 0, borne_inf), borne_sup = ifelse(borne_sup > 100, 100, borne_sup))
+  }
+  if (mode == "médiane"){
+    data_lis <- data %>%
+      arrange(date) %>%
+      mutate(
+        main = sapply(date, function(d) {
+          median(pourcentage[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+        }),
+        borne_inf = sapply(date, function(d) {
+          quantile(pourcentage[date >= d - Delta & date <= d + Delta], 0.25, na.rm = TRUE)
+       }),
+        borne_sup = sapply(date, function(d) {
+          quantile(pourcentage[date >= d - Delta & date <= d + Delta], 0.75, na.rm = TRUE)
+       })) %>%
+      filter(date >= min(date) + Delta, date <= max(date) - Delta) %>%
+      select(date, main, borne_sup, borne_inf)
+  }
 
   # Génération de la liste des datasets
   datasets_list <-list(
     list(
-    label = "moyenne glissante",
-    data = data_lis$moyenne_glissante,
+    label = paste(mode, "glissante"),
+    data = data_lis$main,
     fill = "false"
     ),
     list(

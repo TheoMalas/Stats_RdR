@@ -13,6 +13,7 @@ args <- commandArgs(trailingOnly = TRUE)
 args_list <- extract_args(args)
 outputPath <- args_list$outputPath
 Delta <- args_list$Delta
+mode <- args_list$mode
 
 data <- filter_data(data, args_list)
 

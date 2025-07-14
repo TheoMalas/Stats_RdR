@@ -17,6 +17,7 @@ args <- commandArgs(trailingOnly = TRUE)
 args_list <- extract_args(args)
 outputPath <- args_list$outputPath
 Delta <- args_list$Delta
+mode <- args_list$mode
 
 data <- filter_data(data, args_list)
 ################################################################################
@@ -33,7 +34,7 @@ ratio_base_sel = 237.725/(237.725+35.453)
 ################################################################################
 
 # Génération de la liste des datasets
-list_evol <- datasets_list_evol(data, Delta)
+list_evol <- datasets_list_evol(data, Delta, mode)
 labels_line <- list_evol[[1]]
 datasets_list <- list_evol[[2]]
 

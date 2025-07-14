@@ -11,9 +11,7 @@
 
 {% block rightPanel %} 
 
-<div class="card-header bg-dark text-white">
-    <h5 class="mb-0">Aperçu sur le Canvas</h5>
-</div>
+
 <div class="card-body text-center">
 
     <p id="totalObservations">
@@ -42,7 +40,7 @@
             {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
         </div>
         <div class="tab-pane fade" id="chart2" role="tabpanel" aria-labelledby="chart2-tab">
-            {% include "components/line_chart.html" with id="line_2" chart_data=data is_stacked='false' %}
+            {% include "components/line_chart.html" with id="line_2" chart_data=data_2 is_stacked='false' %}
         </div>
     </div>
     

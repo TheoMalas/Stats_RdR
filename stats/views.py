@@ -88,17 +88,27 @@ def purity_cocaine_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
+  data = runScript("cocaine/histo_purity_cocaine", args_1)
 
-  data = runScript("cocaine/histo_purity_cocaine", args)
-  data_reg = runScript("cocaine/regression_purity_supply_cocaine", args)
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("cocaine/histo_purity_cocaine", args_2)
+
+  data_reg = runScript("cocaine/regression_purity_supply_cocaine", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Cocaïne",
   })
@@ -108,17 +118,27 @@ def purity_mdma_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
+  data = runScript("mdma/histo_purity_mdma", args_1)
+  
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("mdma/histo_purity_mdma", args_2)
 
-  data = runScript("mdma/histo_purity_mdma", args)
-  data_reg = runScript("mdma/regression_purity_supply_mdma", args)
+  data_reg = runScript("mdma/regression_purity_supply_mdma", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "MDMA",
   })
@@ -128,17 +148,26 @@ def purity_heroine_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
+  data = runScript("heroine/histo_purity_heroine", args_1)
 
-  data = runScript("heroine/histo_purity_heroine", args)
-  data_reg = runScript("heroine/regression_purity_supply_heroine", args)
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("heroine/histo_purity_heroine", args_2)
+  data_reg = runScript("heroine/regression_purity_supply_heroine", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Héroïne",
   })
@@ -148,17 +177,27 @@ def purity_3mmc_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
 
-  data = runScript("3mmc/histo_purity_3mmc", args)
-  data_reg = runScript("3mmc/regression_purity_supply_3mmc", args)
+  data = runScript("3mmc/histo_purity_3mmc", args_1)
+
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("3mmc/histo_purity_3mmc", args_2)
+  data_reg = runScript("3mmc/regression_purity_supply_3mmc", args_2)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "3-MMC",
   })
@@ -168,17 +207,27 @@ def purity_ketamine_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
-  
-  data = runScript("ketamine/histo_purity_ketamine", args)
-  data_reg = runScript("ketamine/regression_purity_supply_ketamine", args)
+  data = runScript("ketamine/histo_purity_ketamine", args_1)
+
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("ketamine/histo_purity_ketamine", args_2)
+
+  data_reg = runScript("ketamine/regression_purity_supply_ketamine", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Kétamine",
   })
@@ -189,17 +238,28 @@ def purity_speed_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
 
-  data = runScript("speed/histo_purity_speed", args)
-  data_reg = runScript("speed/regression_purity_supply_speed", args)
+  data = runScript("speed/histo_purity_speed", args_1)
+
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+
+  data_2 = runScript("speed/histo_purity_speed", args_2)
+  data_reg = runScript("speed/regression_purity_supply_speed", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Speed",
   })  
@@ -210,17 +270,28 @@ def purity_cannabis_THC_resine_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
+  data = runScript("cannabis/histo_purity_cannabis_THC_resine", args_1)
 
-  data = runScript("cannabis/histo_purity_cannabis_THC_resine", args)
-  data_reg = runScript("cannabis/regression_purity_supply_THC_resine", args)
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("cannabis/histo_purity_cannabis_THC_resine", args_2)
+
+  
+  data_reg = runScript("cannabis/regression_purity_supply_THC_resine", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Cannabis Résine",
   })  
@@ -231,17 +302,28 @@ def purity_cannabis_THC_herbe_view(request):
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
   
-  args = {
+  args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
+    "mode" : "moyenne"
   }
+  data = runScript("cannabis/histo_purity_cannabis_THC_herbe", args_1)
 
-  data = runScript("cannabis/histo_purity_cannabis_THC_herbe", args)
-  data_reg = runScript("cannabis/regression_purity_supply_THC_herbe", args)
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+  data_2 = runScript("cannabis/histo_purity_cannabis_THC_herbe", args_2)
+
+  
+  data_reg = runScript("cannabis/regression_purity_supply_THC_herbe", args_1)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Cannabis Herbe",
   })
