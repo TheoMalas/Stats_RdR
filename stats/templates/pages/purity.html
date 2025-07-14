@@ -21,11 +21,49 @@
     </p>
 
     {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data%} 
-    {% include "components/line_chart.html" with id="area_chart" chart_data=data is_stacked='false'%}  
+    
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="chartTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="chart1-tab" data-bs-toggle="tab" data-bs-target="#chart1" type="button" role="tab" aria-controls="chart1" aria-selected="true">
+                Moyenne et écarts type
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="chart2-tab" data-bs-toggle="tab" data-bs-target="#chart2" type="button" role="tab" aria-controls="chart2" aria-selected="false">
+                Médianes et quartiles
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" id="chart1" role="tabpanel" aria-labelledby="chart1-tab">
+            {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
+        </div>
+        <div class="tab-pane fade" id="chart2" role="tabpanel" aria-labelledby="chart2-tab">
+            {% include "components/line_chart.html" with id="line_2" chart_data=data is_stacked='false' %}
+        </div>
+    </div>
     
     {% if regression_data %}
         {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
     {% endif %}
 </div>
+
+
+<script>
+    document.addEventListener('shown.bs.tab', function (event) {
+        // Delay to ensure DOM visibility
+        setTimeout(() => {
+            if (window.line_1_chart && event.target.id === 'chart1-tab') {
+                window.line_1_chart.resize();
+            } else if (window.line_2_chart && event.target.id === 'chart2-tab') {
+                window.line_2_chart.resize();
+            }
+        }, 100);
+    });
+</script>
+
 
 {% endblock %}

@@ -8,7 +8,7 @@
     (function() {
 
         const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
-        new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
+        window["{{ id|safe }}_chart"] = new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
             type: 'line',
             data: {
                 labels: data.labels_line,
@@ -37,7 +37,8 @@
                     legend: {
                         display: false
                     }
-                }
+                },
+                pointStyle: false,
             }
         });
 
