@@ -16,7 +16,9 @@
 </div>
 <div class="card-body text-center">
 
-    <p id="totalObservations"></p>
+    <p id="totalObservations">
+        Nombre total d'observations : {{data.count}}
+    </p>
 
     {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data%} 
     {% include "components/line_chart.html" with id="area_chart" chart_data=data%}  
