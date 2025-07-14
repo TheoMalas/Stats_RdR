@@ -1,42 +1,23 @@
-library(DBI)
-library(RMySQL)
 library(dplyr)
-library(stargazer)
 library(jsonlite)
 
-user <- Sys.getenv("USER")
-pwd <- Sys.getenv("PASSWORD")
-host <- Sys.getenv("HOST")
-port <- as.integer(Sys.getenv("PORT"))
+source("scriptR/util/utilities.R")
 
-
-con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
-                 host = host,
-                 port = port,
-                 user = user,
-                 password = pwd)
-
-dbListTables(con)
-data <- dbReadTable(con, "resultats_analyse_cleaned")
-dbDisconnect(con)
-data = data %>% mutate(date=as.Date(date))
+data = load_data()
 data = data %>% filter(molecule_simp=="Cocaïne")
 
 black_list_percent=c("NQ","NQ ","")
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
-# Selection de la fenêtre de temps et des familles #############################
+# Selection de la fenêtre de temps #############################################
 ################################################################################
 
 args <- commandArgs(trailingOnly = TRUE)
+args_list <- extract_args(args)
+outputPath <- args_list$outputPath
 
-date_debut <- as.Date(args[1])
-date_fin <- as.Date(args[2])
-data = data %>% 
-  filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
-
+data <- filter_data(data, args_list)
 
 ################################################################################
 # Régression pour la pureté moyenne en fonction du type de fournisseur #########
@@ -61,4 +42,36 @@ data_reg=data %>%
   mutate(provenance = factor(provenance, levels = rev(unlist(df_pie %>% select(provenance)))))
 
 model = lm(pourcentage ~ provenance, data=data_reg)
-stargazer(model, type="text")
+summar <- summary(model)
+r_squared <- summar$r.squared
+nb_obs <- length(summar$residuals)
+
+res <- summar$coefficients
+var_names <- rownames(res)            # noms des variables (Intercept, poids)
+coefs <- res[, "Estimate"]            # coefficients
+std_errors <- res[, "Std. Error"]     # erreurs standards
+
+stars <- cut(res[, "Pr(>|t|)"],
+             breaks = c(-Inf, 0.01, 0.05, 0.1, Inf),
+             labels = c("***", "**", "*", " "),
+             right = FALSE)
+names(stars) <- rownames(res)
+
+# Génération de la liste des datasets
+datasets_list <- lapply(var_names, function(var_names_i) {
+  list(
+    "label" = ifelse(var_names_i == "(Intercept)", "Constante (Deep web / dark web)", sub("provenance", "", var_names_i)),
+    "coefficient" = paste(unname(coefs[var_names_i]), unname(stars[var_names_i]),sep=""),
+    "standard_error" = unname(std_errors[var_names_i])
+  )
+})
+
+#Création de l'objet JSON
+json_obj <- list(
+  data = datasets_list,
+  nb_obs = nb_obs,
+  r_squared = r_squared
+)
+
+# Créer le fichier JSON (on vérifie si les dossiers parents existent)
+save_ouput_as_json(json_obj, outputPath)
