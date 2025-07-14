@@ -7,3 +7,6 @@ __pycache__/
 .Rhistory
 .DS_Store
 .RData
+db.sqlite3
+.gitignore
+.gitignore
