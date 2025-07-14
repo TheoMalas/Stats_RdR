@@ -51,6 +51,19 @@ def supply_view(request):
 
   return render(request, 'pages/supply.html', { 
       'data' : data,
+      'regression_data' : {
+        "data": [
+          {"variable": "Dealer de rue", "coefficient": "-1.489", "standard_error": "2.116"},
+          {"variable": "Livreur", "coefficient": "-1.548", "standard_error": "2.259"},
+          {"variable": "Réseaux sociaux en ligne", "coefficient": "-5.771**", "standard_error": "2.757"},
+          {"variable": "Dealer en soirée", "coefficient": "-2.568", "standard_error": "3.591"},
+          {"variable": "Don entre partenaire de conso", "coefficient": "2.071", "standard_error": "4.073"},
+          {"variable": "Boutique en ligne", "coefficient": "-7.188", "standard_error": "9.510"},
+          {"variable": "Constante (Deep Web / Dark Web)", "coefficient": "73.605***", "standard_error": "1.349"}
+        ],
+        "nb_observation": 418,
+        "r_squared": 0.014
+      }
   })
 
 def cocaine_view(request):
