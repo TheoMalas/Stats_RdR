@@ -4,9 +4,9 @@ library(jsonlite)
 source("scriptR/util/utilities.R")
 
 data = load_data()
-data = data %>% filter(molecule_simp=="Cocaïne")
+data = data %>% filter(molecule_simp=="Kétamine")
 
-black_list_percent=c("NQ","NQ ","")
+black_list_percent=c("NQ","deschlorokétamine","2-FDCK","")
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################

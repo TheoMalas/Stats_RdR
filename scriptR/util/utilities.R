@@ -119,6 +119,63 @@ datasets_list_evol <- function(data, Delta){
   return(list(labels_line,datasets_list))
 }
 
+
+regression_json <- function(data){
+  black_list=c("Produits de coupe et commentaires :","Revendeur habituel","Revendeur occasionnel","Nous ne détectons rien par HPLC / CCM","")
+
+  data <- data %>%
+    filter(!provenance %in% black_list)
+
+  #df_pie <- data %>% 
+  #  group_by(provenance) %>%
+  #  summarise(somme = n()) %>%
+  #  mutate(
+  #    pourcent = somme / sum(somme) * 100,
+  #    categorie_label = paste0(provenance, " (", round(pourcent, 1), "%)")
+  #  ) %>%
+  #  arrange(somme) %>%
+  #  mutate(categorie_label = factor(categorie_label, levels = categorie_label))
+  order = c("Deep web / dark web", "Dealer de rue (four)", "Livreur", "Réseaux sociaux en ligne", "Dealer en soirée", "Don entre partenaire de conso", "Boutique en ligne")
+  data_reg=data %>%
+    mutate(provenance = factor(provenance, levels = unlist(order)))
+
+  model = lm(pourcentage ~ provenance, data=data_reg)
+  summar <- summary(model)
+  r_squared <- summar$r.squared
+  nb_obs <- length(summar$residuals)
+
+  res <- summar$coefficients
+  var_names <- rownames(res)            # noms des variables (Intercept, poids)
+  coefs <- res[, "Estimate"]            # coefficients
+  std_errors <- res[, "Std. Error"]     # erreurs standards
+
+  stars <- cut(res[, "Pr(>|t|)"],
+              breaks = c(-Inf, 0.01, 0.05, 0.1, Inf),
+              labels = c("***", "**", "*", " "),
+              right = FALSE)
+  names(stars) <- rownames(res)
+
+  # Génération de la liste des datasets
+  datasets_list <- lapply(var_names, function(var_names_i) {
+    list(
+      "label" = ifelse(var_names_i == "(Intercept)", "Constante (Deep web / dark web)", sub("provenance", "", var_names_i)),
+      "coefficient" = paste(unname(round(coefs[var_names_i],3)), unname(stars[var_names_i]),sep=""),
+      "standard_error" = unname(round(std_errors[var_names_i],3))
+    )
+  })
+
+  #Création de l'objet JSON
+  json_obj <- list(
+    data = datasets_list,
+    nb_obs = nb_obs,
+    r_squared = r_squared
+  )
+  return(json_obj)
+}
+
+
+
+
 save_ouput_as_json <- function(json_obj,outputPath, auto_unbox=FALSE){
   
   json_folder<-sub("/[^/]*$", "", outputPath)

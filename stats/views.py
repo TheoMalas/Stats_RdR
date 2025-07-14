@@ -100,7 +100,7 @@ def purity_cocaine_view(request):
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'regression_data' : data_reg,
-    'molecule_name': "Cocaine",
+    'molecule_name': "Cocaïne",
   })
 
 def purity_mdma_view(request):
@@ -115,9 +115,11 @@ def purity_mdma_view(request):
   }
 
   data = runScript("mdma/histo_purity_mdma", args)
+  data_reg = runScript("mdma/regression_purity_supply_mdma", args)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'regression_data' : data_reg,
     'molecule_name': "MDMA",
   })
 
@@ -133,10 +135,12 @@ def purity_heroine_view(request):
   }
 
   data = runScript("heroine/histo_purity_heroine", args)
-
+  data_reg = runScript("heroine/regression_purity_supply_heroine", args)
+  
   return render(request, 'pages/purity.html', { 
     'data' : data,
-    'molecule_name': "Héroine",
+    'regression_data' : data_reg,
+    'molecule_name': "Héroïne",
   })
 
 def purity_3mmc_view(request):
@@ -151,10 +155,12 @@ def purity_3mmc_view(request):
   }
 
   data = runScript("3mmc/histo_purity_3mmc", args)
-
+  data_reg = runScript("3mmc/regression_purity_supply_3mmc", args)
+  
   return render(request, 'pages/purity.html', { 
     'data' : data,
-    'molecule_name': "3MMC",
+    'regression_data' : data_reg,
+    'molecule_name': "3-MMC",
   })
 
 def purity_ketamine_view(request):
@@ -169,11 +175,14 @@ def purity_ketamine_view(request):
   }
   
   data = runScript("ketamine/histo_purity_ketamine", args)
+  data_reg = runScript("ketamine/regression_purity_supply_ketamine", args)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'regression_data' : data_reg,
     'molecule_name': "Kétamine",
   })
+  
 
 def purity_speed_view(request):
 
@@ -187,11 +196,14 @@ def purity_speed_view(request):
   }
 
   data = runScript("speed/histo_purity_speed", args)
+  data_reg = runScript("speed/regression_purity_supply_speed", args)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'regression_data' : data_reg,
     'molecule_name': "Speed",
-  })
+  })  
+  
 
 def purity_cannabis_THC_resine_view(request):
 
@@ -205,11 +217,14 @@ def purity_cannabis_THC_resine_view(request):
   }
 
   data = runScript("cannabis/histo_purity_cannabis_THC_resine", args)
+  data_reg = runScript("cannabis/regression_purity_supply_THC_resine", args)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
-    'molecule_name': "Cannabis Resine",
-  })
+    'regression_data' : data_reg,
+    'molecule_name': "Cannabis Résine",
+  })  
+  
 
 def purity_cannabis_THC_herbe_view(request):
 
@@ -223,9 +238,11 @@ def purity_cannabis_THC_herbe_view(request):
   }
 
   data = runScript("cannabis/histo_purity_cannabis_THC_herbe", args)
-
+  data_reg = runScript("cannabis/regression_purity_supply_THC_herbe", args)
+  
   return render(request, 'pages/purity.html', { 
     'data' : data,
+    'regression_data' : data_reg,
     'molecule_name': "Cannabis Herbe",
   })
 
