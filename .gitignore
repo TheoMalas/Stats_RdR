@@ -4,3 +4,9 @@ output/*
 nohup.out
 2025-06-06_resultats_analyse.sql
 __pycache__/
+.Rhistory
+.DS_Store
+.RData
+db.sqlite3
+.gitignore
+.gitignore
