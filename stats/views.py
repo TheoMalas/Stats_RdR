@@ -409,7 +409,7 @@ def cleanCache(request):
   return HttpResponse(status = 200)
 
 def get_dates(request):
-  default_end = datetime.today().strftime('%Y-%m-%d') #set to today
+  default_end = "2025-07-22" #datetime.today().strftime('%Y-%m-%d') #set a specific date
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
   date_fin = request.GET.get("date_fin", default_end)
