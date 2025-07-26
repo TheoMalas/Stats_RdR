@@ -1,0 +1,72 @@
+{% with "data_"|add:id as data_id %}
+  {{ map_data|json_script:data_id }}
+{% endwith %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<div id="{{ id|safe }}" style="width:800px; height:800px; background-color: #f4f4f4;"></div>
+
+<script>
+    (function() {
+        
+        const map = L.map("{{ id|safe }}",
+            {
+                center: [46.8, 2.5],
+                zoom: 6,
+                zoomControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                tap: false,
+                attributionControl: false
+            }
+        );
+
+        const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
+
+        // Dégradé de couleurs (vert clair → vert foncé)
+        function getColor(d) {
+        return d > 90 ? '#00441b' :
+                d > 70 ? '#238b45' :
+                d > 50 ? '#41ae76' :
+                d > 30 ? '#66c2a4' :
+                d > 10 ? '#99d8c9' :
+                        '#ccece6';
+        }
+
+        // Style par région
+        function style(feature) {
+        const value = data[feature.properties.nom] || 0;
+        return {
+            fillColor: getColor(value),
+            weight: 0.5,
+            opacity: 1,
+            color: '#ccc',
+            fillOpacity: 0.9
+        };
+        }
+
+        // Interactions (tooltip)
+        function onEachFeature(feature, layer) {
+        const value = data[feature.properties.nom] || 0;
+        layer.bindTooltip(`${feature.properties.nom} : ${value}`, {
+            permanent: false,
+            direction: 'center',
+            className: 'region-tooltip'
+        });
+        }
+
+        // Charger le GeoJSON des régions françaises
+        fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions-version-simplifiee.geojson')
+        .then(res => res.json())
+        .then(geojson => {
+            L.geoJSON(geojson, {
+            style: style,
+            onEachFeature: onEachFeature
+            }).addTo(map);
+        });
+    })();
+</script>

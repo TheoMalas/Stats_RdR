@@ -345,6 +345,26 @@ def histo_comprime_mdma_view(request):
     'data' : data,
   })
 
+def map_view(request):
+    
+  return render(request, 'pages/map.html', { 
+    'data' : {
+      "Île-de-France": 95,
+      "Occitanie": 80,
+      "Provence-Alpes-Côte d'Azur": 70,
+      "Auvergne-Rhône-Alpes": 60,
+      "Nouvelle-Aquitaine": 50,
+      "Grand Est": 40,
+      "Bretagne": 30,
+      "Normandie": 20,
+      "Hauts-de-France": 15,
+      "Pays de la Loire": 25,
+      "Centre-Val de Loire": 35,
+      "Bourgogne-Franche-Comté": 45,
+      "Corse": 10
+      },
+  })
+
 # BackEnd
 
 def obj_to_string(obj):
