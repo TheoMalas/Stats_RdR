@@ -26,20 +26,28 @@
         );
 
         const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
-
+        //console.log(Object.values(data)[1]);
         // Dégradé de couleurs (vert clair → vert foncé)
         function getColor(d) {
-        return d > 90 ? '#00441b' :
-                d > 70 ? '#238b45' :
-                d > 50 ? '#41ae76' :
-                d > 30 ? '#66c2a4' :
-                d > 10 ? '#99d8c9' :
-                        '#ccece6';
+            const values = Object.values(data);  // si data est un objet clé-valeur
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            
+            // Normaliser d entre 0 et 1
+            const t = (d - min) / (max - min);
+            console.log(min, max, t);
+            // Interpolation en HSL : du vert clair (120, 60%, 85%) à vert foncé (120, 100%, 25%)
+            const h = 120; // teinte pour le vert
+            const s = 60 + t * 40; // saturation de 60% à 100%
+            const l = 85 - t * 60; // luminosité de 85% à 25%
+
+            return `hsl(${h}, ${s}%, ${l}%)`;
         }
 
         // Style par région
         function style(feature) {
         const value = data[feature.properties.nom] || 0;
+        console.log(feature);
         return {
             fillColor: getColor(value),
             weight: 0.5,

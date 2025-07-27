@@ -365,6 +365,38 @@ def map_view(request):
       },
   })
 
+def carte_region_france_all_molecules_view(request):
+
+  date_debut, date_fin = get_dates(request)
+  familles_list = get_familles(request)
+
+  args = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "familles_list" : ",".join(familles_list),
+  }
+
+  data = runScript("all/carte_region_france_all_molecules", args)
+
+  return render(request, 'pages/map.html', { 
+    'data' : data,
+  })
+
+def purity_region_cocaine_view(request):
+
+  date_debut, date_fin = get_dates(request)
+
+  args = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin
+  }
+
+  data = runScript("cocaine/purity_region_cocaine", args)
+
+  return render(request, 'pages/map.html', { 
+    'data' : data,
+  })
+
 # BackEnd
 
 def obj_to_string(obj):
@@ -393,9 +425,9 @@ def runScript(scriptID, args):
   args["outputPath"] = outputPath
 
   # Check the cache
-  cachedData = basicCache(outputPath)
-  if cachedData != None:
-      return cachedData
+  #cachedData = basicCache(outputPath)
+  #if cachedData != None:
+  #    return cachedData
   
   cmd=["Rscript","scriptR/" + scriptID + ".R"] + [obj_to_string(args)]
 
