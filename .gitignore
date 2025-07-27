@@ -10,3 +10,6 @@ __pycache__/
 db.sqlite3
 .gitignore
 .gitignore
+departements_region_france.csv
+population_region_2025.csv
+test_comp_mdma.csv
