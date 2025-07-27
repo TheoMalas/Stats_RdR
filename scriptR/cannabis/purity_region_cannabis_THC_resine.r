@@ -4,11 +4,11 @@ library(jsonlite)
 source("scriptR/util/utilities.R")
 
 data = load_data()
-data = data %>% filter(molecule_simp=="Cocaïne")
+data = data %>% filter(molecule_simp=="Cannabis (THC/CBD)") %>% filter(forme=="Résine")
 
-data = data %>% mutate(pourcentage = sub(" ","",pourcentage))
-black_list_percent=c("NQ","","nq")
-data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
+data = data %>% mutate(pourcentage = ifelse(pourcentage=="THC 46, CBD 2%, CBG 7%, CBN <1%","THC 46%, CBD 2%, CBG 7%, CBN <1%",pourcentage))
+data = data %>% mutate(pourcentage = as.numeric(gsub(",", ".", sub(".*THC (.*?)\\%.*", "\\1", pourcentage))))
+data = data %>% filter(! is.na(pourcentage))
 
 ################################################################################
 # Selection de la fenêtre de temps #############################################

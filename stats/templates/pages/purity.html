@@ -47,6 +47,7 @@
     {% if regression_data %}
         {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
     {% endif %}
+    {% include "components/map.html" with id="map_chart" chart_data=map_data %}
 </div>
 
 

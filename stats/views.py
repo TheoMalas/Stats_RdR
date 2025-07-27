@@ -30,10 +30,12 @@ def molecules_view(request):
   
   all_molecules_data = runScript("all/pie_chart_all_molecules", args)    
   area_all_molecules_data = runScript("all/stacked_area_prop_all_molecules", args)
+  map_data = runScript("all/carte_region_france_all_molecules", args)
 
   return render(request, 'pages/all_molecules.html', { 
       'all_molecules_data': all_molecules_data,
       'area_all_molecules_data' : area_all_molecules_data,
+      'map_data' : map_data,
   })
 
 def supply_view(request):
@@ -105,12 +107,19 @@ def purity_cocaine_view(request):
   data_2 = runScript("cocaine/histo_purity_cocaine", args_2)
 
   data_reg = runScript("cocaine/regression_purity_supply_cocaine", args_1)
-  
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin
+  }
+  map_data = runScript("cocaine/purity_region_cocaine", args_3)
+
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "Cocaïne",
+    'map_data' : map_data,
   })
 
 def purity_mdma_view(request):
@@ -135,11 +144,18 @@ def purity_mdma_view(request):
   data_2 = runScript("mdma/histo_purity_mdma", args_2)
 
   data_reg = runScript("mdma/regression_purity_supply_mdma", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("mdma/purity_region_mdma", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
+    'map_data' : map_data,
     'molecule_name': "MDMA",
   })
 
@@ -164,11 +180,18 @@ def purity_heroine_view(request):
   }
   data_2 = runScript("heroine/histo_purity_heroine", args_2)
   data_reg = runScript("heroine/regression_purity_supply_heroine", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("heroine/purity_region_heroine", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
+    'map_data' : map_data,
     'molecule_name': "Héroïne",
   })
 
@@ -195,11 +218,18 @@ def purity_3mmc_view(request):
   data_2 = runScript("3mmc/histo_purity_3mmc", args_2)
   data_reg = runScript("3mmc/regression_purity_supply_3mmc", args_2)
   
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("3mmc/purity_region_3mmc", args_3)
+
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
     'molecule_name': "3-MMC",
+    'map_data' : map_data,
   })
 
 def purity_ketamine_view(request):
@@ -224,11 +254,18 @@ def purity_ketamine_view(request):
   data_2 = runScript("ketamine/histo_purity_ketamine", args_2)
 
   data_reg = runScript("ketamine/regression_purity_supply_ketamine", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("ketamine/purity_region_ketamine", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
+    'map_data' : map_data,
     'molecule_name': "Kétamine",
   })
   
@@ -256,11 +293,18 @@ def purity_speed_view(request):
 
   data_2 = runScript("speed/histo_purity_speed", args_2)
   data_reg = runScript("speed/regression_purity_supply_speed", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("speed/purity_region_speed", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
+    'map_data' : map_data,
     'molecule_name': "Speed",
   })  
   
@@ -285,14 +329,19 @@ def purity_cannabis_THC_resine_view(request):
     "mode" : "médiane"
   }
   data_2 = runScript("cannabis/histo_purity_cannabis_THC_resine", args_2)
-
-  
   data_reg = runScript("cannabis/regression_purity_supply_THC_resine", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("cannabis/purity_region_cannabis_THC_resine", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
+    'map_data' : map_data,
     'molecule_name': "Cannabis Résine",
   })  
   
@@ -317,14 +366,20 @@ def purity_cannabis_THC_herbe_view(request):
     "mode" : "médiane"
   }
   data_2 = runScript("cannabis/histo_purity_cannabis_THC_herbe", args_2)
-
   
   data_reg = runScript("cannabis/regression_purity_supply_THC_herbe", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("cannabis/purity_region_cannabis_THC_herbe", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : data,
     'data_2' : data_2,
     'regression_data' : data_reg,
+    'map_data' : map_data,
     'molecule_name': "Cannabis Herbe",
   })
 
@@ -376,10 +431,10 @@ def carte_region_france_all_molecules_view(request):
     "familles_list" : ",".join(familles_list),
   }
 
-  data = runScript("all/carte_region_france_all_molecules", args)
+  map_data = runScript("all/carte_region_france_all_molecules", args)
 
   return render(request, 'pages/map.html', { 
-    'data' : data,
+    'data' : map_data,
   })
 
 def purity_region_cocaine_view(request):
@@ -425,9 +480,9 @@ def runScript(scriptID, args):
   args["outputPath"] = outputPath
 
   # Check the cache
-  #cachedData = basicCache(outputPath)
-  #if cachedData != None:
-  #    return cachedData
+  cachedData = basicCache(outputPath)
+  if cachedData != None:
+      return cachedData
   
   cmd=["Rscript","scriptR/" + scriptID + ".R"] + [obj_to_string(args)]
 

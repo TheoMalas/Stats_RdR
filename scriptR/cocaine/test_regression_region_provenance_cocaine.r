@@ -1,6 +1,6 @@
 library(dplyr)
 library(jsonlite)
-
+library(stargazer)
 source("scriptR/util/utilities.R")
 
 data = load_data()
@@ -14,11 +14,11 @@ data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcent
 # Selection de la fenêtre de temps #############################################
 ################################################################################
 
-args <- commandArgs(trailingOnly = TRUE)
-args_list <- extract_args(args)
-outputPath <- args_list$outputPath
+#args <- commandArgs(trailingOnly = TRUE)
+#args_list <- extract_args(args)
+#outputPath <- args_list$outputPath
 
-data <- filter_data(data, args_list)
+#data <- filter_data(data, args_list)
 
 ################################################################################
 # Pureté par région ############################################################
@@ -29,19 +29,15 @@ data_dep_region = read.csv("departements-region-france.csv")
 data <- data %>%
     mutate(departement = ifelse(nchar(departement)==1, paste0("0", departement), departement)) # nolint
 
-data_sum_reg <- left_join(
+data_reg <- left_join(
   data,
   data_dep_region,
   by = c("departement" = "code_departement")
-)%>%
-group_by(nom_region) %>%
-summarise(moyenne = mean(pourcentage, na.rm = TRUE))
+)
 
-################################################################################
-# Export en JSON ###############################################################
-################################################################################
-
-json_obj <- as.list(setNames(data_sum_reg$moyenne, data_sum_reg$nom_region))
-
-# Créer le fichier JSON (on vérifie si les dossiers parents existent)
-save_ouput_as_json(json_obj, outputPath)
+model <- lm(pourcentage ~ nom_region + provenance + provenance * nom_region, data = data_reg)
+summary(model)
+stargazer(model, type = "text", title = "Regression of Cocaine Purity by Region and Provenance",
+          dep.var.labels = "Cocaine Purity (%)",
+          covariate.labels = c("Region", "Provenance", "Region * Provenance"),
+          out = "output/regression_region_provenance_cocaine.txt")
