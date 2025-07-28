@@ -1,13 +1,13 @@
 library(dplyr)
 library(jsonlite)
-library(stargazer)
+
 source("scriptR/util/utilities.R")
 
 data = load_data()
-data = data %>% filter(molecule_simp=="Cocaïne")
+data = data %>% filter(molecule_simp=="Héroïne")
 
-data = data %>% mutate(pourcentage = sub(" ","",pourcentage))
-black_list_percent=c("NQ","","nq")
+black_list_percent=c("NQ")
+data = data %>% mutate(pourcentage = gsub(",", ".", sub(".*?(\\d+[\\.,]?\\d*)%.*", "\\1", pourcentage)))
 data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
@@ -40,4 +40,4 @@ summary(model)
 stargazer(model, type = "text", title = "Regression of Cocaine Purity by Region and Provenance",
           dep.var.labels = "Cocaine Purity (%)",
           covariate.labels = c("Region", "Provenance", "Region * Provenance"),
-          out = "output/regression_region_provenance_cocaine.txt")
+          out = "output/regression_region_provenance_heroine.txt")
