@@ -23,7 +23,7 @@ port <- as.integer(Sys.getenv("PORT"))
 
 
 con <- dbConnect(RMySQL::MySQL(),
-                 dbname = "db_psycho_test",
+                 dbname = "db_psycho_july_2025",
                  host = host,
                  port = port,
                  user = user,
