@@ -9,6 +9,5 @@ __pycache__/
 .RData
 db.sqlite3
 .gitignore
-.gitignore
 test_comp_mdma.csv
 2025-07-22_resultats_analyse.sql

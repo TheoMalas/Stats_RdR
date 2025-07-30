@@ -13,13 +13,20 @@
 
 
 <div class="card-body text-center">
-
+    <h2>Cette page présente une synthèse sur la pureté de la molécule considérée</h2>
     <p id="totalObservations">
         Nombre total d'observations : {{data.count}}
     </p>
 
+    <p>Commençons par regarder l'histogramme de la pureté des échantillons analysés.</p>
     {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data%} 
     
+    <p>
+        Jetons ensuite un coup d'œil à l'évolution temporelle de la pureté. Deux choix s'offrent à vous, vous pouvez soit visualiser
+        l'évolution de la moyenne et de l'écart-type de la distribution des échantillons, soit l'évolution de la médiane,
+        ainsi que le premier et troisième quartile. Chacune des grandeurs est calculées sur une fenêtre glissante de Δ
+        jours autour de chaque échantillon reçu.
+    </p>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="chartTabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -37,16 +44,39 @@
     <!-- Tab panes -->
     <div class="tab-content mt-3">
         <div class="tab-pane fade show active" id="chart1" role="tabpanel" aria-labelledby="chart1-tab">
+            <p>La ligne centrale présente la moyenne de la pureté moyennée, la ligne inférieure correspond à la moyenne -
+                1 écart-type et la ligne supérieure à la moyenne + 1 écart-type.</p>
             {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
         </div>
         <div class="tab-pane fade" id="chart2" role="tabpanel" aria-labelledby="chart2-tab">
+            <p>La ligne centrale présente la médiane, la ligne inférieure correspond au premier quartile et la
+                ligne supérieure au troisième quartile.</p>
             {% include "components/line_chart.html" with id="line_2" chart_data=data_2 is_stacked='false' %}
         </div>
     </div>
-    
+    <p>
+        Intéressons-nous ensuite à la dépendance de la pureté au mode d'approvisionnement. Pour cela, nous régressons
+        la pureté sur le mode d'approvisionnement. Pour ce faire, on choisi le mode d'approvisionnement privilégié (Deep web / dark web)
+        et on regarde si l'écart à ce premier mode est statistiquement significatif. Cette significativité est symbolisée 
+        par les "*" dans la colonne écart. "***" si la probabilité que l'écart soit simplement dû au hasard est plus petite
+        que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%.
+        Pour plus d'information, voir 
+        <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">ici</a>.
+        On peut aussi, de façon plus approximative, comparer
+        l'erreur standard à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
+        on ne peut pas détecté si l'écart observé est dû au hasard ou non.
+        Enfin, nous présentons aussi le coefficient R² qui permet de quantifier à quel point le modèle de régression
+        permet d'expliquer les données observés. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
+        mieux il explique les données. 
+        Pour de plus amples informations, voir <a href="https://fr.wikipedia.org/wiki/Coefficient_de_d%C3%A9termination" target="_blank">ici</a>.
+    </p>
     {% if regression_data %}
         {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
     {% endif %}
+    <p>
+        Enfin, regardons la géographie de la pureté. Sur la carte suivante est présentée la pureté moyenne
+        par région.
+    </p>
     {% include "components/map.html" with id="map_chart" chart_data=map_data %}
 </div>
 

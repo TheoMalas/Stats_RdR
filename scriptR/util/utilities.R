@@ -175,10 +175,18 @@ regression_json <- function(data){
               right = FALSE)
   names(stars) <- rownames(res)
 
+  mean <- coefs[[1]]+coefs
+  
+  #Formating the Intercept for the table
+  mean[[1]] <- coefs[[1]]
+  coefs[[1]] <- NA
+  stars[[1]] <- " "
+  
   # Génération de la liste des datasets
   datasets_list <- lapply(var_names, function(var_names_i) {
     list(
-      "label" = ifelse(var_names_i == "(Intercept)", "Constante (Deep web / dark web)", sub("provenance", "", var_names_i)),
+      "label" = ifelse(var_names_i == "(Intercept)", "Deep web / dark web", sub("provenance", "", var_names_i)),
+      "mean" = unname(round(mean[var_names_i],3)),
       "coefficient" = paste(unname(round(coefs[var_names_i],3)), unname(stars[var_names_i]),sep=""),
       "standard_error" = unname(round(std_errors[var_names_i],3))
     )

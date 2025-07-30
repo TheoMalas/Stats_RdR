@@ -13,12 +13,17 @@
 
 
 <div class="card-body text-center">
-
+    <h2> Cette page présente une synthèse sur la répartitions des échantillons par molécules.</h2>
     <p id="totalObservations">
         Nombre total d'observations : {{data.count}}
     </p>
 
+    <p> Le premier diagramme présente la répartition des échantillons en fonction des différentes voies d'approvisionnement. </p>
     {% include "components/pie_chart.html" with id="pie_chart" chart_data=data%}
+    <p>
+        Le second graphique montre l'évolution temporelle de la proportion des échantillons pour chaque moyen
+        d'approvisionnement; les donées sont regroupées par bimestre.
+    </p>
     {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true'%}
     
 </div>

@@ -12,14 +12,21 @@
 {% block rightPanel %} 
 
 <div class="card-body text-center">
-
+    <h2> Cette page présente une synthèse sur la répartitions des échantillons par molécules.</h2>
     <p id="totalObservations">
         Nombre total d'observations : {{all_molecules_data.count}}
     </p>
-
+    
+    <p> Le premier diagramme présente la proportion des échantillons en fonction de la molécule supposée.</p>
     {% include "components/pie_chart.html" with id="pie_chart" chart_data=all_molecules_data%}
+    <p> 
+        Les deux graphiques suivants montrent l'évolution temporelle de la répartition des échantillons par molécules; les
+        données sont regroupées par bimestre.
+        Le premier présente l'évolution en nombre d'échantillon et le second l'évolution en proportion.
+    </p>
     {% include "components/area_stacked_chart.html" with id="area_chart_1" chart_data=all_molecules_data is_stacked='true' %}  
     {% include "components/area_stacked_chart.html" with id="area_chart_2" chart_data=area_all_molecules_data is_stacked='true'%}    
+    <p>La carte montre le nombre d'échantillons reçu en fonction de la région d'envoi.</p>
     {% include "components/map.html" with id="map_chart" chart_data=map_data %}    
 </div>
 

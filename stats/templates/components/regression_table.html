@@ -52,8 +52,9 @@
 <table id="{{ id|safe }}">
   <thead>
     <tr>
-      <th>Variable</th>
-      <th class="coef">Coefficient</th>
+      <th>Voie d'approvisionnement</th>
+      <th class="coef">Pureté moyenne</th>
+      <th class="coef"> Écart </th>
       <th class="coef">(Erreur standard)</th>
     </tr>
   </thead>
@@ -82,6 +83,11 @@
         const tdVar = document.createElement('td');
         tdVar.textContent = item.label;
         tr.appendChild(tdVar);
+
+        // Moyenne
+        const tdMean = document.createElement('td');
+        tdMean.textContent = item.mean;
+        tr.appendChild(tdMean);
 
         // Coefficient (avec éventuelles étoiles)
         const tdCoef = document.createElement('td');
