@@ -30,12 +30,21 @@ def molecules_view(request):
   
   all_molecules_data = runScript("all/pie_chart_all_molecules", args)    
   area_all_molecules_data = runScript("all/stacked_area_prop_all_molecules", args)
-  map_data = runScript("all/carte_region_france_all_molecules", args)
+
+  args["mode"] = "abs"
+
+  map_data_abs = runScript("all/carte_region_france_all_molecules", args)
+
+  args["mode"] = "prop"
+
+  map_data_prop = runScript("all/carte_region_france_all_molecules", args)
+
 
   return render(request, 'pages/all_molecules.html', { 
       'all_molecules_data': all_molecules_data,
       'area_all_molecules_data' : area_all_molecules_data,
-      'map_data' : map_data,
+      'map_data_abs' : map_data_abs,
+      'map_data_prop' : map_data_prop,
   })
 
 def supply_view(request):
@@ -420,22 +429,6 @@ def map_view(request):
       },
   })
 
-def carte_region_france_all_molecules_view(request):
-
-  date_debut, date_fin = get_dates(request)
-  familles_list = get_familles(request)
-
-  args = {
-    "date_debut" : date_debut,
-    "date_fin" : date_fin,
-    "familles_list" : ",".join(familles_list),
-  }
-
-  map_data = runScript("all/carte_region_france_all_molecules", args)
-
-  return render(request, 'pages/map.html', { 
-    'data' : map_data,
-  })
 
 def purity_region_cocaine_view(request):
 
