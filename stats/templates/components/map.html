@@ -2,9 +2,6 @@
   {{ chart_data|json_script:data_id }}
 {% endwith %}
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 <div id="{{ id|safe }}" style="width:800px; height:800px; background-color: #f4f4f4;"></div>
 
 <script>
@@ -26,35 +23,19 @@
         );
 
         const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
-        
-        // Dégradé de couleurs (vert clair → vert foncé)
-        function getColor(d) {
-            const values = Object.values(data);  // si data est un objet clé-valeur
-            const min = Math.min(...values);
-            const max = Math.max(...values);
-            
-            // Normaliser d entre 0 et 1
-            const t = (d - min) / (max - min);
-            
-            // Interpolation en HSL : du vert clair (120, 60%, 85%) à vert foncé (120, 100%, 25%)
-            const h = 120; // teinte pour le vert
-            const s = 60 + t * 40; // saturation de 60% à 100%
-            const l = 85 - t * 60; // luminosité de 85% à 25%
-
-            return `hsl(${h}, ${s}%, ${l}%)`;
-        }
+        const color_data = JSON.parse(`{{ color_data|safe }}`);
 
         // Style par région
         function style(feature) {
-        const value = data[feature.properties.nom] || 0;
-        
-        return {
-            fillColor: getColor(value),
-            weight: 0.5,
-            opacity: 1,
-            color: '#ccc',
-            fillOpacity: 0.9
-        };
+            const value = data[feature.properties.nom] || 0;
+            
+            return {
+                fillColor: color_data[feature.properties.nom] || '#fff',
+                weight: 0.5,
+                opacity: 1,
+                color: '#ccc',
+                fillOpacity: 0.9
+            };
         }
 
         // Interactions (tooltip)

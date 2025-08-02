@@ -32,19 +32,18 @@ def molecules_view(request):
   area_all_molecules_data = runScript("all/stacked_area_prop_all_molecules", args)
 
   args["mode"] = "abs"
-
   map_data_abs = runScript("all/carte_region_france_all_molecules", args)
 
   args["mode"] = "prop"
-
   map_data_prop = runScript("all/carte_region_france_all_molecules", args)
-
 
   return render(request, 'pages/all_molecules.html', { 
       'all_molecules_data': all_molecules_data,
       'area_all_molecules_data' : area_all_molecules_data,
       'map_data_abs' : map_data_abs,
+      'map_data_abs_color' : json.dumps(generate_color_map(map_data_abs, (120,60,85), (200,100,30))),
       'map_data_prop' : map_data_prop,
+      'map_data_prop_color' : json.dumps(generate_color_map(map_data_prop, (50,100,70), (0, 100, 40))),
   })
 
 def supply_view(request):
@@ -444,6 +443,30 @@ def purity_region_cocaine_view(request):
   return render(request, 'pages/map.html', { 
     'data' : data,
   })
+
+# Map Functions
+
+def generate_color_map(data, start_hsl=(120, 60, 85), end_hsl=(120, 100, 25)):
+    # Extraire la valeur scalaire depuis les listes
+    scalar_data = {k: v[0] for k, v in data.items()}
+
+    values = list(scalar_data.values())
+    min_val = min(values)
+    max_val = max(values)
+
+    color_map = {}
+
+    for key, value in scalar_data.items():
+        t = (value - min_val) / (max_val - min_val) if max_val != min_val else 0
+
+        # Interpolation HSL
+        h = start_hsl[0] + t * (end_hsl[0] - start_hsl[0])
+        s = start_hsl[1] + t * (end_hsl[1] - start_hsl[1])
+        l = start_hsl[2] + t * (end_hsl[2] - start_hsl[2])
+
+        color_map[key] = f"hsl({h:.0f}, {s:.1f}%, {l:.1f}%)"
+
+    return color_map
 
 # BackEnd
 
