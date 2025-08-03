@@ -69,7 +69,7 @@
 <script>
 (function() {
     
-    const data = JSON.parse(`{{ chart_data|safe }}`);
+    const data = JSON.parse(`{{ table_data|safe }}`);
     const tbody = document.querySelector(`#{{ id|safe }} tbody`);
 
     data.data.forEach(item => {
