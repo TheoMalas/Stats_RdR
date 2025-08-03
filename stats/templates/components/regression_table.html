@@ -45,10 +45,6 @@
     }
 </style>
 
-{% with "data_"|add:id as data_id %}
-  {{ table_data|json_script:data_id }}
-{% endwith %}
-
 <table id="{{ id|safe }}">
   <thead>
     <tr>
@@ -73,7 +69,7 @@
 <script>
 (function() {
     
-    const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
+    const data = JSON.parse(`{{ chart_data|safe }}`);
     const tbody = document.querySelector(`#{{ id|safe }} tbody`);
 
     data.data.forEach(item => {

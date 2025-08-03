@@ -38,11 +38,11 @@ def molecules_view(request):
   map_data_prop = runScript("all/carte_region_france_all_molecules", args)
 
   return render(request, 'pages/all_molecules.html', { 
-      'all_molecules_data': all_molecules_data,
-      'area_all_molecules_data' : area_all_molecules_data,
-      'map_data_abs' : map_data_abs,
+      'all_molecules_data': json.dumps(all_molecules_data),
+      'area_all_molecules_data' : json.dumps(area_all_molecules_data),
+      'map_data_abs' : json.dumps(map_data_abs),
       'map_data_abs_color' : json.dumps(generate_color_map(map_data_abs, (120,60,85), (200,100,30))),
-      'map_data_prop' : map_data_prop,
+      'map_data_prop' : json.dumps(map_data_prop),
       'map_data_prop_color' : json.dumps(generate_color_map(map_data_prop, (50,100,70), (0, 100, 40))),
   })
 
@@ -60,7 +60,7 @@ def supply_view(request):
   data = runScript("all/pie_chart_supply_all_molecules", args)
   
   return render(request, 'pages/supply.html', { 
-      'data' : data,
+      'data' : json.dumps(data),
   })
 
 def cocaine_view(request):
@@ -75,7 +75,7 @@ def cocaine_view(request):
   data = runScript("cocaine/diagram_coupe_cocaine", args)
 
   return render(request, 'pages/coupe.html', { 
-    'data' : data,
+    'data' : json.dumps(data),
   })
 
 def heroine_view(request):
@@ -90,7 +90,7 @@ def heroine_view(request):
   data = runScript("heroine/diagram_coupe_heroine", args)
   
   return render(request, 'pages/coupe.html', { 
-    'data' : data,
+    'data' : json.dumps(data),
   })
 
 def purity_cocaine_view(request):
@@ -123,11 +123,12 @@ def purity_cocaine_view(request):
   map_data = runScript("cocaine/purity_region_cocaine", args_3)
 
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
     'molecule_name': "Cocaïne",
-    'map_data' : map_data,
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
   })
 
 def purity_mdma_view(request):
@@ -160,10 +161,11 @@ def purity_mdma_view(request):
   map_data = runScript("mdma/purity_region_mdma", args_3)
   
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
-    'map_data' : map_data,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "MDMA",
   })
 
@@ -196,10 +198,11 @@ def purity_heroine_view(request):
   map_data = runScript("heroine/purity_region_heroine", args_3)
   
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
-    'map_data' : map_data,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Héroïne",
   })
 
@@ -233,11 +236,12 @@ def purity_3mmc_view(request):
   map_data = runScript("3mmc/purity_region_3mmc", args_3)
 
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
     'molecule_name': "3-MMC",
-    'map_data' : map_data,
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
   })
 
 def purity_ketamine_view(request):
@@ -270,10 +274,11 @@ def purity_ketamine_view(request):
   map_data = runScript("ketamine/purity_region_ketamine", args_3)
   
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
-    'map_data' : map_data,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Kétamine",
   })
   
@@ -309,10 +314,11 @@ def purity_speed_view(request):
   map_data = runScript("speed/purity_region_speed", args_3)
   
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
-    'map_data' : map_data,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Speed",
   })  
   
@@ -346,10 +352,11 @@ def purity_cannabis_THC_resine_view(request):
   map_data = runScript("cannabis/purity_region_cannabis_THC_resine", args_3)
   
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
-    'map_data' : map_data,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Cannabis Résine",
   })  
   
@@ -384,10 +391,11 @@ def purity_cannabis_THC_herbe_view(request):
   map_data = runScript("cannabis/purity_region_cannabis_THC_herbe", args_3)
   
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-    'data_2' : data_2,
-    'regression_data' : data_reg,
-    'map_data' : map_data,
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Cannabis Herbe",
   })
 
@@ -405,43 +413,7 @@ def histo_comprime_mdma_view(request):
   data = runScript("mdma/histo_comprime_mdma", args)
     
   return render(request, 'pages/purity.html', { 
-    'data' : data,
-  })
-
-def map_view(request):
-    
-  return render(request, 'pages/map.html', { 
-    'data' : {
-      "Île-de-France": 95,
-      "Occitanie": 80,
-      "Provence-Alpes-Côte d'Azur": 70,
-      "Auvergne-Rhône-Alpes": 60,
-      "Nouvelle-Aquitaine": 50,
-      "Grand Est": 40,
-      "Bretagne": 30,
-      "Normandie": 20,
-      "Hauts-de-France": 15,
-      "Pays de la Loire": 25,
-      "Centre-Val de Loire": 35,
-      "Bourgogne-Franche-Comté": 45,
-      "Corse": 10
-      },
-  })
-
-
-def purity_region_cocaine_view(request):
-
-  date_debut, date_fin = get_dates(request)
-
-  args = {
-    "date_debut" : date_debut,
-    "date_fin" : date_fin
-  }
-
-  data = runScript("cocaine/purity_region_cocaine", args)
-
-  return render(request, 'pages/map.html', { 
-    'data' : data,
+    'data' : json.dumps(data),
   })
 
 # Map Functions

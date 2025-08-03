@@ -1,7 +1,3 @@
-{% with "data_"|add:id as data_id %}
-  {{ chart_data|json_script:data_id }}
-{% endwith %}
-
 <div id="{{ id|safe }}" style="width:800px; height:800px; background-color: #f4f4f4;"></div>
 
 <script>
@@ -22,7 +18,7 @@
             }
         );
 
-        const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
+        const data = JSON.parse(`{{ chart_data|safe }}`);
         const color_data = JSON.parse(`{{ color_data|safe }}`);
 
         // Style par région
