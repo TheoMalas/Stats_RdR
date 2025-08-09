@@ -32,7 +32,9 @@
 
     <p>La carte montre le nombre d'échantillons reçus en fonction de la région d'envoi par million d'habitants.</p>
     {% include "components/map.html" with id="map_chart_prop" chart_data=map_data_prop color_data=map_data_prop_color %}
-  
+    
+    <p>Dans un autre temps, on peut s'intéresser à la proportion des échantillons envoyés après une première consommation.</p>
+    {% include "components/pie_chart.html" with id="pie_chart_conso" chart_data=conso_all_molecules_data%}
 </div>
 
 {% endblock %}
