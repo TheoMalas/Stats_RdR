@@ -94,5 +94,13 @@
     });
 </script>
 
+{% if molecule_name == "Héroïne" %}
+        <p>Ensuite, on peut se demander si les échantillons envoyés après une première consommation
+            par les personnes utilisatrice de drogues contiennent une pureté plus faible. Alors qu'on ne remarque
+            aucune variation significative pour les autres drogues entre les échantillons déjà consommés ou pas,
+            pour l'héroïne, l'écart est significatif.    
+        </p>
+        {% include "components/regression_table.html" with id="conso_regression" table_data=regression_data_consommation %}
+    {% endif %}
 
 {% endblock %}
