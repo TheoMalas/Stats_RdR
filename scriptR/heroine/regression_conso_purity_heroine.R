@@ -1,6 +1,5 @@
 library(dplyr)
 library(jsonlite)
-library(fixest)
 
 source("scriptR/util/utilities.R")
 
