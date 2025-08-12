@@ -1,106 +1,152 @@
 {% extends "base.html" %}
 
-{% block title %} {{molecule_name}} {% endblock %}
-{% block centerText %} Statistique sur la pureté de {{molecule_name}} {% endblock %}
+{% block title %} {{ molecule_name }} {% endblock %}
+{% block centerText %} Statistiques sur la pureté de {{ molecule_name }} {% endblock %}
 
-{% block leftPanel %} 
+{% block body %}
 
-{% include "components/form_date.html" %}
-
-{% endblock %}
-
-{% block rightPanel %} 
-
-
-<div class="card-body text-center">
-    <h2>Cette page présente une synthèse sur la pureté de la molécule considérée</h2>
-    <p id="totalObservations">
-        Nombre total d'observations : {{data.count}}
-    </p>
-
-    <p>Commençons par regarder l'histogramme de la pureté des échantillons analysés.</p>
-    {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data%} 
+<div class="d-flex align-items-center gap-3 m-3">
     
-    <p>
-        Jetons ensuite un coup d'œil à l'évolution temporelle de la pureté. Deux choix s'offrent à vous, vous pouvez soit visualiser
-        l'évolution de la moyenne et de l'écart-type de la distribution des échantillons, soit l'évolution de la médiane,
-        ainsi que le premier et troisième quartile. Chacune des grandeurs est calculées sur une fenêtre glissante de Δ
-        jours autour de chaque échantillon reçu.
-    </p>
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" id="chartTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="chart1-tab" data-bs-toggle="tab" data-bs-target="#chart1" type="button" role="tab" aria-controls="chart1" aria-selected="true">
-                Moyenne et écarts type
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="chart2-tab" data-bs-toggle="tab" data-bs-target="#chart2" type="button" role="tab" aria-controls="chart2" aria-selected="false">
-                Médianes et quartiles
-            </button>
-        </li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content mt-3">
-        <div class="tab-pane fade show active" id="chart1" role="tabpanel" aria-labelledby="chart1-tab">
-            <p>La ligne centrale présente la moyenne de la pureté moyennée, la ligne inférieure correspond à la moyenne -
-                1 écart-type et la ligne supérieure à la moyenne + 1 écart-type.</p>
-            {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
-        </div>
-        <div class="tab-pane fade" id="chart2" role="tabpanel" aria-labelledby="chart2-tab">
-            <p>La ligne centrale présente la médiane, la ligne inférieure correspond au premier quartile et la
-                ligne supérieure au troisième quartile.</p>
-            {% include "components/line_chart.html" with id="line_2" chart_data=data_2 is_stacked='false' %}
-        </div>
+    <!-- Infos sur le nombre total d'observations -->
+    <div>
+        <p class="display-6 mb-0">{{ data.count }}</p>
+        <small>Nombre total d'observations</small>
     </div>
-    <p>
-        Intéressons-nous ensuite à la dépendance de la pureté au mode d'approvisionnement. Pour cela, nous régressons
-        la pureté sur le mode d'approvisionnement. Pour ce faire, on choisi le mode d'approvisionnement privilégié (Deep web / dark web)
-        et on regarde si l'écart à ce premier mode est statistiquement significatif. Cette significativité est symbolisée 
-        par les "*" dans la colonne écart. "***" si la probabilité que l'écart soit simplement dû au hasard est plus petite
-        que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%.
-        Pour plus d'information, voir 
-        <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">ici</a>.
-        On peut aussi, de façon plus approximative, comparer
-        l'erreur standard à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
-        on ne peut pas détecté si l'écart observé est dû au hasard ou non.
-        Enfin, nous présentons aussi le coefficient R² qui permet de quantifier à quel point le modèle de régression
-        permet d'expliquer les données observés. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
-        mieux il explique les données. 
-        Pour de plus amples informations, voir <a href="https://fr.wikipedia.org/wiki/Coefficient_de_d%C3%A9termination" target="_blank">ici</a>.
-    </p>
-    {% if regression_data %}
-        {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
-    {% endif %}
-    <p>
-        Enfin, regardons la géographie de la pureté. Sur la carte suivante est présentée la pureté moyenne
-        par région.
-    </p>
-    {% include "components/map.html" with id="map_chart" chart_data=map_data color_data=map_data_color %}
+
+    <!-- Bouton pour ouvrir le formulaire -->
+    <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
+            aria-controls="formOffcanvas">
+        Ouvrir le formulaire
+    </button>
 </div>
 
+<!-- Offcanvas gauche -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="formOffcanvas" aria-labelledby="formOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="formOffcanvasLabel">Formulaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% include "components/form_date.html" %}
+    </div>
+</div>
+
+<div class="container py-3">
+    <div class="masonry-grid">
+
+        <!-- Carte 1 : Histogramme de pureté -->
+        <div class="card text-center">
+            <div class="card-header">
+                Distribution de la pureté
+            </div>
+            <div class="card-body">
+                <p>Histogramme de la pureté des échantillons analysés.</p>
+                {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data %}
+            </div>
+        </div>
+
+        <!-- Carte 2 : Évolution temporelle -->
+        <div class="card text-center">
+            <div class="card-header">
+                Évolution temporelle de la pureté
+            </div>
+            <div class="card-body">
+                <p>Visualisation de la moyenne/écart-type ou de la médiane/quartiles sur une fenêtre glissante.</p>
+                <ul class="nav nav-tabs" id="chartTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="chart1-tab" data-bs-toggle="tab" data-bs-target="#chart1" type="button" role="tab">
+                            Moyenne et écarts type
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="chart2-tab" data-bs-toggle="tab" data-bs-target="#chart2" type="button" role="tab">
+                            Médianes et quartiles
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="chart1" role="tabpanel">
+                        <p>Ligne centrale : moyenne, inférieure : moyenne - 1 écart-type, supérieure : moyenne + 1 écart-type.</p>
+                        {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
+                    </div>
+                    <div class="tab-pane fade" id="chart2" role="tabpanel">
+                        <p>Ligne centrale : médiane, inférieure : 1er quartile, supérieure : 3e quartile.</p>
+                        {% include "components/line_chart.html" with id="line_2" chart_data=data_2 is_stacked='false' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte 3 : Régression par mode d'approvisionnement -->
+        <div class="card text-center">
+            <div class="card-header">
+                Influence du mode d'approvisionnement
+            </div>
+            <div class="card-body">
+                <p>Analyse statistique de l'écart de pureté selon le mode d'approvisionnement.</p>
+                {% if regression_data %}
+                    {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if molecule_name == "Héroïne" %}
+        <!-- Carte 4 : Cas particulier héroïne -->
+        <div class="card text-center">
+            <div class="card-header">
+                Pureté après première consommation
+            </div>
+            <div class="card-body">
+                <p>Pour l'héroïne, les échantillons envoyés après première consommation présentent un écart significatif.</p>
+                {% include "components/regression_table.html" with id="conso_regression" table_data=regression_data_consommation %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Carte 5 : Carte de la pureté par région -->
+        <div class="card text-center">
+            <div class="card-header">
+                Pureté moyenne par région
+            </div>
+            <div class="card-body">
+                {% include "components/map.html" with id="map_chart" chart_data=map_data color_data=map_data_color %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+    gap: 1.5rem;
+}
+.card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+.card-header {
+    font-weight: bold;
+}
+</style>
 
 <script>
-    document.addEventListener('shown.bs.tab', function (event) {
-        // Delay to ensure DOM visibility
-        setTimeout(() => {
-            if (window.line_1_chart && event.target.id === 'chart1-tab') {
-                window.line_1_chart.resize();
-            } else if (window.line_2_chart && event.target.id === 'chart2-tab') {
-                window.line_2_chart.resize();
-            }
-        }, 100);
-    });
+document.addEventListener('shown.bs.tab', function (event) {
+    setTimeout(() => {
+        if (window.line_1_chart && event.target.id === 'chart1-tab') {
+            window.line_1_chart.resize();
+        } else if (window.line_2_chart && event.target.id === 'chart2-tab') {
+            window.line_2_chart.resize();
+        }
+    }, 100);
+});
 </script>
-
-{% if molecule_name == "Héroïne" %}
-        <p>Ensuite, on peut se demander si les échantillons envoyés après une première consommation
-            par les personnes utilisatrice de drogues contiennent une pureté plus faible. Alors qu'on ne remarque
-            aucune variation significative pour les autres drogues entre les échantillons déjà consommés ou pas,
-            pour l'héroïne, l'écart est significatif.    
-        </p>
-        {% include "components/regression_table.html" with id="conso_regression" table_data=regression_data_consommation %}
-    {% endif %}
 
 {% endblock %}

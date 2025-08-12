@@ -3,38 +3,128 @@
 {% block title %} All molecules {% endblock %}
 {% block centerText %} All molecules {% endblock %}
 
-{% block leftPanel %} 
 
-{% include "components/form.html" %}
+{% block body %} 
 
-{% endblock %}
 
-{% block rightPanel %} 
-
-<div class="card-body text-center">
-    <h2> Cette page présente une synthèse sur la répartitions des échantillons par molécules.</h2>
-    <p id="totalObservations">
-        Nombre total d'observations : {{all_molecules_data.count}}
-    </p>
+<div class="d-flex align-items-center gap-3 m-3">
     
-    <p> Le premier diagramme présente la proportion des échantillons en fonction de la molécule supposée.</p>
-    {% include "components/pie_chart.html" with id="pie_chart" chart_data=all_molecules_data%}
-    <p> 
-        Les deux graphiques suivants montrent l'évolution temporelle de la répartition des échantillons par molécules; les
-        données sont regroupées par bimestre.
-        Le premier présente l'évolution en nombre d'échantillon et le second l'évolution en proportion.
-    </p>
-    {% include "components/area_stacked_chart.html" with id="area_chart_1" chart_data=all_molecules_data is_stacked='true' %}  
-    {% include "components/area_stacked_chart.html" with id="area_chart_2" chart_data=area_all_molecules_data is_stacked='true'%}    
-     
-    <p>La carte montre le nombre d'échantillons reçus en fonction de la région d'envoi.</p>
-    {% include "components/map.html" with id="map_chart_abs" chart_data=map_data_abs color_data=map_data_abs_color %}  
+    <!-- Infos sur le nombre d'échantillons -->
+    <div>
+        <p class="display-6 mb-0">{{ all_molecules_data_count }}</p>
+        <small>Nombre total d'échantillons observés</small>
+    </div>
 
-    <p>La carte montre le nombre d'échantillons reçus en fonction de la région d'envoi par million d'habitants.</p>
-    {% include "components/map.html" with id="map_chart_prop" chart_data=map_data_prop color_data=map_data_prop_color %}
-    
-    <p>Dans un autre temps, on peut s'intéresser à la proportion des échantillons envoyés après une première consommation.</p>
-    {% include "components/pie_chart.html" with id="pie_chart_conso" chart_data=conso_all_molecules_data%}
+    <!-- Bouton pour ouvrir le panneau -->
+    <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
+            aria-controls="formOffcanvas">
+        Ouvrir le formulaire
+    </button>
 </div>
+
+<!-- Offcanvas gauche -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="formOffcanvas" aria-labelledby="formOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="formOffcanvasLabel">Formulaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% include "components/form.html" %}
+    </div>
+</div>
+
+<div class="container py-3">
+    <div class="masonry-grid">
+
+        <!-- Pie Chart - Proportion par molécule -->
+        <div class="card text-center">
+            <div class="card-header">
+                Répartition par molécule
+            </div>
+            <div class="card-body">
+                {% include "components/pie_chart.html" with id="pie_chart" chart_data=all_molecules_data %}
+                <p class="mt-3">Le diagramme présente la proportion des échantillons en fonction de la molécule supposée.</p>
+            </div>
+        </div>
+
+          <!-- Pie Chart - Après première consommation -->
+        <div class="card text-center">
+            <div class="card-header">
+                Proportion après première consommation
+            </div>
+            <div class="card-body">
+                {% include "components/pie_chart.html" with id="pie_chart_conso" chart_data=conso_all_molecules_data %}
+                <p class="mt-3">Proportion des échantillons envoyés après une première consommation.</p>
+            </div>
+        </div>
+
+        <!-- Area Chart 1 -->
+        <div class="card text-center">
+            <div class="card-header">
+                Évolution temporelle - Nombre d'échantillons
+            </div>
+            <div class="card-body">
+                {% include "components/area_stacked_chart.html" with id="area_chart_1" chart_data=all_molecules_data is_stacked='true' %}
+                <p class="mt-3">Les données sont regroupées par bimestre et montrent l'évolution en nombre d'échantillons par molécule.</p>
+            </div>
+        </div>
+
+        <!-- Area Chart 2 -->
+        <div class="card text-center">
+            <div class="card-header">
+                Évolution temporelle - Proportion
+            </div>
+            <div class="card-body">
+                {% include "components/area_stacked_chart.html" with id="area_chart_2" chart_data=area_all_molecules_data is_stacked='true' %}
+                <p class="mt-3">Les données sont regroupées par bimestre et montrent l'évolution en proportion d'échantillons par molécule.</p>
+            </div>
+        </div>
+
+       
+        <!-- Map absolute -->
+        <div class="card text-center">
+            <div class="card-header">
+                Carte - Nombre d'échantillons par région
+            </div>
+            <div class="card-body">
+                {% include "components/map.html" with id="map_chart_abs" chart_data=map_data_abs color_data=map_data_abs_color %}
+                <p class="mt-3">La carte montre le nombre d'échantillons reçus en fonction de la région d'envoi.</p>
+            </div>
+        </div>
+
+        <!-- Map proportion -->
+        <div class="card text-center">
+            <div class="card-header">
+                Carte - Échantillons par million d'habitants
+            </div>
+            <div class="card-body">
+                {% include "components/map.html" with id="map_chart_prop" chart_data=map_data_prop color_data=map_data_prop_color %}
+                <p class="mt-3">Nombre d'échantillons reçus par région, rapporté à la population (par million d'habitants).</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+    gap: 1.5rem;
+}
+.card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+.card-header {
+    font-weight: bold;
+}
+</style>
 
 {% endblock %}

@@ -38,7 +38,8 @@ def molecules_view(request):
   args["mode"] = "prop"
   map_data_prop = runScript("all/carte_region_france_all_molecules", args)
 
-  return render(request, 'pages/all_molecules.html', { 
+  return render(request, 'pages/all_molecules.html', {
+      'all_molecules_data_count' : all_molecules_data["count"][0],
       'all_molecules_data': json.dumps(all_molecules_data),
       'area_all_molecules_data' : json.dumps(area_all_molecules_data),
       'map_data_abs' : json.dumps(map_data_abs),
