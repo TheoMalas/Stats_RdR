@@ -140,26 +140,24 @@ datasets_list_evol <- function(data, Delta, mode="moyenne"){
 }
 
 
-regression_json <- function(data){
+regression_json <- function(data, mode="provenance"){
+  if (mode=="provenance"){
   black_list=c("Produits de coupe et commentaires :","Revendeur habituel","Revendeur occasionnel","Nous ne détectons rien par HPLC / CCM","")
 
   data <- data %>%
     filter(!provenance %in% black_list)
 
-  #df_pie <- data %>% 
-  #  group_by(provenance) %>%
-  #  summarise(somme = n()) %>%
-  #  mutate(
-  #    pourcent = somme / sum(somme) * 100,
-  #    categorie_label = paste0(provenance, " (", round(pourcent, 1), "%)")
-  #  ) %>%
-  #  arrange(somme) %>%
-  #  mutate(categorie_label = factor(categorie_label, levels = categorie_label))
   order = c("Deep web / dark web", "Dealer de rue (four)", "Livreur", "Réseaux sociaux en ligne", "Dealer en soirée", "Don entre partenaire de conso", "Boutique en ligne")
   data_reg=data %>%
     mutate(provenance = factor(provenance, levels = unlist(order)))
 
   model = lm(pourcentage ~ provenance, data=data_reg)
+  }
+
+  if (mode == "consommation"){
+    model = lm(pourcentage ~ consomme, data=data)
+  }
+
   summar <- summary(model)
   r_squared <- summar$r.squared
   nb_obs <- length(summar$residuals)

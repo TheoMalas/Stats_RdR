@@ -30,6 +30,7 @@ def molecules_view(request):
   
   all_molecules_data = runScript("all/pie_chart_all_molecules", args)    
   area_all_molecules_data = runScript("all/stacked_area_prop_all_molecules", args)
+  conso_all_molecules_data = runScript("all/pie_chart_conso_all_molecules", args)
 
   args["mode"] = "abs"
   map_data_abs = runScript("all/carte_region_france_all_molecules", args)
@@ -37,13 +38,15 @@ def molecules_view(request):
   args["mode"] = "prop"
   map_data_prop = runScript("all/carte_region_france_all_molecules", args)
 
-  return render(request, 'pages/all_molecules.html', { 
+  return render(request, 'pages/all_molecules.html', {
+      'all_molecules_data_count' : all_molecules_data["count"][0],
       'all_molecules_data': json.dumps(all_molecules_data),
       'area_all_molecules_data' : json.dumps(area_all_molecules_data),
       'map_data_abs' : json.dumps(map_data_abs),
       'map_data_abs_color' : json.dumps(generate_color_map(map_data_abs, (120,60,85), (200,100,30))),
       'map_data_prop' : json.dumps(map_data_prop),
       'map_data_prop_color' : json.dumps(generate_color_map(map_data_prop, (50,100,70), (0, 100, 40))),
+      'conso_all_molecules_data' : json.dumps(conso_all_molecules_data)
   })
 
 def supply_view(request):
@@ -190,6 +193,7 @@ def purity_heroine_view(request):
   }
   data_2 = runScript("heroine/histo_purity_heroine", args_2)
   data_reg = runScript("heroine/regression_purity_supply_heroine", args_1)
+  regression_data_consommation = runScript("heroine/regression_conso_purity_heroine", args_1)
 
   args_3 = {
     "date_debut" : date_debut,
@@ -201,6 +205,7 @@ def purity_heroine_view(request):
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
+    'regression_data_consommation' : json.dumps(regression_data_consommation),
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Héroïne",

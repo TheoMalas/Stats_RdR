@@ -3,29 +3,81 @@
 {% block title %} Supply {% endblock %}
 {% block centerText %} Répartition des molécules {% endblock %}
 
-{% block leftPanel %} 
+{% block body %}
 
-{% include "components/form.html" %}
-
-{% endblock %}
-
-{% block rightPanel %} 
-
-
-<div class="card-body text-center">
-    <h2> Cette page présente une synthèse sur la répartitions des échantillons par molécules.</h2>
-    <p id="totalObservations">
-        Nombre total d'observations : {{data.count}}
-    </p>
-
-    <p> Le premier diagramme présente la répartition des échantillons en fonction des différentes voies d'approvisionnement. </p>
-    {% include "components/pie_chart.html" with id="pie_chart" chart_data=data%}
-    <p>
-        Le second graphique montre l'évolution temporelle de la proportion des échantillons pour chaque moyen
-        d'approvisionnement; les donées sont regroupées par bimestre.
-    </p>
-    {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true'%}
+<div class="d-flex align-items-center gap-3 m-3">
     
+    <!-- Infos sur le nombre total d'observations -->
+    <div>
+        <p class="display-6 mb-0">{{ data.count }}</p>
+        <small>Nombre total d'observations</small>
+    </div>
+
+    <!-- Bouton pour ouvrir le formulaire -->
+    <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
+            aria-controls="formOffcanvas">
+        Ouvrir le formulaire
+    </button>
 </div>
+
+<!-- Offcanvas gauche -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="formOffcanvas" aria-labelledby="formOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="formOffcanvasLabel">Formulaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% include "components/form.html" %}
+    </div>
+</div>
+
+<div class="container py-3">
+    <div class="masonry-grid">
+
+        <!-- Carte 1 : Répartition par voie d'approvisionnement -->
+        <div class="card text-center">
+            <div class="card-header">
+                Répartition par voie d'approvisionnement
+            </div>
+            <div class="card-body">
+                <p>Répartition des échantillons selon les différentes voies d'approvisionnement.</p>
+                {% include "components/pie_chart.html" with id="pie_chart" chart_data=data %}
+            </div>
+        </div>
+
+        <!-- Carte 2 : Évolution temporelle -->
+        <div class="card text-center">
+            <div class="card-header">
+                Évolution temporelle par voie d'approvisionnement
+            </div>
+            <div class="card-body">
+                <p>Proportion des échantillons par voie d'approvisionnement, regroupée par bimestre.</p>
+                {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='true' %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+    gap: 1.5rem;
+}
+.card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+.card-header {
+    font-weight: bold;
+}
+</style>
 
 {% endblock %}

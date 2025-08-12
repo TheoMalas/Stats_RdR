@@ -3,36 +3,92 @@
 {% block title %} Legacy {% endblock %}
 {% block centerText %} Répartition des molécules {% endblock %}
 
-{% block leftPanel %} 
+{% block body %}
 
-{% include "components/form_date.html" %}
-
-{% endblock %}
-
-{% block rightPanel %} 
-
-
-<div class="card-body text-center">
-    <h2> Cette page présente une synthèse sur les produits de coupe détectés.</h2>
-    <p id="totalObservations">
-        Nombre total d'observations : {{data.count}}
-    </p>
-    <p>
-        Le premier diagramme présente la proportion d'échantillons dans lesquels un ou plusieurs produits de coupe
-        ont été détectés.
-    </p>
-    {% include "components/pie_chart.html" with id="pie_chart" chart_data=data%}
-    <p>
-        L'histogramme suivant montre, parmi les échantillons contenant un ou plusieurs produits de coupe, 
-        la proportion de ceux contenant chacun des produits de coupe.
-    </p>
-    {% include "components/bar_x_chart.html" with id="bar_chart" chart_data=data%} 
-    <p>
-        Le graphique présente l'évolution temporelle, par bimestre, de la proportion des échantillons, parmi ceux où
-        un ou plusieurs produits de coupe ont été détectés, qui contiennent chacun des produits de coupe. 
-    </p>   
-    {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='false'%}  
+<div class="d-flex align-items-center gap-3 m-3">
     
+    <!-- Infos sur le nombre total d'observations -->
+    <div>
+        <p class="display-6 mb-0">{{ data.count }}</p>
+        <small>Nombre total d'observations</small>
+    </div>
+
+    <!-- Bouton pour ouvrir le panneau -->
+    <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
+            aria-controls="formOffcanvas">
+        Ouvrir le formulaire
+    </button>
 </div>
+
+<!-- Offcanvas gauche -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="formOffcanvas" aria-labelledby="formOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="formOffcanvasLabel">Formulaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% include "components/form_date.html" %}
+    </div>
+</div>
+
+<div class="container py-3">
+    <div class="masonry-grid">
+
+        <!-- Carte 1 : Proportion avec produits de coupe -->
+        <div class="card text-center">
+            <div class="card-header">
+                Proportion des échantillons avec produits de coupe
+            </div>
+            <div class="card-body">
+                <p>Le diagramme présente la proportion d'échantillons dans lesquels un ou plusieurs produits de coupe ont été détectés.</p>
+                {% include "components/pie_chart.html" with id="pie_chart" chart_data=data %}
+            </div>
+        </div>
+
+        <!-- Carte 2 : Histogramme produits de coupe -->
+        <div class="card text-center">
+            <div class="card-header">
+                Proportion par produit de coupe
+            </div>
+            <div class="card-body">
+                <p>Parmi les échantillons contenant des produits de coupe, proportion de ceux contenant chacun des produits.</p>
+                {% include "components/bar_x_chart.html" with id="bar_chart" chart_data=data %}
+            </div>
+        </div>
+
+        <!-- Carte 3 : Évolution temporelle -->
+        <div class="card text-center">
+            <div class="card-header">
+                Évolution temporelle des produits de coupe
+            </div>
+            <div class="card-body">
+                <p>Évolution bimestrielle de la proportion des échantillons contenant chacun des produits de coupe.</p>
+                {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='false' %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+    gap: 1.5rem;
+}
+.card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+.card-header {
+    font-weight: bold;
+}
+</style>
 
 {% endblock %}

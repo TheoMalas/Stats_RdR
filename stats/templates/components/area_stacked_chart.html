@@ -4,6 +4,13 @@
     (function() {
 
         const data = JSON.parse(`{{ chart_data|safe }}`);
+
+            // Assign colors to datasets if not already set
+        data.datasets_area.forEach((dataset, i) => {
+            dataset.borderColor = Chart.defaults.colorPalette[i % Chart.defaults.colorPalette.length];
+            dataset.backgroundColor = Chart.defaults.colorPalette[i % Chart.defaults.colorPalette.length];
+        });
+
         new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
             type: 'line',
             data: {
