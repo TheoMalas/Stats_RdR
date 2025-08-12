@@ -1,13 +1,27 @@
-{% with "data_"|add:id as data_id %}
-  {{ chart_data|json_script:data_id }}
-{% endwith %}
-
 <canvas id="{{ id|safe }}" width="400" height="400"></canvas>
  
 <script>
     (function() {
 
-        const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
+        const data = JSON.parse(`{{ chart_data|safe }}`);
+
+        data.datasets_line.forEach(element => {
+            
+            if (element.label[0] === "borne sup") {
+                element.borderColor = "transparent";
+            } else if (element.label[0] === "borne inf") {
+                element.borderColor = "transparent";
+                element.backgroundColor = pattern.draw('diagonal', 'rgba(128, 128, 128, 0.3)');
+                element.fill = "1";
+            } else {
+                element.borderColor = "blue";
+                element.backgroundColor = "transparent";
+                element.fill = false;
+            }
+        });
+
+        console.log(data.datasets_line);
+
         window["{{ id|safe }}_chart"] = new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
             type: 'line',
             data: {

@@ -1,13 +1,9 @@
-{% with "data_"|add:id as data_id %}
-  {{ chart_data|json_script:data_id }}
-{% endwith %}
-
 <canvas id="{{ id|safe }}" width="400" height="400"></canvas>
 
 <script>
     (function() {
 
-        const data = JSON.parse(document.getElementById('data_{{ id }}').textContent);
+        const data = JSON.parse(`{{ chart_data|safe }}`);
         new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
             type: 'bar',
             data: {

@@ -13,13 +13,24 @@
 
 
 <div class="card-body text-center">
-
+    <h2> Cette page présente une synthèse sur les produits de coupe détectés.</h2>
     <p id="totalObservations">
         Nombre total d'observations : {{data.count}}
     </p>
-
+    <p>
+        Le premier diagramme présente la proportion d'échantillons dans lesquels un ou plusieurs produits de coupe
+        ont été détectés.
+    </p>
     {% include "components/pie_chart.html" with id="pie_chart" chart_data=data%}
+    <p>
+        L'histogramme suivant montre, parmi les échantillons contenant un ou plusieurs produits de coupe, 
+        la proportion de ceux contenant chacun des produits de coupe.
+    </p>
     {% include "components/bar_x_chart.html" with id="bar_chart" chart_data=data%} 
+    <p>
+        Le graphique présente l'évolution temporelle, par bimestre, de la proportion des échantillons, parmi ceux où
+        un ou plusieurs produits de coupe ont été détectés, qui contiennent chacun des produits de coupe. 
+    </p>   
     {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='false'%}  
     
 </div>

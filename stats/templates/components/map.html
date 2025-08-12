@@ -1,0 +1,57 @@
+<div id="{{ id|safe }}" style="width:800px; height:800px; background-color: #f4f4f4;"></div>
+
+<script>
+    (function() {
+        
+        const map = L.map("{{ id|safe }}",
+            {
+                center: [46.8, 2.5],
+                zoom: 6,
+                zoomControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                tap: false,
+                attributionControl: false
+            }
+        );
+
+        const data = JSON.parse(`{{ chart_data|safe }}`);
+        const color_data = JSON.parse(`{{ color_data|safe }}`);
+
+        // Style par région
+        function style(feature) {
+            const value = data[feature.properties.nom] || 0;
+            
+            return {
+                fillColor: color_data[feature.properties.nom] || '#fff',
+                weight: 0.5,
+                opacity: 1,
+                color: '#ccc',
+                fillOpacity: 0.9
+            };
+        }
+
+        // Interactions (tooltip)
+        function onEachFeature(feature, layer) {
+        const value = data[feature.properties.nom] || 0;
+        layer.bindTooltip(`${feature.properties.nom} : ${value}`, {
+            permanent: false,
+            direction: 'center',
+            className: 'region-tooltip'
+        });
+        }
+
+        // Charger le GeoJSON des régions françaises
+        fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions-version-simplifiee.geojson')
+        .then(res => res.json())
+        .then(geojson => {
+            L.geoJSON(geojson, {
+            style: style,
+            onEachFeature: onEachFeature
+            }).addTo(map);
+        });
+    })();
+</script>

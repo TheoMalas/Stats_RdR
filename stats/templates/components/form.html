@@ -91,7 +91,6 @@
     document.getElementById('sendButton').addEventListener('click', function () {
         const date_debut = document.getElementById('date_debut').value;
         const date_fin = document.getElementById('date_fin').value;
-        const range = document.getElementById('range_val').value;
         const selectedFamilles = Array.from(document.querySelectorAll('input[name="famille"]:checked')).map(cb => cb.value);
 
         const params = new URLSearchParams();
