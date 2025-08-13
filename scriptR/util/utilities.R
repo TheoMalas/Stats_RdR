@@ -181,15 +181,26 @@ regression_json <- function(data, mode="provenance"){
   stars[[1]] <- " "
   
   # Génération de la liste des datasets
-  datasets_list <- lapply(var_names, function(var_names_i) {
-    list(
-      "label" = ifelse(var_names_i == "(Intercept)", "Deep web / dark web", sub("provenance", "", var_names_i)),
-      "mean" = unname(round(mean[var_names_i],3)),
-      "coefficient" = paste(unname(round(coefs[var_names_i],3)), unname(stars[var_names_i]),sep=""),
-      "standard_error" = unname(round(std_errors[var_names_i],3))
-    )
-  })
-
+  if (mode=="provenance"){
+    datasets_list <- lapply(var_names, function(var_names_i) {
+      list(
+        "label" = ifelse(var_names_i == "(Intercept)", "Deep web / dark web", sub("provenance", "", var_names_i)),
+        "mean" = unname(round(mean[var_names_i],3)),
+        "coefficient" = paste(unname(round(coefs[var_names_i],3)), unname(stars[var_names_i]),sep=""),
+        "standard_error" = unname(round(std_errors[var_names_i],3))
+      )
+    })
+  }
+  if (mode=="consommation"){
+    datasets_list <- lapply(var_names, function(var_names_i) {
+      list(
+        "label" = ifelse(var_names_i == "(Intercept)", "Non consommé", "Consommé"),
+        "mean" = unname(round(mean[var_names_i],3)),
+        "coefficient" = paste(unname(round(coefs[var_names_i],3)), unname(stars[var_names_i]),sep=""),
+        "standard_error" = unname(round(std_errors[var_names_i],3))
+      )
+    })
+  }
   #Création de l'objet JSON
   json_obj <- list(
     data = datasets_list,
