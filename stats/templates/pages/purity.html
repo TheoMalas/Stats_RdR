@@ -96,12 +96,11 @@
                 la pureté sur le mode d'approvisionnement. Pour ce faire, on choisi le mode d'approvisionnement privilégié (Deep web / dark web)
                 et on regarde si l'écart à ce premier mode est statistiquement significatif. Cette significativité est symbolisée 
                 par les "*" dans la colonne écart. "***" si la probabilité que l'écart soit simplement dû au hasard est plus petite
-                que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%.
-                Pour plus d'information, voir 
-                <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">ici</a>.
+                que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%. Cette probabilité
+                se nomme la <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>.    
                 On peut aussi, de façon plus approximative, comparer
-                l'erreur standard à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
-                on ne peut pas détecté si l'écart observé est dû au hasard ou non.
+                l'<a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a> à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
+                on ne peut pas détecté si l'écart observé est dû au hasard ou non. 
                 Enfin, nous présentons aussi le coefficient R² qui permet de quantifier à quel point le modèle de régression
                 permet d'expliquer les données observés. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
                 mieux il explique les données. 
@@ -138,13 +137,41 @@
             </div>
         </div>
 
+        {% if reg_map_data %}
+        <!-- Carte 6 : Analyse de la carte de la pureté -->
+        <div class="card text-center">
+            <div class="card-header">
+                Analyse de la carte de la pureté
+            </div>
+            <div class="card-body">
+                {% include "components/regression_table_fe.html" with id="region_regression" table_data=reg_map_data %}
+                <p>
+                    Demandons-nous comment analyser la carte de France présentant la pureté par région. Pour certaines
+                    molécules, on peut remarquer de fortes différences de couleurs, et ainsi de pureté moyenne, entre
+                    les différentes régions. Cependant, l'image est incomplète : les différences pourraient très bien être
+                    dues à différents modes d'approvisionnement ou bien à différentes dates d'achat. Pour prendre cela en compte,
+                    nous réalisons une <a href="https://en.wikipedia.org/wiki/Fixed_effects_model"  target="_blank">régression à effets fixes</a>
+                    en choisissant comme effets fixes le mode d'approvisionnement et le bimestre d'achat. Concrètement, cela revient à comparer
+                    uniquement les variations de qualité à l’intérieur d’un même mode d’approvisionnement et d’un même bimestre, en
+                    neutralisant les différences moyennes entre groupes. De cette façon, on isole l’effet des autres variables 
+                    (comme la région) indépendamment de ces facteurs fixes.
+
+                    Pour créer ce tableau, nous devons choisir une région à laquelle comparée toutes les autres; nous avons choisi
+                    de prendre la région d'où provient la majorité des échantillons, soit l’Île-de-France. Le tableau se lit par exmple de la façon suivante :
+                    pour un même mode d’approvisionnement et un même bimestre, la pureté moyenne des échantillons provenant du <i>Grand-Est</i> est en moyenne
+                    à un certain <i>écart</i>. Chaque écart est caractérisée par sa <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>
+                    (les potentielles astérisques) et par son <a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a>.
+                </p>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 
 <style>
 .masonry-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
     gap: 1.5rem;
 }
 .card {

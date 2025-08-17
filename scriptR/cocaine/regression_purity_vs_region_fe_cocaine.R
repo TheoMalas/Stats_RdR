@@ -7,7 +7,8 @@ data = load_data()
 data = data %>% filter(molecule_simp=="Cocaïne")
 
 black_list_percent=c("NQ","NQ ","", "nq")
-data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
+data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage)) %>%
+    select(departement,pourcentage,date, provenance)
 
 ################################################################################
 # Selection de la fenêtre de temps #############################################
@@ -20,11 +21,11 @@ outputPath <- args_list$outputPath
 data <- filter_data(data, args_list)
 
 ################################################################################
-# Régression pour la pureté moyenne en fonction du type de fournisseur #########
+# Régreession pureté par région ################################################
 ################################################################################
 
 #Création de l'objet JSON
-json_obj <- regression_json(data)
+json_obj <- regression_json_fe(data)
 
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
 save_ouput_as_json(json_obj, outputPath, auto_unbox=TRUE)

@@ -125,6 +125,8 @@ def purity_cocaine_view(request):
   }
   map_data = runScript("cocaine/purity_region_cocaine", args_3)
 
+  reg_map_data = runScript("cocaine/regression_purity_vs_region_fe_cocaine", args_3)
+
   return render(request, 'pages/purity.html', { 
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
@@ -132,6 +134,7 @@ def purity_cocaine_view(request):
     'molecule_name': "Cocaïne",
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
+    'reg_map_data' : json.dumps(reg_map_data)
   })
 
 def purity_mdma_view(request):
@@ -162,6 +165,7 @@ def purity_mdma_view(request):
     "date_fin" : date_fin,
   }
   map_data = runScript("mdma/purity_region_mdma", args_3)
+  reg_map_data = runScript("mdma/regression_purity_vs_region_fe_mdma", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : json.dumps(data),
@@ -170,6 +174,7 @@ def purity_mdma_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "MDMA",
+    'reg_map_data' : json.dumps(reg_map_data)
   })
 
 def purity_heroine_view(request):
@@ -200,6 +205,7 @@ def purity_heroine_view(request):
     "date_fin" : date_fin,
   }
   map_data = runScript("heroine/purity_region_heroine", args_3)
+  reg_map_data = runScript("heroine/regression_purity_vs_region_fe_heroine", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : json.dumps(data),
@@ -209,6 +215,7 @@ def purity_heroine_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Héroïne",
+    'reg_map_data' : json.dumps(reg_map_data)
   })
 
 def purity_3mmc_view(request):
@@ -239,6 +246,7 @@ def purity_3mmc_view(request):
     "date_fin" : date_fin,
   }
   map_data = runScript("3mmc/purity_region_3mmc", args_3)
+  reg_map_data = runScript("3mmc/regression_purity_vs_region_fe_3mmc", args_3)
 
   return render(request, 'pages/purity.html', { 
     'data' : json.dumps(data),
@@ -247,6 +255,7 @@ def purity_3mmc_view(request):
     'molecule_name': "3-MMC",
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
+    'reg_map_data' : json.dumps(reg_map_data)
   })
 
 def purity_ketamine_view(request):
@@ -277,6 +286,7 @@ def purity_ketamine_view(request):
     "date_fin" : date_fin,
   }
   map_data = runScript("ketamine/purity_region_ketamine", args_3)
+  reg_map_data = runScript("ketamine/regression_purity_vs_region_fe_ketamine", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : json.dumps(data),
@@ -285,6 +295,7 @@ def purity_ketamine_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Kétamine",
+    'reg_map_data' : json.dumps(reg_map_data)
   })
   
 
@@ -317,6 +328,7 @@ def purity_speed_view(request):
     "date_fin" : date_fin,
   }
   map_data = runScript("speed/purity_region_speed", args_3)
+  reg_map_data = runScript("speed/regression_purity_vs_region_fe_speed", args_3)
   
   return render(request, 'pages/purity.html', { 
     'data' : json.dumps(data),
@@ -325,6 +337,7 @@ def purity_speed_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': "Speed",
+    'reg_map_data' : json.dumps(reg_map_data)
   })  
   
 
