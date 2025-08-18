@@ -19,6 +19,81 @@
                 <input type="range" class="form-range" min="1" max="30" id="range_val" value="15" oninput="rangeOutput.value = range_val.value">
                 <output id="rangeOutput" class="ms-2">15</output>
             </div>
+            {% if molecule_name == "3-MMC"%}
+            <div class="switch-container">
+            <style>
+                .switch {
+                font-size: 17px;
+                position: relative;
+                display: inline-block;
+                width: 3.5em;
+                height: 2em;
+                }
+
+                /* Hide default HTML checkbox */
+                .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                }
+
+                /* The slider */
+                .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #fff;
+                border: 1px solid #adb5bd;
+                transition: .4s;
+                border-radius: 30px;
+                }
+
+                .slider:before {
+                position: absolute;
+                content: "";
+                height: 1.4em;
+                width: 1.4em;
+                border-radius: 20px;
+                left: 0.27em;
+                bottom: 0.25em;
+                background-color: #adb5bd;
+                transition: .4s;
+                }
+
+                input:checked + .slider {
+                background-color: #007bff;
+                border: 1px solid #007bff;
+                }
+
+                input:focus + .slider {
+                box-shadow: 0 0 1px #007bff;
+                }
+
+                input:checked + .slider:before {
+                transform: translateX(1.4em);
+                background-color: #fff;
+                }
+
+                .switch-container {
+                display: flex;
+                flex-direction: column; /* empile le texte au-dessus */
+                align-items: center;    /* centre horizontalement */
+                }
+
+                .switch-text {
+                margin-bottom: 4px; /* espace entre texte et switch */
+                }
+            </style>
+            <span class="switch-text">Seulement les échantillons contenant de la 3-MMC</span>
+            <label class="switch">
+                <input type="checkbox" id="no_cut">
+                <span class="slider"></span>
+            </label>
+            </div>
+            {%endif%}
             <button id="sendButton" class="btn btn-primary w-100">Envoyer</button>
         </div>
     </div>
@@ -30,11 +105,14 @@
         const date_debut = document.getElementById('date_debut').value;
         const date_fin = document.getElementById('date_fin').value;
         const range = document.getElementById('range_val').value;
-
+        
         const params = new URLSearchParams();
         if (date_debut) params.set('date_debut', date_debut);
         if (date_fin) params.set('date_fin', date_fin);
         if (range) params.set('range', range);
+        if (document.getElementById('no_cut')){ 
+            const no_cut = document.getElementById('no_cut').checked;
+            if (no_cut) params.set('no_cut',no_cut);}
 
         const newUrl = window.location.pathname + '?' + params.toString();
 

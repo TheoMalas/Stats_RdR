@@ -9,6 +9,7 @@ urlpatterns = [
     path('supply/', views.supply_view, name='supply_view'),
     path('cocaine-coupe/', views.cocaine_view, name='cocaine_view'),
     path('heroine-coupe/', views.heroine_view, name='heroine_view'),
+    path('3mmc-coupe/', views.coupe_3mmc_view, name='3mmc_view'),
     path('purity-heroine/', views.purity_heroine_view, name='purity_heroine_view'),
     path('purity-mdma/', views.purity_mdma_view, name='purity_mdma_view'),
     path('purity-3mmc/', views.purity_3mmc_view, name='purity_3mmc_view'),

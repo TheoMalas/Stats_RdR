@@ -40,13 +40,16 @@ extract_args <- function(args_string){
   else{Delta<- NULL}
   if (!is.null(args_list[["mode"]])){mode=args_list[["mode"]]}
   else{mode<- NULL}
+  no_cut<- "false"
+  if (args_list["no_cut"]=="true"){no_cut=args_list[["no_cut"]]}
   return(list(
     date_debut = date_debut,
     date_fin = date_fin,
     outputPath = outputPath,
     familles_list = familles_vec,
     Delta = Delta,
-    mode = mode
+    mode = mode,
+    no_cut = no_cut
   ))
   
 }
@@ -54,12 +57,14 @@ filter_data <- function(data, args_list){
   date_debut <- args_list$date_debut
   date_fin   <- args_list$date_fin
   familles_vec <- args_list$familles_list
+  no_cut <- args_list$no_cut
   
   # Filtre
   data = data %>% 
     filter(date>=date_debut & date<=date_fin)  # 2 dates NA à gérer
   if (length(familles_vec)>1){data = data %>% filter(famille %in% familles_vec)}
   if (length(familles_vec)==1){if(!is.na(familles_vec)){data = data %>% filter(famille %in% familles_vec)}}
+  if (no_cut=="true"){data = data %>% filter(pourcentage >0)}
 
   return(data)
 }

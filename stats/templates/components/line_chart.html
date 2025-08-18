@@ -20,8 +20,6 @@
             }
         });
 
-        console.log(data.datasets_line);
-
         window["{{ id|safe }}_chart"] = new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
             type: 'line',
             data: {

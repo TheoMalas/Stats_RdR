@@ -14,6 +14,7 @@ import shutil
 from datetime import datetime
 
 default_Delta = 15
+default_no_cut = 'false'
 
 # FrontEnd
 
@@ -63,6 +64,7 @@ def supply_view(request):
   data = runScript("all/pie_chart_supply_all_molecules", args)
   
   return render(request, 'pages/supply.html', { 
+      'data_count' : data["count"][0],
       'data' : json.dumps(data),
   })
 
@@ -78,6 +80,7 @@ def cocaine_view(request):
   data = runScript("cocaine/diagram_coupe_cocaine", args)
 
   return render(request, 'pages/coupe.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
   })
 
@@ -93,8 +96,25 @@ def heroine_view(request):
   data = runScript("heroine/diagram_coupe_heroine", args)
   
   return render(request, 'pages/coupe.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
   })
+
+def coupe_3mmc_view(request):
+  date_debut, date_fin = get_dates(request)
+  
+  args = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+
+  data = runScript("3mmc/coupe_3mmc", args)
+
+  return render(request, 'pages/coupe.html',{
+    'data_count' : data["count"][0],
+    'data' : json.dumps(data),
+  })
+
 
 def purity_cocaine_view(request):
 
@@ -128,6 +148,7 @@ def purity_cocaine_view(request):
   reg_map_data = runScript("cocaine/regression_purity_vs_region_fe_cocaine", args_3)
 
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -168,6 +189,7 @@ def purity_mdma_view(request):
   reg_map_data = runScript("mdma/regression_purity_vs_region_fe_mdma", args_3)
   
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -208,6 +230,7 @@ def purity_heroine_view(request):
   reg_map_data = runScript("heroine/regression_purity_vs_region_fe_heroine", args_3)
   
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -222,33 +245,34 @@ def purity_3mmc_view(request):
 
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
-  
+  no_cut = request.GET.get("no_cut", default_no_cut)
+
   args_1 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
     "Delta" : Delta,
-    "mode" : "moyenne"
+    "mode" : "moyenne",
+    "no_cut" : no_cut
   }
+  print(args_1)
 
   data = runScript("3mmc/histo_purity_3mmc", args_1)
 
-  args_2 = {
-    "date_debut" : date_debut,
-    "date_fin" : date_fin,
-    "Delta" : Delta,
-    "mode" : "médiane"
-  }
-  data_2 = runScript("3mmc/histo_purity_3mmc", args_2)
-  data_reg = runScript("3mmc/regression_purity_supply_3mmc", args_2)
+  args_1["mode"] = "médiane"
+  
+  data_2 = runScript("3mmc/histo_purity_3mmc", args_1)
+  data_reg = runScript("3mmc/regression_purity_supply_3mmc", args_1)
   
   args_3 = {
     "date_debut" : date_debut,
     "date_fin" : date_fin,
+    "no_cut" : no_cut
   }
   map_data = runScript("3mmc/purity_region_3mmc", args_3)
   reg_map_data = runScript("3mmc/regression_purity_vs_region_fe_3mmc", args_3)
 
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -289,6 +313,7 @@ def purity_ketamine_view(request):
   reg_map_data = runScript("ketamine/regression_purity_vs_region_fe_ketamine", args_3)
   
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -330,7 +355,8 @@ def purity_speed_view(request):
   map_data = runScript("speed/purity_region_speed", args_3)
   reg_map_data = runScript("speed/regression_purity_vs_region_fe_speed", args_3)
   
-  return render(request, 'pages/purity.html', { 
+  return render(request, 'pages/purity.html', {
+    'data_count' : data["count"][0], 
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -370,6 +396,7 @@ def purity_cannabis_THC_resine_view(request):
   map_data = runScript("cannabis/purity_region_cannabis_THC_resine", args_3)
   
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -409,6 +436,7 @@ def purity_cannabis_THC_herbe_view(request):
   map_data = runScript("cannabis/purity_region_cannabis_THC_herbe", args_3)
   
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_2' : json.dumps(data_2),
     'regression_data' : json.dumps(data_reg),
@@ -431,6 +459,7 @@ def histo_comprime_mdma_view(request):
   data = runScript("mdma/histo_comprime_mdma", args)
     
   return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
     'data' : json.dumps(data),
   })
 
@@ -488,7 +517,7 @@ def runScript(scriptID, args):
   # Check the cache
   cachedData = basicCache(outputPath)
   if cachedData != None:
-      return cachedData
+     return cachedData
   
   cmd=["Rscript","scriptR/" + scriptID + ".R"] + [obj_to_string(args)]
 
@@ -522,7 +551,7 @@ def cleanCache(request):
   return HttpResponse(status = 200)
 
 def get_dates(request):
-  default_end = "2025-07-22" #datetime.today().strftime('%Y-%m-%d') #set a specific date
+  default_end = "2026-07-22" #datetime.today().strftime('%Y-%m-%d') #set a specific date
   default_start = "2022-06-22" #first analysis done
   date_debut = request.GET.get("date_debut", default_start)
   date_fin = request.GET.get("date_fin", default_end)
