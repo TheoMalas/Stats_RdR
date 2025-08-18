@@ -97,10 +97,12 @@
                 et on regarde si l'écart à ce premier mode est statistiquement significatif. Cette significativité est symbolisée 
                 par les "*" dans la colonne écart. "***" si la probabilité que l'écart soit simplement dû au hasard est plus petite
                 que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%. Cette probabilité
-                se nomme la <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>.    
+                se nomme la <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>.
+                <br>
                 On peut aussi, de façon plus approximative, comparer
                 l'<a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a> à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
                 on ne peut pas détecté si l'écart observé est dû au hasard ou non. 
+                <br>
                 Enfin, nous présentons aussi le coefficient R² qui permet de quantifier à quel point le modèle de régression
                 permet d'expliquer les données observés. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
                 mieux il explique les données. 
@@ -155,12 +157,16 @@
                     uniquement les variations de qualité à l’intérieur d’un même mode d’approvisionnement et d’un même bimestre, en
                     neutralisant les différences moyennes entre groupes. De cette façon, on isole l’effet des autres variables 
                     (comme la région) indépendamment de ces facteurs fixes.
-
+                    <br>
                     Pour créer ce tableau, nous devons choisir une région à laquelle comparée toutes les autres; nous avons choisi
                     de prendre la région d'où provient la majorité des échantillons, soit l’Île-de-France. Le tableau se lit par exmple de la façon suivante :
                     pour un même mode d’approvisionnement et un même bimestre, la pureté moyenne des échantillons provenant du <i>Grand-Est</i> est en moyenne
                     à un certain <i>écart</i>. Chaque écart est caractérisée par sa <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>
                     (les potentielles astérisques) et par son <a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a>.
+                    <br>
+                    Il se peut que pour une ou plusieurs régions, Le modèle ne puisse pas estimer un coefficient parce que la pureté de tous les échantillons
+                    sont déjà parfaitement déterminés par la combinaison des efferts fixes. Les échantillons provenant de cette région,
+                    (voire ces régions) ont tous une commbinaison <i>mode d'approvisionnement</i> x <i>bimestre</i> différente.
                 </p>
             </div>
         </div>
