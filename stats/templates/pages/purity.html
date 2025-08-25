@@ -125,6 +125,7 @@
         </div>
         {% endif %}
 
+        {% if map_data_color %}
         <!-- Carte 5 : Carte de la pureté par région -->
         <div class="card text-center">
             <div class="card-header">
@@ -138,6 +139,7 @@
                 </p>
             </div>
         </div>
+        {% endif %}
 
         {% if reg_map_data %}
         <!-- Carte 6 : Analyse de la carte de la pureté -->
@@ -168,6 +170,18 @@
                     sont déjà parfaitement déterminés par la combinaison des efferts fixes. Les échantillons provenant de cette région,
                     (voire ces régions) ont tous une commbinaison <i>mode d'approvisionnement</i> x <i>bimestre</i> différente.
                 </p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if molecule_name == "MDMA_tablets" %}
+        <!-- MDMA comprime line plot -->
+        <div class="card text-center">
+            <div class="card-header">
+                Quantité de MDMA VS Masse des comprimés
+            </div>
+            <div class="card-body">
+                {% include "components/scatter_chart.html" with id="scatter_mdma_comprime" chart_data=data_reg_dose_poids %}
             </div>
         </div>
         {% endif %}

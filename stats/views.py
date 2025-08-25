@@ -449,18 +449,23 @@ def histo_comprime_mdma_view(request):
 
   date_debut, date_fin = get_dates(request)
   Delta = request.GET.get("range", default_Delta)
-  
-  args = {
+
+  args = {    
     "date_debut" : date_debut,
     "date_fin" : date_fin,
-    "Delta" : Delta,
-  }
+    }
+  
+  data_reg_dose_poids = runScript("mdma/regression_poids_comprime_quantite_mdma", args)
+  
+  args["Delta"] = Delta
 
   data = runScript("mdma/histo_comprime_mdma", args)
     
   return render(request, 'pages/purity.html', { 
     'data_count' : data["count"][0],
     'data' : json.dumps(data),
+    'data_reg_dose_poids' : json.dumps(data_reg_dose_poids),
+    'molecule_name': "MDMA_tablets",
   })
 
 # Map Functions
