@@ -71,45 +71,73 @@ data = data %>% filter(poids > dose/0.8) #permet d'éliminer les erreurs où le 
 model <- lm(dose ~ poids, data)
 summar <- summary(model)
 coef <- summar$coefficients
-poids_lis=list()
-dose_lis = list()
+poids_lis=list() 
+dose_lis = list() 
+pred <- predict(model, 
+newdata = data.frame(poids = data$poids), 
+interval = "confidence", 
+level = 0.95) 
 
-for (i in min(data$poids):max(data$poids)){
-  poids_lis <- append(poids_lis,i)
-  dose_lis <- append(dose_lis,coef[1]+coef[2]*i)
-}
+#for (i in min(data$poids):max(data$poids)){ 
+#  poids_lis <- append(poids_lis,i) 
+#  dose_lis <- append(dose_lis,coef[1]+coef[2]*i) 
+#}
+#for (i in data$poids){dose_lis <- append(dose_lis,coef[1]+coef[2]*i)}
+scatter_data <- list() 
+for (i in 1:length(data$poids)){ 
+  scatter_data <- append(scatter_data,list(c(x = data$poids[[i]], y=data$dose[[i]]))) 
+} 
 
-scatter_test <- list()
-for (i in 1:length(data$poids)){
-  scatter_test <- append(scatter_test,list(c(x = data$poids[[i]], y=data$dose[[i]])))
-}
 
+ord <- order(data$poids)
+fit_points <- lapply(ord, function(i) list(x = data$poids[i], y = pred[i,"fit"]))
+lwr_points <- lapply(ord, function(i) list(x = data$poids[i], y = pred[i,"lwr"]))
+upr_points <- lapply(ord, function(i) list(x = data$poids[i], y = pred[i,"upr"]))
 
-# Génération de la liste des datasets
-datasets_list <- list(
+# Génération de la liste des datasets 
+datasets_list <- list( 
+  list( 
+    label = "Données", 
+    type = "scatter", 
+    data = scatter_data,
+    borderColor = "blue"
+  ), 
+  list( 
+    type = "line", 
+    label = "Régression linéaire", 
+    data = fit_points,
+    borderColor = "red",
+    pointRadius = 0,
+    fill = FALSE
+  ),
+  # Confidence ribbon
   list(
-  label = "Données",
-  type = "scatter",
-  data = scatter_test
- ),
- list(
-  type = "line",
-  label = "Régression linéaire",
-  data = unlist(dose_lis),
-  xAxisID = "x2"
+    type = "line",
+    data = lwr_points,
+    label = NULL,
+    showLegend = FALSE,
+    borderColor = "grey",
+    pointRadius = 0,
+    fill = FALSE
+  ),
+  list(
+    type = "line",
+    label = "Intervalle de confiance à 95%",
+    data = upr_points,
+    borderColor = "grey",
+    pointRadius = 0,
+    fill = list(target = "-1"),  # fill to previous dataset (the lwr line below)
+    backgroundColor = "rgba(128,128,128,0.3)"
+  )
 )
-)
-
-
-
-################################################################################
-# Export en JSON ###############################################################
-################################################################################
-
+################################################################################ 
+# Export en JSON ############################################################### 
+################################################################################ 
 json_obj <- list(
-  labels = as.character(poids_lis),
-  datasets = datasets_list
-)
+  labels = as.character(sort(data$poids)), 
+  datasets = datasets_list, 
+  coef = c(coef[1], coef[2]) 
+  )
 # Créer le fichier JSON (on vérifie si les dossiers parents existent)
 save_ouput_as_json(json_obj, outputPath)
 #library(ggplot2)

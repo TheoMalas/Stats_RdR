@@ -1,0 +1,27 @@
+<input type="number" id="userInput" placeholder="Indiquer la masse de votre comprimé en mg">
+<button id="calcBtn">Calculate</button>
+<p>Estimation de la quantité de MDMA: <span id="result"></span> mg</p>
+
+<canvas id="{{ id|safe }}" width="400" height="400"></canvas>
+
+<script>
+(function () {
+    const data = JSON.parse(`{{ data|safe }}`);
+    const [origin, coef_dir] = data.coef;
+
+    const inputEl = document.getElementById("userInput");
+    const resultEl = document.getElementById("result");
+    const btn = document.getElementById("calcBtn");
+
+    btn.addEventListener("click", () => {
+        const x = parseFloat(inputEl.value);
+        if (!isNaN(x)) {
+            const y = x * coef_dir + origin;
+            resultEl.textContent = y.toFixed(2); // show with 2 decimals
+        } else {
+            resultEl.textContent = "Invalid input";
+        }
+    });
+})();
+</script>
+

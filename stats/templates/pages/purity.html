@@ -175,13 +175,23 @@
         {% endif %}
 
         {% if molecule_name == "MDMA_tablets" %}
-        <!-- MDMA comprime line plot -->
+        <!-- MDMA comprime scatter-and-line plot -->
         <div class="card text-center">
             <div class="card-header">
                 Quantité de MDMA VS Masse des comprimés
             </div>
             <div class="card-body">
-                {% include "components/scatter_chart.html" with id="scatter_mdma_comprime" chart_data=data_reg_dose_poids %}
+                {% include "components/scatter_line_chart.html" with id="scatter_mdma_comprime" chart_data=data_reg_dose_poids %}
+            </div>
+        </div>
+
+        <!-- MDMA quantity estimator -->
+        <div class="card text-center">
+            <div class="card-header">
+                Estimation de la quantité de MDMA
+            </div>
+            <div class="card-body">
+                {% include "components/MDMA_calculator.html" with id="mdma_calculator" data=data_reg_dose_poids %}
             </div>
         </div>
         {% endif %}
