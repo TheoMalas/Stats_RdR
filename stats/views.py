@@ -521,8 +521,8 @@ def runScript(scriptID, args):
 
   # Check the cache
   cachedData = basicCache(outputPath)
-  #if cachedData != None:
-  #   return cachedData
+  if cachedData != None:
+     return cachedData
   
   cmd=["Rscript","scriptR/" + scriptID + ".R"] + [obj_to_string(args)]
 
