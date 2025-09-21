@@ -1,6 +1,8 @@
-<input type="number" id="userInput" placeholder="Indiquer la masse de votre comprimé en mg">
-<button id="calcBtn">Calculate</button>
-<p>Estimation de la quantité de MDMA: <span id="result"></span> mg</p>
+<p>Veuillez indiquer la masse de votre comprimé d'ecstasy : </p>
+<input type="number" id="userInput" placeholder="Masse de votre comprimé en mg">
+<button id="calcBtn">Calculer</button>
+<p>Estimation de la quantité de MDMA : <span id="result"></span> mg</p>
+<p>Intervalle de confiance à 95% de l'estimation : <span id="low_lim"></span> mg - <span id="up_lim"></span> mg</p>
 
 <canvas id="{{ id|safe }}" width="400" height="400"></canvas>
 
@@ -9,17 +11,41 @@
     const data = JSON.parse(`{{ data|safe }}`);
     const [origin, coef_dir] = data.coef;
 
+    const tablet_mass = data.datasets[2].data.map(p => p.x[0])
+    const min_tablet_mass = Math.min(...tablet_mass);
+    const max_tablet_mass = Math.max(...tablet_mass);
+    const low_lim = data.datasets[2].data.map(p => p.y[0]);
+    const up_lim = data.datasets[3].data.map(p => p.y[0]);
+
     const inputEl = document.getElementById("userInput");
     const resultEl = document.getElementById("result");
+    const low_limEl = document.getElementById("low_lim");
+    const up_limEl = document.getElementById("up_lim");
     const btn = document.getElementById("calcBtn");
-
+    
     btn.addEventListener("click", () => {
-        const x = parseFloat(inputEl.value);
-        if (!isNaN(x)) {
-            const y = x * coef_dir + origin;
+        const input = parseFloat(inputEl.value);
+        if (!isNaN(input)) {
+            const y = input * coef_dir + origin;
             resultEl.textContent = y.toFixed(2); // show with 2 decimals
+
+            if (input > min_tablet_mass && input < max_tablet_mass){
+                const nearest_tablet_mass_idx = tablet_mass.reduce((best, val, i, arr) =>
+                Math.abs(val - input) < Math.abs(arr[best] - input) ? i : best
+                , 0);
+                low_lim_input = low_lim[nearest_tablet_mass_idx];
+                up_lim_input = up_lim[nearest_tablet_mass_idx];
+                
+                low_limEl.textContent = low_lim_input.toFixed(2);
+                up_limEl.textContent = up_lim_input.toFixed(2);
+            } else {
+                low_limEl.textContent = "";
+                up_limEl.textContent = "";
+            }
         } else {
             resultEl.textContent = "Invalid input";
+            low_limEl.textContent = "";
+            up_limEl.textContent = "";
         }
     });
 })();
