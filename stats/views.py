@@ -44,9 +44,9 @@ def molecules_view(request):
       'all_molecules_data': json.dumps(all_molecules_data),
       'area_all_molecules_data' : json.dumps(area_all_molecules_data),
       'map_data_abs' : json.dumps(map_data_abs),
-      'map_data_abs_color' : json.dumps(generate_color_map(map_data_abs, (120,60,85), (200,100,30))),
+      'map_data_abs_color' : json.dumps(generate_color_map(map_data_abs, (120,60,85), (200,100,30), "number")),
       'map_data_prop' : json.dumps(map_data_prop),
-      'map_data_prop_color' : json.dumps(generate_color_map(map_data_prop, (50,100,70), (0, 100, 40))),
+      'map_data_prop_color' : json.dumps(generate_color_map(map_data_prop, (50,100,70), (0, 100, 40), "number")),
       'conso_all_molecules_data' : json.dumps(conso_all_molecules_data)
   })
 
@@ -470,7 +470,7 @@ def histo_comprime_mdma_view(request):
 
 # Map Functions
 
-def generate_color_map(data, start_hsl=(120, 60, 85), end_hsl=(120, 100, 25)):
+def generate_color_map(data, start_hsl=(120, 60, 85), end_hsl=(120, 100, 25), mode="pourcent"):
     # Extraire la valeur scalaire depuis les listes
     scalar_data = {k: v[0] for k, v in data.items()}
 
@@ -489,6 +489,9 @@ def generate_color_map(data, start_hsl=(120, 60, 85), end_hsl=(120, 100, 25)):
         l = start_hsl[2] + t * (end_hsl[2] - start_hsl[2])
 
         color_map[key] = f"hsl({h:.0f}, {s:.1f}%, {l:.1f}%)"
+    color_map["start_hsl"] = start_hsl
+    color_map["end_hsl"] = end_hsl
+    color_map["mode"] = mode
 
     return color_map
 

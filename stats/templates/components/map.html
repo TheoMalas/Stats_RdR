@@ -20,6 +20,16 @@
 
         const data = JSON.parse(`{{ chart_data|safe }}`);
         const color_data = JSON.parse(`{{ color_data|safe }}`);
+        const values = Object.keys(data).map(function(key){
+            return data[key][0];
+        });
+        const min_values = Math.min(...values);
+        const max_values = Math.max(...values);
+        const start_hsl = color_data["start_hsl"];
+        const start_hslStr = `hsl(${start_hsl[0]}, ${start_hsl[1]}%, ${start_hsl[2]}%)`;
+        const end_hsl = color_data["end_hsl"];
+        const end_hslStr = `hsl(${end_hsl[0]}, ${end_hsl[1]}%, ${end_hsl[2]}%)`;
+        console.log(end_hslStr);
 
         // Style par région
         function style(feature) {
@@ -53,5 +63,47 @@
             onEachFeature: onEachFeature
             }).addTo(map);
         });
+        const legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function(map) {
+            const div = L.DomUtil.create('div', 'info legend');
+            div.style.top = '-200px';
+            // Create gradient bar
+            if (color_data["mode"]=="pourcent"){
+            div.innerHTML = `
+                <div style="font-size:20px; line-height:1.2; margin-top:4px; text-align:center;">
+                    <div>${max_values.toFixed(2)} %</div>
+                </div>
+                <div style="
+                    width: 40px;
+                    height: 400px;
+                    background: linear-gradient(to top, ${start_hslStr}, ${end_hslStr});
+                    border: 1px solid #999;">
+                </div>
+                <div style="font-size:20px; line-height:1.2; margin-top:4px; text-align:center;">
+                    <div>${min_values.toFixed(2)} %</div>
+                </div>
+            `
+            } else if (color_data["mode"]=="number"){
+            div.innerHTML = `
+                <div style="font-size:20px; line-height:1.2; margin-top:4px; text-align:center;">
+                    <div>${parseFloat(max_values.toFixed(2))}</div>
+                </div>
+                <div style="
+                    width: 40px;
+                    height: 400px;
+                    background: linear-gradient(to top, ${start_hslStr}, ${end_hslStr});
+                    border: 1px solid #999;">
+                </div>
+                <div style="font-size:20px; line-height:1.2; margin-top:4px; text-align:center;">
+                    <div>${parseFloat(min_values.toFixed(2))}</div>
+                </div>
+            `                
+            };
+            return div;
+        };
+
+        legend.addTo(map);
     })();
+
 </script>
