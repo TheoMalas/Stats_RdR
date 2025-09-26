@@ -1,6 +1,6 @@
 load_data <- function(){
   library(DBI)
-  library(RMySQL)
+  library(RMariaDB)
   library(dplyr)
   user <- Sys.getenv("USER")
   pwd <- Sys.getenv("PASSWORD")
@@ -8,7 +8,7 @@ load_data <- function(){
   port <- as.integer(Sys.getenv("PORT"))
   
   
-  con <- dbConnect(RMySQL::MySQL(),
+  con <- dbConnect(RMariaDB::MariaDB(),
                    dbname = "db_psycho_july_2025",
                    host = host,
                    port = port,

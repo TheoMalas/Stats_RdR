@@ -1,5 +1,5 @@
 library(DBI)
-library(RMySQL)
+library(RMariaDB)
 library(dplyr)
 library(jsonlite)
 library(purrr)
@@ -8,7 +8,7 @@ library(purrr)
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")
 # 
-con <- dbConnect(RMySQL::MySQL(),
+con <- dbConnect(RMariaDB::MariaDB(),
                  dbname = "db_psycho_test",
                  host     = "localhost",    # Ajouté si tu es en local
                  port     = 3306,           # Port par défaut MySQL

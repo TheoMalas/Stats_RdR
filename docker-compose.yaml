@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  myapp:
+    image: django-r-app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mariadb
+    environment:
+      - USER=my_user
+      - PASSWORD=my_password
+      - HOST=mariadb
+      - PORT=3306
+
+  mariadb:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: db_psycho_test
+      MARIADB_USER: my_user
+      MARIADB_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:

@@ -1,20 +1,20 @@
 library(DBI)
-library(RMySQL)
+library(RMariaDB)
 library(dplyr)
 
 # user <- Sys.getenv("USER")
 # pwd <- Sys.getenv("PASSWORD")
 # 
 # 
-# con <- dbConnect(RMySQL::MySQL(),
+# con <- dbConnect(RMariaDB::MariaDB(),
 #                 dbname = "db_psycho_test",
 #                 host     = "localhost",    # Ajouté si tu es en local
-#                 port     = 3306,           # Port par défaut MySQL
+#                 port     = 3306,           # Port par défaut MariaDB
 #                 user = user,
 #                 password = pwd,
 #                 local_infile = 1)  # active LOAD DATA LOCAL INFILE)
 
-CLIENT_LOCAL_FILES <- 128  # This constant is not predefined in RMySQL
+CLIENT_LOCAL_FILES <- 128  # This constant is not predefined in RMariaDB
 
 user <- Sys.getenv("USER")
 pwd <- Sys.getenv("PASSWORD")
@@ -22,7 +22,7 @@ host <- Sys.getenv("HOST")
 port <- as.integer(Sys.getenv("PORT"))
 
 
-con <- dbConnect(RMySQL::MySQL(),
+con <- dbConnect(RMariaDB::MariaDB(),
                  dbname = "db_psycho_july_2025",
                  host = host,
                  port = port,
