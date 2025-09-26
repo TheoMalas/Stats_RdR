@@ -1,7 +1,7 @@
 FROM rocker/r-ver:latest
 
 # Installer packages R
-RUN R -e "install.packages(c('DBI', 'dplyr', 'RMariaDB', 'jsonlite', 'purrr', 'lubridate'))"
+RUN R -e "install.packages(c('DBI', 'dplyr', 'RMariaDB', 'jsonlite', 'purrr', 'lubridate', 'lfe'))"
 
 # Installer Python, Pip & MariaDB
 RUN apt-get update && apt-get install -y \
