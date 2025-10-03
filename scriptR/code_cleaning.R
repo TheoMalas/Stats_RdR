@@ -23,7 +23,7 @@ port <- as.integer(Sys.getenv("PORT"))
 
 
 con <- dbConnect(RMariaDB::MariaDB(),
-                 dbname = "db_psycho_july_2025",
+                 dbname = Sys.getenv("DB_NAME"),
                  host = host,
                  port = port,
                  user = user,
