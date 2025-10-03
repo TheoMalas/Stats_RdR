@@ -9,7 +9,7 @@ load_data <- function(){
   
   
   con <- dbConnect(RMySQL::MySQL(),
-                   dbname = "db_psycho_july_2025",
+                   dbname = Sys.getenv("DB_NAME"),
                    host = host,
                    port = port,
                    user = user,
