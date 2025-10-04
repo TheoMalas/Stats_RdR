@@ -13,12 +13,22 @@ load_data <- function(){
                    host = host,
                    port = port,
                    user = user,
-                   password = pwd)
+                   password = pwd,
+                   encoding = "UTF-8")
   
   dbListTables(con)
   data <- dbReadTable(con, "resultats_analyse_cleaned")
   dbDisconnect(con)
-  data = data %>% mutate(date=as.Date(date))
+  data[] <- lapply(data, function(col) {
+    if (is.character(col)) {
+      col <- gsub("Ã©", "é", col)
+      col <- gsub("Ã¯", "ï", col)
+      return(col)
+    } else {
+      return(col)
+    }
+  })
+  data = data %>% mutate(date=as.Date(date), pourcentage = as.numeric(pourcentage))
   
   return(data)
 }

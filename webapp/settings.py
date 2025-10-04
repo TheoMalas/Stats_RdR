@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@@^*y$@4tv1(v-plr+pf&)-4qd=+79uzt@ogl9o2yarv^!xl!8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'stats.lefief-cachan.fr']
+ALLOWED_HOSTS = ['127.0.0.1', 'stats.lefief-cachan.fr', 'psychotopia.psychoactif.org']
 
 
 # Application definition
