@@ -1,5 +1,5 @@
 library(DBI)
-library(RMySQL)
+library(RMariaDB)
 library(dplyr)
 
 # user <- Sys.getenv("USER")
@@ -22,13 +22,14 @@ host <- Sys.getenv("HOST")
 port <- as.integer(Sys.getenv("PORT"))
 
 
-con <- dbConnect(RMySQL::MySQL(),
+con <- dbConnect(RMariaDB::MariaDB(),
                  dbname = Sys.getenv("DB_NAME"),
                  host = host,
                  port = port,
                  user = user,
                  password = pwd,
-                 client.flag = CLIENT_LOCAL_FILES)
+                 client.flag = CLIENT_LOCAL_FILES,
+                 encoding = "utf8mb4")
 
 dbListTables(con)
 data <- dbReadTable(con, "resultats_analyse")
@@ -138,8 +139,36 @@ data_f <- data_canonique %>%
 
 
 # 2. Write the cleaned data into the MySQL database
+col_defs <- paste0(
+  names(data_f), " ",
+  sapply(data_f, function(col) {
+    if(is.character(col)) {
+      "TEXT"
+    } else if(is.integer(col)) {
+      "INT"
+    } else if(is.numeric(col)) {
+      "DOUBLE"
+    } else if(is.logical(col)) {
+      "TINYINT(1)"
+    } else {
+      "TEXT"  # fallback
+    }
+  }),
+  collapse = ", "
+)
+
+create_sql <- paste0(
+  "CREATE TABLE IF NOT EXISTS resultats_analyse_cleaned (",
+  col_defs,
+  ") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+)
+
+dbExecute(con, create_sql)
+
 dbWriteTable(con,
              name = "resultats_analyse_cleaned",  # You can replace the table name if needed
              value = data_f,
-             overwrite = TRUE,  # or use append = TRUE if you want to add to existing data
+             append = TRUE,
              row.names = FALSE)
+
+dbListTables(con)

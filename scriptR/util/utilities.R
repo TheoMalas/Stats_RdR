@@ -28,7 +28,7 @@ load_data <- function(){
       return(col)
     }
   })
-  data = data %>% mutate(date=as.Date(date), pourcentage = as.numeric(pourcentage))
+  data = data %>% mutate(date=as.Date(date))
   
   return(data)
 }
