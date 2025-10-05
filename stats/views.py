@@ -81,6 +81,7 @@ def cocaine_view(request):
 
   return render(request, 'pages/coupe.html', { 
     'data_count' : data["count"][0],
+    'molecule_name' : 'Cocaïne',
     'data' : json.dumps(data),
   })
 
@@ -97,6 +98,7 @@ def heroine_view(request):
   
   return render(request, 'pages/coupe.html', { 
     'data_count' : data["count"][0],
+    'molecule_name': 'Héroïne',
     'data' : json.dumps(data),
   })
 
@@ -112,6 +114,7 @@ def coupe_3mmc_view(request):
 
   return render(request, 'pages/coupe.html',{
     'data_count' : data["count"][0],
+    'molecule_name': '3MMC',
     'data' : json.dumps(data),
   })
 
@@ -465,7 +468,7 @@ def histo_comprime_mdma_view(request):
     'data_count' : data["count"][0],
     'data' : json.dumps(data),
     'data_reg_dose_poids' : json.dumps(data_reg_dose_poids),
-    'molecule_name': "MDMA_tablets",
+    'molecule_name': "Comprimés de MDMA",
   })
 
 # Map Functions

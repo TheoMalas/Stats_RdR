@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Mes Données</a>
-      <button id="cleanCache">cleanCache</button>
+      <img src="https://www.psychoactif.org/images/banniere_psychoactif5.png">
+      <a class="navbar-brand" href="/">Psychotopia</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -15,12 +15,12 @@
           <a class="nav-link dropdown-toggle" href="#" id="allDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Toutes molécules
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="allDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="allDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'molecules_view' %}">Molécules</a>
+                <a class="nav-link" href="{% url 'molecules_view' %}">Analyse par type de molécules</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'supply_view' %}">Supply</a>
+                <a class="nav-link" href="{% url 'supply_view' %}">Analyse par mode d'approvisionnement</a>
                 </li>
           </ul>
         </li>
@@ -30,7 +30,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="cocaineDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cocaïne
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cocaineDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="cocaineDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Pureté cocaïne</a>
                 </li>
@@ -45,7 +45,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="mdmaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             MDMA
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="mdmaDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="mdmaDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_mdma_view' %}">Pureté MDMA</a>
                 </li>
@@ -60,7 +60,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="heroineDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Héroïne
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="heroineDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="heroineDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté héroïne</a>
                 </li>
@@ -75,7 +75,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="3mmcDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             3-MMC
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="3mmcDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="3mmcDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_3mmc_view' %}">Pureté 3-MMC</a>
                 </li>
@@ -90,7 +90,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="ketamineDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Kétamine
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="ketamineDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="ketamineDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_ketamine_view' %}">Pureté kétamine</a>
                 </li>
@@ -102,7 +102,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="speedDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Speed
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="speedDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="speedDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_speed_view' %}">Pureté speed</a>
                 </li>
@@ -114,7 +114,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="cannabisDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cannabis
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cannabisDropdown">
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="cannabisDropdown">
                 <li class="nav-item">
                 <a class="nav-link" href="{% url 'purity_cannabis_THC_resine_view' %}">Pourcentage THC résine</a>
                 </li>
