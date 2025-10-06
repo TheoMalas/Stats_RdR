@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %} All molecules {% endblock %}
-{% block centerText %} All molecules {% endblock %}
+{% block title %} Toutes molécules {% endblock %}
+{% block centerText %} Toutes molécules {% endblock %}
 
 
 {% block body %} 
@@ -11,15 +11,15 @@
     
     <!-- Infos sur le nombre d'échantillons -->
     <div>
+        <small>Nombre total d'échantillons observés :</small>
         <p class="display-6 mb-0">{{ all_molecules_data_count }}</p>
-        <small>Nombre total d'échantillons observés</small>
     </div>
 
     <!-- Bouton pour ouvrir le panneau -->
     <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
             type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
             aria-controls="formOffcanvas">
-        Ouvrir le formulaire
+        Options de visualisation
     </button>
 </div>
 

@@ -19,6 +19,7 @@ urlpatterns = [
     path('purity-cannabis-THC-herbe/', views.purity_cannabis_THC_herbe_view, name='purity_cannabis_THC_herbe_view'),
     path('purity-cocaine/', views.purity_cocaine_view, name='purity_cocaine_view'),
     path('histo-comprime-mdma/', views.histo_comprime_mdma_view, name='histo_comprime_mdma_view'),
+    path('faq/', views.faq_view, name='faq'),
 
     path('cleanCache/', views.cleanCache, name='clean_cache'),
   ]

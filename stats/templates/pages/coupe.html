@@ -9,15 +9,15 @@
     
     <!-- Infos sur le nombre total d'observations -->
     <div>
+        <small>Nombre total d'échantillons observés :</small>
         <p class="display-6 mb-0">{{ data_count }}</p>
-        <small>Nombre total d'échantillons observés</small>
     </div>
 
     <!-- Bouton pour ouvrir le panneau -->
     <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
             type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
             aria-controls="formOffcanvas">
-        Ouvrir le formulaire
+        Options de visualisation
     </button>
 </div>
 
@@ -71,8 +71,7 @@
             <div class="card-body">
                 {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='false' %}
                 <p>
-                    Le graphique présente l'évolution temporelle, par bimestre, de la proportion des échantillons, parmi ceux où
-                    un ou plusieurs produits de coupe ont été détectés, qui contiennent chacun des produits de coupe. 
+                    Parmis les échantillons coupés, voici l'évolution temporelle ( par bimestre ), de la présence des produits de coupe.
                 </p>  
             </div>
         </div>

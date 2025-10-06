@@ -11,18 +11,11 @@
       <ul class="navbar-nav ms-auto">
 
         <!-- Menu déroulant -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="allDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Toutes molécules
-          </a>
-          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="allDropdown">
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'molecules_view' %}">Analyse par type de molécules</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'supply_view' %}">Analyse par mode d'approvisionnement</a>
-                </li>
-          </ul>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'molecules_view' %}">Analyse par type de molécules</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'supply_view' %}">Analyse par mode d'approvisionnement</a>
         </li>
 
         <!-- Menu déroulant -->
@@ -32,10 +25,10 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="cocaineDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Pureté cocaïne</a>
+                <a class="nav-link" href="{% url 'purity_cocaine_view' %}">Pureté</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'cocaine_view' %}">Cocaïne coupe</a>
+                <a class="nav-link" href="{% url 'cocaine_view' %}">Produits de coupe</a>
                 </li>
           </ul>
         </li>
@@ -47,10 +40,10 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="mdmaDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_mdma_view' %}">Pureté MDMA</a>
+                <a class="nav-link" href="{% url 'purity_mdma_view' %}">Pureté de la forme poudre</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'histo_comprime_mdma_view' %}">Histo Comprimé MDMA</a>
+                <a class="nav-link" href="{% url 'histo_comprime_mdma_view' %}">Dosage des comprimés</a>
                 </li>
           </ul>
         </li>
@@ -62,10 +55,10 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="heroineDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté héroïne</a>
+                <a class="nav-link" href="{% url 'purity_heroine_view' %}">Pureté</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'heroine_view' %}">Héroïne coupe</a>
+                <a class="nav-link" href="{% url 'heroine_view' %}">Produits de coupe</a>
                 </li>                
           </ul>
         </li>
@@ -77,10 +70,10 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="3mmcDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_3mmc_view' %}">Pureté 3-MMC</a>
+                <a class="nav-link" href="{% url 'purity_3mmc_view' %}">Pureté</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url '3mmc_view' %}">3-MMC coupe</a>
+                <a class="nav-link" href="{% url '3mmc_view' %}">Produits de coupe</a>
                 </li>     
           </ul>
         </li>
@@ -92,7 +85,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="ketamineDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_ketamine_view' %}">Pureté kétamine</a>
+                <a class="nav-link" href="{% url 'purity_ketamine_view' %}">Pureté</a>
                 </li>
           </ul>
         </li>
@@ -104,7 +97,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="speedDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_speed_view' %}">Pureté speed</a>
+                <a class="nav-link" href="{% url 'purity_speed_view' %}">Pureté</a>
                 </li>
           </ul>
         </li>
@@ -116,12 +109,15 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="cannabisDropdown">
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_cannabis_THC_resine_view' %}">Pourcentage THC résine</a>
+                <a class="nav-link" href="{% url 'purity_cannabis_THC_resine_view' %}">Teneur en THC de la résine</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'purity_cannabis_THC_herbe_view' %}">Pourcentage THC herbe</a>
+                <a class="nav-link" href="{% url 'purity_cannabis_THC_herbe_view' %}">Teneur en THC de l'herbe</a>
                 </li>
           </ul>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'faq' %}">F.A.Q.</a>
         </li>
       </ul>
     </div>

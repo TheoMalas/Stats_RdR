@@ -471,6 +471,9 @@ def histo_comprime_mdma_view(request):
     'molecule_name': "Comprimés de MDMA",
   })
 
+def faq_view(request):
+  return render(request, 'pages/faq.html',{})
+
 # Map Functions
 
 def generate_color_map(data, start_hsl=(120, 60, 85), end_hsl=(120, 100, 25), mode="pourcent"):

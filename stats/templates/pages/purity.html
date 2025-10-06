@@ -9,15 +9,15 @@
     
     <!-- Infos sur le nombre total d'observations -->
     <div>
+        <small>Nombre total d'échantillons observés :</small>
         <p class="display-6 mb-0">{{ data_count }}</p>
-        <small>Nombre total d'échantillons observés</small>
     </div>
 
     <!-- Bouton pour ouvrir le formulaire -->
     <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
             type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
             aria-controls="formOffcanvas">
-        Ouvrir le formulaire
+        Options de visualisation
     </button>
 </div>
 
@@ -31,6 +31,13 @@
         {% include "components/form_date.html" %}
     </div>
 </div>
+{% if molecule_name == "3-MMC"%}
+<p>
+    Point d'attention : De nombreux échantillons vendus comme de la 3-MMC n'en sont pas (cf le nombre élevé d'échantillons
+    dont la pureté est nulle). Ainsi, vous pouvez choisir dans les options de ne regarder que les échantillons qui contiennent de la 3-MMC 
+    d'après l'analyse en laboratoire.
+</p>
+{%endif%}
 
 <div class="container py-3">
     <div class="masonry-grid">
@@ -38,11 +45,23 @@
         <!-- Carte 1 : Histogramme de pureté -->
         <div class="card text-center">
             <div class="card-header">
-                Distribution de la pureté
+                Histogramme de la pureté
             </div>
             <div class="card-body">
                 {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data %}
-                <p>Commençons par regarder l'histogramme de la pureté des échantillons analysés.</p>
+                <p>
+                    Commençons par regarder le nombre d'échantillons en fonction de leur pureté.
+                    Les analyses présentent la pureté de deux façons différentes : équivalent base et équivalent chlorhydrate.
+                    Les produits psychoactifs sont souvent vendus sous formes de poudre ou de cristal et ne contiennent pas uniquement
+                    la subustance psychoactive (cocaïne, héroïne, MDMA, ...). Le pourcentage d'une substance en équivalent base, 
+                    c'est le pourcentage de la dite molécule dans la poudre. Nous avons choisi de présenter le pourcentage en équivalent base 
+                    car c'est celui directement mesuré par le laboratoire.
+                    La pureté maximale (en masse) n'est pas 100% (car la poudre ne peut pas contenir que la molécule psychoactive) mais dépend 
+                    de la molécule considérée et est représentée par la barre verticale rouge en pointillé.
+                    Certains échantillons se situent au-delà de cette limite car les résultats d'analyse sont donnés avec une incertitude de +/- 10%.
+                    Pour plus d'information, vous pouvez consultez la <a href="https://www.psychoactif.org/forum/viewtopic.php?id=79748" target="_blank">F.A.Q.</a>
+                    sur l'analyse de drogues à distance.
+                </p>
             </div>
         </div>
 
