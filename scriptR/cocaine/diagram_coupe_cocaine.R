@@ -51,6 +51,15 @@ liste_prod_coupe = c("paracetamol","cafeine","levamisole","phenacetine","hydroxy
 
 data_coupe = data %>% filter(presencecoupe==1) %>%  select(all_of(liste_prod_coupe),date)
 
+data_coupe<- data_coupe %>%
+  rename("Paracétamol" = paracetamol, 
+         "Lévamisole" = levamisole,
+         "Phénacétine" = phenacetine,
+         "Caféine" = cafeine,
+         "Hydroxyzine" = hydroxyzine,
+         "Lidocaïne" = lidocaine,
+         "Procaïne" = procaine)
+
 pourcentage_non_nuls <- data.frame(
   prod = character(),
   pourcentage_non_nuls = numeric()

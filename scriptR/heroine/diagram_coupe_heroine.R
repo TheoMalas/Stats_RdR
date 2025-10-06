@@ -52,6 +52,12 @@ liste_prod_coupe = c("paracetamol","X6MAM","cafeine","papaverine","dextrometorph
 
 data_coupe = data %>% filter(presencecoupe==1) %>%  select(all_of(liste_prod_coupe),date)
 
+data_coupe<- data_coupe %>%
+  rename("Paracétamol" = paracetamol, 
+         "Caféine" = cafeine,
+         "Papavérine" = papaverine,
+         "Dextrométorphane" = dextrometorphane)
+
 pourcentage_non_nuls <- data.frame(
   prod = character(),
   pourcentage_non_nuls = numeric()
