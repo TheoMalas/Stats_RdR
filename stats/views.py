@@ -471,6 +471,9 @@ def histo_comprime_mdma_view(request):
     'molecule_name': "Comprimés de MDMA",
   })
 
+def accueil_view(request):
+  return render(request, 'pages/accueil.html',{})
+
 def faq_view(request):
   return render(request, 'pages/faq.html',{})
 
