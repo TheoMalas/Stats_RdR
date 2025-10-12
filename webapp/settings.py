@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@@^*y$@4tv1(v-plr+pf&)-4qd=+79uzt@ogl9o2yarv^!xl!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'stats.lefief-cachan.fr', 'psychotopia.psychoactif.org']
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'stats'
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# (optionnel) dossier où collecter les fichiers pour la prod
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# (optionnel) emplacements supplémentaires
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # si tu veux un dossier global
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

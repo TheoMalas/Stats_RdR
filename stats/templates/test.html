@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div id="header">
+        <div id="header-block-1">
+            <h1>{% block title %}{% endblock %}</h1>
+            <p>{% block explanations %}{% endblock %}</p>
+            {% block filter %}
+            {% endblock %}
+        </div>
+        <div id="header-block-2">
+            <h2>Liens utiles :</h2>
+            {% block links %}{% endblock %}
+        </div>
+    </div>
+
+    <div id="visualizations">
+        {% block body %}
+        {% endblock %}
+    </div>
+
+{% endblock %}

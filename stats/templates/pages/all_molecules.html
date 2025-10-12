@@ -1,27 +1,35 @@
-{% extends "base.html" %}
+{% extends "test.html" %}
 
-{% block title %} Toutes molécules {% endblock %}
-{% block centerText %} Toutes molécules {% endblock %}
+{% load card %}
 
+{% block title %} Analyse par type de molécule {% endblock %}
 
-{% block body %} 
+{% block explanations %} Analyse par type de molécule {% endblock %}
 
+{% block links %} 
+<ul>
+    <li>Test</li>
+    <li>Test</li>
+</ul>
 
-<div class="d-flex align-items-center gap-3 m-3">
-    
-    <!-- Infos sur le nombre d'échantillons -->
-    <div>
-        <small>Nombre total d'échantillons observés :</small>
-        <p class="display-6 mb-0">{{ all_molecules_data_count }}</p>
-    </div>
+{% endblock %}
 
-    <!-- Bouton pour ouvrir le panneau -->
-    <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
+{% block filter %} 
+
+    <div id="filter">
+    <button class="btn btn-primary" style="width: 200px" 
             type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
             aria-controls="formOffcanvas">
         Options de visualisation
     </button>
-</div>
+
+    <p>Nombre total d'échantillons observés :</p>
+    <p>{{ all_molecules_data_count }}</p>
+    </div>
+{% endblock %}
+
+
+{% block body %} 
 
 <!-- Offcanvas gauche -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="formOffcanvas" aria-labelledby="formOffcanvasLabel">
@@ -34,11 +42,30 @@
     </div>
 </div>
 
-<div class="container py-3">
-    <div class="masonry-grid">
+<div class="tabs">
+  <div role="tablist" aria-labelledby="tablist-1" class="manual">
+    <button id="tab-1" type="button" role="tab" aria-selected="true" aria-controls="tabpanel-1">
+      <span class="focus">Proportion par molécule</span>
+    </button>
+    <button id="tab-2" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-2" tabindex="-1">
+      <span class="focus">Après première consommation</span>
+    </button>
+    <button id="tab-3" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-3" tabindex="-1">
+      <span class="focus">Évolution temporelle - Nombre d'échantillons</span>
+    </button>
+    <button id="tab-4" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-4" tabindex="-1">
+      <span class="focus">Évolution temporelle - Proportion</span>
+    </button>
+    <button id="tab-5" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-5" tabindex="-1">
+      <span class="focus">Nombre d'échantillons par région</span>
+    </button>
+    <button id="tab-6" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-6" tabindex="-1">
+      <span class="focus">Échantillons par million d'habitants</span>
+    </button>
+  </div>
 
-        <!-- Pie Chart - Proportion par molécule -->
-        <div class="card text-center">
+  <div id="tabpanel-1" role="tabpanel" aria-labelledby="tab-1">
+    <div class="card text-center">
             <div class="card-header">
                 Répartition par molécule
             </div>
@@ -47,9 +74,9 @@
                 <p class="mt-3">Le diagramme présente la proportion des échantillons en fonction de la molécule supposée.</p>
             </div>
         </div>
-
-          <!-- Pie Chart - Après première consommation -->
-        <div class="card text-center">
+  </div>
+  <div id="tabpanel-2" role="tabpanel" aria-labelledby="tab-2" class="is-hidden">
+    <div class="card text-center">
             <div class="card-header">
                 Proportion après première consommation
             </div>
@@ -58,9 +85,9 @@
                 <p class="mt-3">Proportion des échantillons envoyés après une première consommation.</p>
             </div>
         </div>
-
-        <!-- Area Chart 1 -->
-        <div class="card text-center">
+  </div>
+  <div id="tabpanel-3" role="tabpanel" aria-labelledby="tab-3" class="is-hidden">
+    <div class="card text-center">
             <div class="card-header">
                 Évolution temporelle - Nombre d'échantillons
             </div>
@@ -69,9 +96,9 @@
                 <p class="mt-3">Les données sont regroupées par bimestre et montrent l'évolution en nombre d'échantillons par molécule.</p>
             </div>
         </div>
-
-        <!-- Area Chart 2 -->
-        <div class="card text-center">
+  </div>
+  <div id="tabpanel-4" role="tabpanel" aria-labelledby="tab-4" class="is-hidden">
+            <div class="card text-center">
             <div class="card-header">
                 Évolution temporelle - Proportion
             </div>
@@ -80,10 +107,9 @@
                 <p class="mt-3">Les données sont regroupées par bimestre et montrent l'évolution en proportion d'échantillons par molécule.</p>
             </div>
         </div>
-
-       
-        <!-- Map absolute -->
-        <div class="card text-center">
+  </div>
+  <div id="tabpanel-5" role="tabpanel" aria-labelledby="tab-5" class="is-hidden">
+            <div class="card text-center">
             <div class="card-header">
                 Carte - Nombre d'échantillons par région
             </div>
@@ -92,9 +118,9 @@
                 <p class="mt-3">La carte montre le nombre d'échantillons reçus en fonction de la région d'envoi.</p>
             </div>
         </div>
-
-        <!-- Map proportion -->
-        <div class="card text-center">
+  </div>
+  <div id="tabpanel-6" role="tabpanel" aria-labelledby="tab-6" class="is-hidden">
+             <div class="card text-center">
             <div class="card-header">
                 Carte - Échantillons par million d'habitants
             </div>
@@ -103,10 +129,9 @@
                 <p class="mt-3">Nombre d'échantillons reçus par région, rapporté à la population (par million d'habitants).</p>
             </div>
         </div>
-
-    </div>
+  </div>
 </div>
-
+        
 <style>
 .masonry-grid {
     display: grid;
