@@ -1,27 +1,67 @@
 {% extends "base.html" %}
 
-{% block body %} 
-<h1>
-    Psychotopia
-</h1>
-<h2>
-    Un paysage des drogues en France
-</h2>
-<p>
-    Ce site présente un ensemble d'analyses statistiques qui s'appuient sur le dispositif 
-    d'<a href="https://www.psychoactif.org/blogs/L-analyse-de-drogue-a-distance-Psychoactif-en-a-reve-et-l-a-fait_7273_1.html" target="_blank">analyse à distance</a>
-    mis en place par l'association Psychoactif.
-</p>
-<p>
-    Vous pouvez regarder les statistiques à l'échelle de l'ensemble des échantillons ou bien vous restreindre à certaines
-    molécules parmi les plus présentes dans les échantillons. Vous pouvez choisir différentes options pour l'analyse statistique :
-    fenêtre temporelle, options de moyennage, restriction à certaines catégories de substances,...
-</p>
-<p>
-    Pour vous accompagner, chaque graphique ou tableau possède un texte explicatif afin de décrire ce qui est présenté, guider l'interprétation des résultats et
-    expliciter les notations.
-</p>
-<p>
-    Bonne visite !
-</p>
+{% block body %}
+<style>
+.home-container {
+    max-width: 850px;
+    margin: 60px auto;
+    background: white;
+    padding: 50px 60px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.home-container h1 {
+    font-size: 2.6em;
+    color: #d35400; /* orange profond cohérent avec la navbar */
+    margin-bottom: 10px;
+}
+
+.home-container h2 {
+    font-size: 1.4em;
+    color: #555;
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+
+.home-container p {
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    text-align: justify;
+}
+
+.home-container a {
+    color: #e74c3c; /* rouge doux pour les liens */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.home-container a:hover {
+    text-decoration: underline;
+}
+</style>
+
+<div class="home-container">
+    <h1>Psychotopia</h1>
+    <h2>Un paysage des drogues en France</h2>
+    <p>
+        Ce site présente un ensemble d'analyses statistiques qui s'appuient sur le dispositif 
+        d'<a href="https://www.psychoactif.org/blogs/L-analyse-de-drogue-a-distance-Psychoactif-en-a-reve-et-l-a-fait_7273_1.html" target="_blank">
+        analyse à distance</a>
+        mis en place par l'association Psychoactif.
+    </p>
+    <p>
+        Vous pouvez regarder les statistiques à l'échelle de l'ensemble des échantillons ou bien vous restreindre à certaines
+        molécules parmi les plus présentes dans les échantillons. Vous pouvez choisir différentes options pour l'analyse statistique :
+        fenêtre temporelle, options de moyennage, restriction à certaines catégories de substances,...
+    </p>
+    <p>
+        Pour vous accompagner, chaque graphique ou tableau possède un texte explicatif afin de décrire ce qui est présenté, guider l'interprétation des résultats et
+        expliciter les notations.
+    </p>
+    <p><strong>Bonne visite !</strong></p>
+</div>
 {% endblock %}

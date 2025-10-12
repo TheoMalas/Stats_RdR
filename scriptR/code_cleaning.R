@@ -171,4 +171,5 @@ dbWriteTable(con,
              append = TRUE,
              row.names = FALSE)
 
-dbListTables(con)
+#dbListTables(con)
+dbDisconnect(con)

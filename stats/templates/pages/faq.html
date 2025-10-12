@@ -1,54 +1,91 @@
 {% extends "base.html" %}
 
-{% block body %} 
-<h2>
-    Qui sommes-nous ?
-</h2>
-<p>
-    Le site Psychotopia a été développé à l'initiative de deux adhérents de Psychoactif : 
-    <a href="https://www.psychoactif.org/forum/profile.php?id=185396" target="_blank">Delphes</a> et Buster.
-</p>
-<p>
-    Rien n'aurait été possible sans l'équipe de Psychoactif et le dispositif d'analyse à distance.
-</p>
-<p>
-    Nous tenons à remercier chaleureusement Camille, ...
-</p>
-<h2>
-    Le travail présenté est-il opensource ?
-</h2>
-<p>
-    Tout à fait !
-    Si vous souhaitez contribuer à Psychotopia ou vérifier le code, tout est disponible sur ce 
-    <a href="https://github.com/TheoMalas/Stats_RdR" target="_blank">repository github</a>.
-</p>
-<h2>
-    Pourquoi les cartes de France ne représentent que l'hexagone et la Corse ?
-</h2>
-<p>
-    Il s'agit d'une question importante et nous nous sommes posés la question de la représentation géographique
-    lors de l'élaboration du site. Du fait du nombre très faible d'échantillons qui proviennent des régions
-    ultramarines (1 échantillon provenant de la Gouadeloupe sur 3344 à date du 05/07/2025) et de la complexité 
-    de code plus grande, nous avons décidés pour l'instant de ne montrer que l'hexagone et la Corse.
-</p>
-<h2>
-    J'ai des interrogations concernant Psychotopia qui ne trouve aucune réponse parmi la communauté Psychoactif, qui puis-je contacter ?
-</h2>
-<h2>
-    J'utilise Psychotopia pour mon travail de recherche ou pour une publication, comment citer ce site ?
-</h2>
-<p>
-    Nous serions très reconnaissant que vous citiez le site.
-</p>
-<p>
-    C'est d'ailleurs une bonne approche si vous voulez faciliter la reproductibilité de ce que vous présentez.
-</p>
-<p>
-    Vous pouvez utiliser une phrase commme suit dans le paragraphe dédié aux remerciements:
-</p>
-<p>
-    "Les auteurs.ices sont reconnaissants envers la plateforme Psychotopia et l'association Psychoactif pour 
-    leurs ressources et leur soutien."
-</p>
+{% block body %}
+<style>
+.faq-container {
+    max-width: 850px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
+.faq-container h2 {
+    color: #d35400; /* orange profond cohérent avec la navbar */
+    font-size: 1.6em;
+    margin-top: 30px;
+    border-left: 4px solid orange;
+    padding-left: 12px;
+}
+
+.faq-container p {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 1.05em;
+}
+
+.faq-container a {
+    color: #e74c3c; /* rouge doux pour les liens */
+    text-decoration: none;
+}
+
+.faq-container a:hover {
+    text-decoration: underline;
+}
+
+.faq-container h2:first-of-type {
+    margin-top: 0;
+}
+</style>
+
+<div class="faq-container">
+    <h2>Qui sommes-nous ?</h2>
+    <p>
+        Le site Psychotopia a été développé à l'initiative de deux adhérents de Psychoactif : 
+        <a href="https://www.psychoactif.org/forum/profile.php?id=185396" target="_blank">Delphes</a> et Buster.
+    </p>
+    <p>
+        Rien n'aurait été possible sans l'équipe de Psychoactif et le dispositif d'analyse à distance.
+    </p>
+    <p>
+        Nous tenons à remercier chaleureusement Camille, ...
+    </p>
+
+    <h2>Le travail présenté est-il opensource ?</h2>
+    <p>
+        Tout à fait ! Si vous souhaitez contribuer à Psychotopia ou vérifier le code, tout est disponible sur ce 
+        <a href="https://github.com/TheoMalas/Stats_RdR" target="_blank">repository github</a>.
+    </p>
+
+    <h2>Pourquoi les cartes de France ne représentent que l'hexagone et la Corse ?</h2>
+    <p>
+        Il s'agit d'une question importante et nous nous sommes posés la question de la représentation géographique
+        lors de l'élaboration du site. Du fait du nombre très faible d'échantillons qui proviennent des régions
+        ultramarines (1 échantillon provenant de la Guadeloupe sur 3344 à date du 05/07/2025) et de la complexité 
+        de code plus grande, nous avons décidés pour l'instant de ne montrer que l'hexagone et la Corse.
+    </p>
+
+    <h2>J'ai des interrogations concernant Psychotopia qui ne trouve aucune réponse parmi la communauté Psychoactif, qui puis-je contacter ?</h2>
+    <p> 
+        Si la moindre interrogation émerge, n'hésitez pas à ouvrir une discussion sur le forum Psychoactif dans la catégorie
+        Psychotopia. Si malgré tout votre interrogation persiste, vous pouvez contacter l'équipe du site à l'adresse ...
+    </p>
+
+    <h2>J'utilise Psychotopia pour mon travail de recherche ou pour une publication, comment citer ce site ?</h2>
+    <p>
+        Nous serions très reconnaissant que vous citiez le site.
+    </p>
+    <p>
+        C'est d'ailleurs une bonne approche si vous voulez faciliter la reproductibilité de ce que vous présentez.
+    </p>
+    <p>
+        Vous pouvez utiliser une phrase commme suit dans le paragraphe dédié aux remerciements :
+    </p>
+    <p>
+        "Les auteurs.ices sont reconnaissants envers la plateforme Psychotopia et l'association Psychoactif pour 
+        leurs ressources et leur soutien."
+    </p>
+</div>
 {% endblock %}

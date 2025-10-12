@@ -31,13 +31,55 @@
         {% include "components/form_date.html" %}
     </div>
 </div>
-{% if molecule_name == "3-MMC"%}
-<p>
-    Point d'attention : De nombreux échantillons vendus comme de la 3-MMC n'en sont pas (cf le nombre élevé d'échantillons
-    dont la pureté est nulle). Ainsi, vous pouvez choisir dans les options de ne regarder que les échantillons qui contiennent de la 3-MMC 
-    d'après l'analyse en laboratoire.
-</p>
-{%endif%}
+<style>
+.info-box {
+    width: 100%;
+    margin: 20px auto 40px auto;
+    padding: 20px 25px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-size: 1.05em;
+    line-height: 1.6;
+    color: #333;
+}
+
+.info-box a {
+    color: #e74c3c; /* rouge doux */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.info-box a:hover {
+    text-decoration: underline;
+}
+
+.alert-box {
+    margin-top: 15px;
+    padding: 15px 20px;
+    background-color: #fff3e0; /* orange très clair */
+    border-left: 4px solid #d35400; /* accent orange profond */
+    border-radius: 6px;
+    font-weight: 500;
+    color: #333;
+}
+</style>
+
+<div class="info-box">
+    <p>
+        {{ presentation | safe }}
+        Pour plus d'informations, vous pouvez regarder la 
+        <a href="{{ url_wiki }}" target="_blank">page Wiki sur la {{ molecule_name }}</a>.
+    </p>
+    {% if molecule_name == "3-MMC" %}
+    <div class="alert-box">
+        Point d'attention : De nombreux échantillons vendus comme de la 3-MMC n'en sont pas (cf le nombre élevé d'échantillons
+        dont la pureté est nulle). Ainsi, vous pouvez choisir dans les options de ne regarder que les échantillons qui contiennent de la 3-MMC 
+        d'après l'analyse en laboratoire.
+    </div>
+    {% endif %}
+</div>
+
 
 <div class="container py-3">
     <div class="masonry-grid">

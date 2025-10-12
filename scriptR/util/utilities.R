@@ -1,20 +1,20 @@
 load_data <- function(){
   library(DBI)
-  library(RMySQL)
+  library(RMariaDB)
   library(dplyr)
   user <- Sys.getenv("USER")
   pwd <- Sys.getenv("PASSWORD")
   host <- Sys.getenv("HOST")
   port <- as.integer(Sys.getenv("PORT"))
   
-  
-  con <- dbConnect(RMySQL::MySQL(),
-                   dbname = Sys.getenv("DB_NAME"),
-                   host = host,
-                   port = port,
-                   user = user,
-                   password = pwd,
-                   encoding = "UTF-8")
+  con <- dbConnect(RMariaDB::MariaDB(),
+                 dbname = Sys.getenv("DB_NAME"),
+                 host = host,
+                 port = port,
+                 user = user,
+                 password = pwd,
+                 client.flag = CLIENT_LOCAL_FILES,
+                 encoding = "utf8mb4")
   
   dbListTables(con)
   data <- dbReadTable(con, "resultats_analyse_cleaned")
