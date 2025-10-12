@@ -157,6 +157,8 @@ col_defs <- paste0(
   collapse = ", "
 )
 
+dbExecute(con, "DROP TABLE resultats_analyse_cleaned");
+
 create_sql <- paste0(
   "CREATE TABLE IF NOT EXISTS resultats_analyse_cleaned (",
   col_defs,

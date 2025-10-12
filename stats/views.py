@@ -565,12 +565,17 @@ def generate_color_map(data, start_hsl=(120, 60, 85), end_hsl=(120, 100, 25), mo
     scalar_data = {k: v[0] for k, v in data.items()}
 
     values = list(scalar_data.values())
+    values = [v[0] for v in data.values() if isinstance(v[0], (float, int))]
+
     min_val = min(values)
     max_val = max(values)
 
     color_map = {}
 
     for key, value in scalar_data.items():
+        if (not isinstance(value, (float, int))):
+          continue
+        
         t = (value - min_val) / (max_val - min_val) if max_val != min_val else 0
 
         # Interpolation HSL

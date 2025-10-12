@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@@^*y$@4tv1(v-plr+pf&)-4qd=+79uzt@ogl9o2yarv^!xl!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'stats.lefief-cachan.fr', 'psychotopia.psychoactif.org']
 
