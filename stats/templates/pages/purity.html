@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %} Pureté - {{ molecule_name }} {% endblock %}
-{% block centerText %} Statistiques sur la pureté de {{ molecule_name }} {% endblock %}
+{% block centerText %} {{ page_title }} {% endblock %}
 
 {% block body %}
 
@@ -90,7 +90,7 @@
                 Histogramme de la pureté
             </div>
             <div class="card-body">
-                {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data %}
+                {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data unit=unit%}
                 <p>
                     Commençons par regarder le nombre d'échantillons en fonction de leur pureté.
                     Les analyses présentent la pureté de deux façons différentes : équivalent base et équivalent chlorhydrate.
@@ -127,11 +127,11 @@
                 </ul>
                 <div class="tab-content mt-3">
                     <div class="tab-pane fade show active" id="chart1" role="tabpanel">
-                        <p>Ligne centrale : moyenne, inférieure : moyenne - 1 écart-type, supérieure : moyenne + 1 écart-type.</p>
+                        <p>La ligne bleue représente la moyenne et la zone grisée est l'espace autour de la moyenne à +/- 1 écart-type.</p>
                         {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
                     </div>
                     <div class="tab-pane fade" id="chart2" role="tabpanel">
-                        <p>Ligne centrale : médiane, inférieure : 1er quartile, supérieure : 3e quartile.</p>
+                        <p>La ligne bleue représente la médiane, la zone grisée s'étend du premier quartile au troisième quartile.</p>
                         {% include "components/line_chart.html" with id="line_2" chart_data=data_2 is_stacked='false' %}
                     </div>
                 </div>

@@ -15,6 +15,25 @@ from datetime import datetime
 
 default_Delta = 15
 default_no_cut = 'false'
+default_unit = 'pourcent'
+
+#Dictionary for the titles of each page
+dict_title = {
+  'All molecules' : "Analyse par type de molécules",
+  'Supply' : "Analyse par mode d'approvisionnement",
+  'Cocaïne' : "Statistiques sur la pureté de la cocaïne",
+  'Cocaïne_coupe' : "Analyse des produits de coupe sur la cocaïne",
+  'Héroïne' : "Statistiques sur la pureté de l'héroïne", 
+  'Héroïne_coupe' : "Analyse des produits de coupe sur l'héroïne",
+  '3-MMC' : "Statistiques sur la pureté de la 3-MMC",
+  '3-MMC_coupe' : "Analyse des produits de coupe sur la 3-MMC",
+  'MDMA' : "Statistiques sur la pureté de la MDMA sous forme cristal/poudre",
+  'Comprimés de MDMA' : "Statistiques sur la teneur en MDMA des cachets d'ecstasy",
+  'Kétamine' : "Statistiques sur la pureté de la kétamine",
+  'Speed' : "Statistiques sur la pureté du speed",
+  'Résine de Cannabis' : "Statistiques sur la teneur en THC de la résine de cannabis",
+  'Herbe de Cannabis' : "Statistiques sur la teneur en THC des fleurs séchées de cannabis"
+}
 
 #Dictionary for the urls of the Psychowiki
 dict_urls = {
@@ -26,9 +45,9 @@ dict_urls = {
   'Kétamine' : 'https://www.psychoactif.org/psychowiki/index.php?title=K%C3%A9tamine,_effets,_risques,_t%C3%A9moignages',
   'Speed' : 'https://www.psychoactif.org/psychowiki/index.php?title=Amph%C3%A9tamine-M%C3%A9thamph%C3%A9tamine,_effets,_risques,_t%C3%A9moignages',
   'Résine de Cannabis' : 'https://www.psychoactif.org/psychowiki/index.php?title=Cannabis,_effets,_risques,_t%C3%A9moignages',
-  'Herbe de Cannabis' : 'https://www.psychoactif.org/psychowiki/index.php?title=Cannabis,_effets,_risques,_t%C3%A9moignages',
+  'Herbe de Cannabis' : 'https://www.psychoactif.org/psychowiki/index.php?title=Cannabis,_effets,_risques,_t%C3%A9moignages'
 }
-
+#Dictionary for the presentation of each substance
 dict_pres = {
   'Cocaïne' : """La cocaïne est un produit psychoactif de la classe des stimulants du système nerveux central.
                Elle est issue de la feuille du cocaïer et se présente comme une poudre de couleur blanche scintillante.""",
@@ -83,6 +102,7 @@ def molecules_view(request):
 
   args["mode"] = "prop"
   map_data_prop = runScript("all/carte_region_france_all_molecules", args)
+  page_name="All molecules"
 
   return render(request, 'pages/all_molecules.html', {
       'all_molecules_data_count' : all_molecules_data["count"][0],
@@ -92,7 +112,8 @@ def molecules_view(request):
       'map_data_abs_color' : json.dumps(generate_color_map(map_data_abs, (120,60,85), (200,100,30), "number")),
       'map_data_prop' : json.dumps(map_data_prop),
       'map_data_prop_color' : json.dumps(generate_color_map(map_data_prop, (50,100,70), (0, 100, 40), "number")),
-      'conso_all_molecules_data' : json.dumps(conso_all_molecules_data)
+      'conso_all_molecules_data' : json.dumps(conso_all_molecules_data),
+      'page_title' : dict_title[page_name]
   })
 
 def supply_view(request):
@@ -107,10 +128,12 @@ def supply_view(request):
   }
 
   data = runScript("all/pie_chart_supply_all_molecules", args)
+  page_name="Supply"
   
   return render(request, 'pages/supply.html', { 
       'data_count' : data["count"][0],
       'data' : json.dumps(data),
+      'page_title' : dict_title[page_name]
   })
 
 def cocaine_view(request):
@@ -124,11 +147,13 @@ def cocaine_view(request):
     
   data = runScript("cocaine/diagram_coupe_cocaine", args)
   molecule_name = 'Cocaïne'
+  page_name = 'Cocaïne_coupe'
 
   return render(request, 'pages/coupe.html', { 
     'data_count' : data["count"][0],
     'molecule_name' : molecule_name,
     'data' : json.dumps(data),
+    'page_title' : dict_title[page_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name]
   })
@@ -144,11 +169,13 @@ def heroine_view(request):
   
   data = runScript("heroine/diagram_coupe_heroine", args)
   molecule_name = 'Héroïne'
+  page_name = 'Héroïne_coupe'
   
   return render(request, 'pages/coupe.html', { 
     'data_count' : data["count"][0],
     'molecule_name': molecule_name,
     'data' : json.dumps(data),
+    'page_title' : dict_title[page_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name]
   })
@@ -162,12 +189,14 @@ def coupe_3mmc_view(request):
   }
 
   data = runScript("3mmc/coupe_3mmc", args)
-  molecule_name = '3MMC'
+  molecule_name = '3-MMC'
+  page_name = '3-MMC_coupe'
 
   return render(request, 'pages/coupe.html',{
     'data_count' : data["count"][0],
     'molecule_name': molecule_name,
     'data' : json.dumps(data),
+    'page_title' : dict_title[page_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name]
   })
@@ -214,8 +243,10 @@ def purity_cocaine_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })
 
 def purity_mdma_view(request):
@@ -258,8 +289,10 @@ def purity_mdma_view(request):
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': molecule_name,
     'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })
 
 def purity_heroine_view(request):
@@ -303,8 +336,10 @@ def purity_heroine_view(request):
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': molecule_name,
     'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })
 
 def purity_3mmc_view(request):
@@ -347,8 +382,10 @@ def purity_3mmc_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })
 
 def purity_ketamine_view(request):
@@ -391,8 +428,10 @@ def purity_ketamine_view(request):
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': molecule_name,
     'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })
   
 
@@ -437,8 +476,10 @@ def purity_speed_view(request):
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': molecule_name,
     'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })  
   
 
@@ -479,8 +520,10 @@ def purity_cannabis_THC_resine_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': molecule_name,
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })  
   
 
@@ -522,8 +565,10 @@ def purity_cannabis_THC_herbe_view(request):
     'map_data' : json.dumps(map_data),
     'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
     'molecule_name': molecule_name,
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit
   })
 
 def histo_comprime_mdma_view(request):
@@ -539,17 +584,25 @@ def histo_comprime_mdma_view(request):
   data_reg_dose_poids = runScript("mdma/regression_poids_comprime_quantite_mdma", args)
   
   args["Delta"] = Delta
+  args["mode"] = "moyenne"
 
   data = runScript("mdma/histo_comprime_mdma", args)
+
+  args["mode"] = "médiane"
+  data_2 = runScript("mdma/histo_comprime_mdma", args)
+
   molecule_name = "Comprimés de MDMA"
     
   return render(request, 'pages/purity.html', { 
     'data_count' : data["count"][0],
     'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
     'data_reg_dose_poids' : json.dumps(data_reg_dose_poids),
     'molecule_name': molecule_name,
+    'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
-    'presentation' : dict_pres[molecule_name]
+    'presentation' : dict_pres[molecule_name],
+    'unit' : "poids"
   })
 
 def accueil_view(request):

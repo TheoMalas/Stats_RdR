@@ -48,14 +48,13 @@ df_fin_presence_coupe = df_pie_presence_coupe %>% select(categorie_label, pource
 
 # Second chart: histogramme avec barres à l'horizontale, une ligne par produit de coupe, rangé par ordre décroissant
 
-liste_prod_coupe = c("paracetamol","X6MAM","cafeine","papaverine","dextrometorphane")
+liste_prod_coupe = c("paracetamol","cafeine","dextrometorphane")
 
 data_coupe = data %>% filter(presencecoupe==1) %>%  select(all_of(liste_prod_coupe),date)
 
 data_coupe<- data_coupe %>%
   rename("Paracétamol" = paracetamol, 
          "Caféine" = cafeine,
-         "Papavérine" = papaverine,
          "Dextrométorphane" = dextrometorphane)
 
 pourcentage_non_nuls <- data.frame(

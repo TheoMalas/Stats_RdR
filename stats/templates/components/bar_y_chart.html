@@ -1,42 +1,104 @@
 <canvas id="{{ id|safe }}" width="400" height="400"></canvas>
 
-<script>
-    (function() {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
 
-        const data = JSON.parse(`{{ chart_data|safe }}`);
-        new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: data.labels,
-                datasets: [{
-                    label: 'Proportion de produits retrouvés',
-                    data: data.data,
-                    backgroundColor: '#36A2EB',
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Pourcentage de pureté'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Occurences'
-                        }
+<script>
+(function() {
+    const data = JSON.parse(`{{ chart_data|safe }}`);
+    const unit = '{{unit}}'
+    let x_axis_label = ''
+    if (unit === 'pourcent'){x_axis_label='Pourcentage de pureté'}
+    if (unit === 'poids'){x_axis_label='Masse de la substance [mg]'}
+    if (typeof data.ratio_base_sel === 'undefined') {
+    new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Proportion de produits retrouvés',
+                data: data.data,
+                backgroundColor: '#36A2EB',
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: x_axis_label
                     }
                 },
-                plugins: {
-                    legend: {
-                        display: false // Si tu veux juste un titre simple
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Occurences'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+            }
+        }
+    });
+}
+    else {
+    new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Proportion de produits retrouvés',
+                data: data.data,
+                backgroundColor: '#36A2EB',
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: x_axis_label
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Occurences'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                annotation: {
+                    annotations: {
+                        threshold: {
+                            type: 'line',
+                            xMin: data.ratio_base_sel[0]/5,
+                            xMax: data.ratio_base_sel[0]/5,
+                            borderColor: 'red',
+                            borderWidth: 3,              // line thickness
+                            borderDash: [6, 6],          // dashed line pattern
+                            label: {
+                                display: true,
+                                position: 'start',
+                                backgroundColor: 'rgba(255,255,255,0.7)',
+                                color: 'red'
+                            }
+                        }
                     }
                 }
             }
-        });
-    })();
+        }
+    });
+}
+})();
 </script>

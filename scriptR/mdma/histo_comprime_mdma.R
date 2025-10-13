@@ -74,21 +74,59 @@ data_histo <- data_comprime %>%
 # Evolution moyenne et variance ################################################
 ################################################################################
 
-data_mean_lis <- data_comprime %>%
-  arrange(date) %>%
-  mutate(moyenne_glissante = sapply(date, function(d) {
-    mean(dose[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
-  }))%>%
-  filter(date >= min(date) + Delta, date <= max(date) - Delta) %>% 
-  select(date,moyenne_glissante)
+if (mode == "moyenne"){
+  data_lis <- data_comprime %>%
+    arrange(date) %>%
+    mutate(
+      main = sapply(date, function(d) {
+        mean(dose[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+      }),
+      ecart_type_glissant = sapply(date, function(d) {
+        sd(dose[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+      }),
+      borne_sup = main + ecart_type_glissant,
+      borne_inf = main - ecart_type_glissant) %>%
+    filter(date >= min(date) + Delta, date <= max(date) - Delta) %>%
+    select(date, main, borne_sup, borne_inf)
+  data_lis <- data_lis %>% mutate(borne_inf = ifelse(borne_inf < 0, 0, borne_inf))
+}
+
+if (mode == "médiane"){
+  data_lis <- data_comprime %>%
+    arrange(date) %>%
+    mutate(
+      main = sapply(date, function(d) {
+        median(dose[date >= d - Delta & date <= d + Delta], na.rm = TRUE)
+      }),
+      borne_inf = sapply(date, function(d) {
+        quantile(dose[date >= d - Delta & date <= d + Delta], 0.25, na.rm = TRUE)
+      }),
+      borne_sup = sapply(date, function(d) {
+        quantile(dose[date >= d - Delta & date <= d + Delta], 0.75, na.rm = TRUE)
+      })) %>%
+    filter(date >= min(date) + Delta, date <= max(date) - Delta) %>%
+    select(date, main, borne_sup, borne_inf)
+}
 
 # Génération de la liste des datasets
-datasets_list <-list(list(
-  label = "",
-  data = data_mean_lis$moyenne_glissante,
+datasets_list <-list(
+  list(
+  label = paste(mode, "glissante"),
+  data = data_lis$main,
   fill = "false"
-))
-
+  ),
+  list(
+  label = "borne sup",
+  data = data_lis$borne_sup,
+  fill = "false"
+  ),
+  list(
+  label = "borne inf",
+  data = data_lis$borne_inf,
+  fill = "false"
+  )
+)
+labels_line = as.character(data_lis$date)
 ################################################################################
 # Export en JSON ###############################################################
 ################################################################################
@@ -98,7 +136,7 @@ N=sum(data_histo$occurence)
 json_obj <- list(
   labels = as.character(data_histo$classe),
   data = data_histo$occurence,
-  labels_line = as.character(data_mean_lis$date),
+  labels_line = labels_line,
   datasets_line = datasets_list,
   count = N
 )
