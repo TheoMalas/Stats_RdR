@@ -23,7 +23,7 @@
         const color_data = JSON.parse(`{{ color_data|safe }}`);
         const values = Object.keys(data).map(function(key){
             return data[key][0];
-        });
+        }).filter((v) => !isNaN(v));
         const min_values = Math.min(...values);
         const max_values = Math.max(...values);
         const start_hsl = color_data["start_hsl"];
