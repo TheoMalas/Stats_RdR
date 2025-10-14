@@ -7,7 +7,7 @@ data = load_data()
 data = data %>% filter(molecule_simp=="MDMA", (forme=="Cristal" | forme=="Poudre"))
 
 black_list_percent=c("NQ")
-data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
+data = data %>% filter(!pourcentage %in% black_list_percent) %>% filter(provenance != "Deep web / dark web") %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
 # Selection de la fenêtre de temps #############################################

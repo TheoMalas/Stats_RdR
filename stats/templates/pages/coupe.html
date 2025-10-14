@@ -27,6 +27,14 @@
         Pour plus d'informations, vous pouvez regarder la 
         <a href="{{ url_wiki }}" target="_blank">page Wiki de cette substance</a>.
     </p>
+    {% if molecule_name != "3-MMC" %}
+    <p>
+        "Les produits de coupe sont des substances ajoutées au principe actif d’un produit stupéfiant,
+        au cours de son parcours allant de sa production à sa consommation par l’usager final, afin 
+        d’augmenter le poids total du produit à la revente et éventuellement en raison de l’action pharmacologique de la ou des substances ajoutées."
+        (Définition de l'OFdT)
+    </p>
+    {% endif %}
 </div>
 
 <!-- Offcanvas gauche -->
@@ -79,7 +87,7 @@
             <div class="card-body">
                 {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='false' %}
                 <p>
-                    Parmis les échantillons coupés, voici l'évolution temporelle (par bimestre), de la présence des produits de coupe.
+                    Parmi les échantillons coupés, voici l'évolution temporelle (par bimestre), de la présence des produits de coupe.
                 </p>  
             </div>
         </div>

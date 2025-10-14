@@ -4,6 +4,10 @@
     (function() {
 
         const data = JSON.parse(`{{ chart_data|safe }}`);
+        const mode = '{{mode}}'
+        let y_axis_label = ''
+        if (mode === 'absolu'){y_axis_label="Nombre d'échantillons"}
+        if (mode === 'relatif'){y_axis_label='Proportion (%)'}
 
             // Assign colors to datasets if not already set
         data.datasets_area.forEach((dataset, i) => {
@@ -32,7 +36,7 @@
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Proportion'
+                            text: y_axis_label
                         }
                     }
                 },

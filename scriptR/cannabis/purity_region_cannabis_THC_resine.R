@@ -8,7 +8,7 @@ data = data %>% filter(molecule_simp=="Cannabis (THC/CBD)") %>% filter(forme=="R
 
 data = data %>% mutate(pourcentage = ifelse(pourcentage=="THC 46, CBD 2%, CBG 7%, CBN <1%","THC 46%, CBD 2%, CBG 7%, CBN <1%",pourcentage))
 data = data %>% mutate(pourcentage = as.numeric(gsub(",", ".", sub(".*THC (.*?)\\%.*", "\\1", pourcentage))))
-data = data %>% filter(! is.na(pourcentage))
+data = data %>% filter(! is.na(pourcentage)) %>% filter(provenance != "Deep web / dark web")
 
 ################################################################################
 # Selection de la fenêtre de temps #############################################

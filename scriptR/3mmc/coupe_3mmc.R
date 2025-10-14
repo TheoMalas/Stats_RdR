@@ -30,7 +30,8 @@ data <- filter_data(data, args_list)
 ################################################################################
 
 black_list_maj <- c("3MMC","SINTES","NQ","HPLC", "HPLCDAD", "ATTENTION", "C", "HCL",
-"MISE", "A", "JOUR", "DU", "NOVEMBRE", "L", "PSYCHO241187", "CCM", "EDIT", "CP", "MMC")
+"MISE", "A", "JOUR", "DU", "NOVEMBRE", "L", "PSYCHO241187", "CCM", "EDIT", "CP", "MMC", "NE", "PAS",
+"UTILISER", "DE", "SCOTCH", "POUR", "LE", "KAPA", "ENI", "YOUHOU")
 # Risque de ne pas prendre en compte les écritures comme "2 MMC"
 
 data_coupe <- data %>%
@@ -68,7 +69,7 @@ coupe_bim <- data.frame(
 evol_coupe <- as.data.frame(table(coupe_bim$molecule, coupe_bim$bimester))%>%
  rename(coupe_prod = Var1, date_bimestre = Var2, occurence = Freq) %>%
  group_by(date_bimestre) %>%
- mutate(pourcentage_presence = occurence/sum(occurence))
+ mutate(pourcentage_presence = occurence/sum(occurence)*100)
 
 prod_vec=levels(evol_coupe$coupe_prod)
 

@@ -53,7 +53,7 @@ data_evol <- data_bimestre %>%
   mutate(n_total = n()) %>%
   ungroup() %>%
   group_by(date_bimestre, molecule_simp) %>%
-  summarise(prop = n() / first(n_total), .groups = "drop") %>%
+  summarise(prop = n() / first(n_total) *100, .groups = "drop") %>%
   right_join(grille, by = c("date_bimestre", "molecule_simp")) %>%
   mutate(prop = ifelse(is.na(prop), 0, prop)) %>%
   arrange(date_bimestre, molecule_simp)

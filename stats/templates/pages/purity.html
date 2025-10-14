@@ -180,7 +180,7 @@
                 Pureté après première consommation
             </div>
             <div class="card-body">
-                <p>Pour l'héroïne, les échantillons envoyés après première consommation présentent un écart significatif.</p>
+                <p>Pour l'héroïne, les échantillons envoyés après première consommation présentent un écart significatif de pureté.</p>
                 {% include "components/regression_table.html" with id="conso_regression" table_data=regression_data_consommation %}
             </div>
         </div>
@@ -195,9 +195,16 @@
             <div class="card-body">
                 {% include "components/map.html" with id="map_chart" chart_data=map_data color_data=map_data_color %}
                 <p>
-                    Enfin, regardons la géographie de la pureté. Sur la carte suivante est présentée la pureté moyenne
-                    par région.
+                    Désormais, regardons la géographie de la pureté. Sur la carte suivante est présentée la pureté moyenne
+                    par région parmi les échantillons qui ne proviennent pas du dark net. Nous choisissons de retirer ces échantillons
+                    car il ne doivent pas différer entre régions de France, le marché se passant à l'échelle internationale.
                 </p>
+                <div class="alert-box">
+                    Point d'attention : La représentation sous forme de carte pour la pureté a certes le bénéfice d'être très visuelle, mais 
+                    possède d'importants défauts. Tout d'abord, il est difficile de savoir si les différences de puretés moyennes entre les régions sont 
+                    significatives ou le simple fruit du hasard. Deuxièmement, des comportements de consommation différents entre régions peuvent créer les différences
+                    observées dans la pureté (le mode d'approvisionnement diffère par exemple entre les régions). Ainsi, nous conseillons de plutôt regarder le tableau qui suit.
+                </div>
             </div>
         </div>
         {% endif %}
@@ -231,6 +238,8 @@
                     sont déjà parfaitement déterminés par la combinaison des efferts fixes. Les échantillons provenant de cette région,
                     (voire ces régions) ont tous une commbinaison <i>mode d'approvisionnement</i> x <i>bimestre</i> différente.
                 </p>
+                <div class="alert-box">
+                    Point d'attention : Tout comme pour la carte précédente, les échantillons provenant du dark net ne sont pas pris en compte.
             </div>
         </div>
         {% endif %}

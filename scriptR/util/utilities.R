@@ -238,6 +238,7 @@ regression_json_fe <- function(data){
   )
 
   data <- data %>%
+      filter(provenance != "Deep web / dark web") %>%
       mutate(
         departement = ifelse(
           nchar(.data$departement) == 1,

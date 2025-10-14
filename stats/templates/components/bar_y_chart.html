@@ -9,7 +9,7 @@
     const unit = '{{unit}}'
     let x_axis_label = ''
     if (unit === 'pourcent'){x_axis_label='Pourcentage de pureté'}
-    if (unit === 'poids'){x_axis_label='Masse de la substance [mg]'}
+    if (unit === 'poids'){x_axis_label='Masse de la substance (mg)'}
     if (typeof data.ratio_base_sel === 'undefined') {
     new Chart(document.getElementById('{{ id|safe }}').getContext('2d'), {
         type: 'bar',

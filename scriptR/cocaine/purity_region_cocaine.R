@@ -8,7 +8,7 @@ data = data %>% filter(molecule_simp=="Cocaïne")
 
 data = data %>% mutate(pourcentage = sub(" ","",pourcentage))
 black_list_percent=c("NQ","NQ ","", "nq")
-data = data %>% filter(!pourcentage %in% black_list_percent) %>% mutate(pourcentage = as.double(pourcentage))
+data = data %>% filter(!pourcentage %in% black_list_percent) %>% filter(provenance != "Deep web / dark web") %>% mutate(pourcentage = as.double(pourcentage))
 
 ################################################################################
 # Selection de la fenêtre de temps #############################################
