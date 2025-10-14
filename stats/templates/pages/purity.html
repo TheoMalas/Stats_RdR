@@ -28,7 +28,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
     </div>
     <div class="offcanvas-body">
-        {% include "components/form_date.html" %}
+        {% include "components/form_purity.html" %}
     </div>
 </div>
 <style>
@@ -69,7 +69,7 @@
     <p>
         {{ presentation | safe }}
         Pour plus d'informations, vous pouvez regarder la 
-        <a href="{{ url_wiki }}" target="_blank">page Wiki sur la {{ molecule_name }}</a>.
+        <a href="{{ url_wiki }}" target="_blank">page Wiki de cette substance</a>.
     </p>
     {% if molecule_name == "3-MMC" %}
     <div class="alert-box">

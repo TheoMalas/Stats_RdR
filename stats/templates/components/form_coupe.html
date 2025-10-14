@@ -1,0 +1,37 @@
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Remplir le formulaire</h5>
+    </div>
+    <div class="card-body">
+        <div>
+            <div class="mb-3">
+                <label for="nom" class="form-label">Choisir une date de début :</label>
+                <input type="date" class="form-control" id="date_debut">
+            </div>
+
+            <div class="mb-3">
+                <label for="nom" class="form-label">Choisir une date de fin :</label>
+                <input type="date" class="form-control" id="date_fin">
+            </div>
+
+            <button id="sendButton" class="btn btn-primary w-100">Envoyer</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    document.getElementById('sendButton').addEventListener('click', function () {
+        const date_debut = document.getElementById('date_debut').value;
+        const date_fin = document.getElementById('date_fin').value;
+        
+        const params = new URLSearchParams();
+        if (date_debut) params.set('date_debut', date_debut);
+        if (date_fin) params.set('date_fin', date_fin);
+
+        const newUrl = window.location.pathname + '?' + params.toString();
+
+        // Modifie l'URL dans la barre d'adresse sans recharger la page
+        window.location = newUrl;
+    });
+</script>

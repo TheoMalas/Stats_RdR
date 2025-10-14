@@ -27,6 +27,10 @@
         Pour plus d'informations, vous pouvez regarder la 
         <a href="{{ url_wiki }}" target="_blank">page Wiki de cette substance</a>.
     </p>
+    <p>
+        Un sous-produit est un produit accessoire ou secondaire issu de la fabrication, 
+        la production, la réaction ou la synthèse d'une molécule.
+    </p>
 </div>
 
 <!-- Offcanvas gauche -->
@@ -43,43 +47,29 @@
 <div class="container py-3">
     <div class="masonry-grid">
 
-        <!-- Carte 1 : Proportion avec produits de coupe -->
+        <!-- Carte 1 : Histogramme produits de coupe -->
         <div class="card text-center">
             <div class="card-header">
-                Proportion des échantillons avec produits de coupe
-            </div>
-            <div class="card-body">
-                {% include "components/pie_chart.html" with id="pie_chart" chart_data=data %}
-                <p>
-                    Le premier diagramme présente la proportion d'échantillons dans lesquels un ou plusieurs produits de coupe
-                    ont été détectés.
-                </p>
-            </div>
-        </div>
-
-        <!-- Carte 2 : Histogramme produits de coupe -->
-        <div class="card text-center">
-            <div class="card-header">
-                Proportion par produit de coupe
+                Proportion par sous-produit
             </div>
             <div class="card-body">
                 {% include "components/bar_x_chart.html" with id="bar_chart" chart_data=data %}
                 <p>
-                    L'histogramme suivant montre, parmi les échantillons contenant un ou plusieurs produits de coupe, 
-                    la proportion pour chacun des produits de coupe.
+                    L'histogramme suivant montre, parmi les échantillons contenant un ou plusieurs sous-produits, 
+                    la proportion pour chacun des sous-produit.
                 </p>
             </div>
         </div>
 
-        <!-- Carte 3 : Évolution temporelle -->
+        <!-- Carte 2 : Évolution temporelle -->
         <div class="card text-center">
             <div class="card-header">
-                Évolution temporelle des produits de coupe
+                Évolution temporelle des sous-produits
             </div>
             <div class="card-body">
                 {% include "components/area_stacked_chart.html" with id="area_chart" chart_data=data is_stacked='false' %}
                 <p>
-                    Parmis les échantillons coupés, voici l'évolution temporelle (par bimestre), de la présence des produits de coupe.
+                    Parmis les échantillons avec un ou plusieurs sous-produits, voici l'évolution temporelle (par bimestre), de la présence de chaque sous-produit.
                 </p>  
             </div>
         </div>

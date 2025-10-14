@@ -25,12 +25,14 @@ dict_title = {
   'Cocaïne_coupe' : "Analyse des produits de coupe sur la cocaïne",
   'Héroïne' : "Statistiques sur la pureté de l'héroïne", 
   'Héroïne_coupe' : "Analyse des produits de coupe sur l'héroïne",
+  'Héroïne_sous_produit' : "Analyse des sous-produits de la synthèse de l'héroïne",
   '3-MMC' : "Statistiques sur la pureté de la 3-MMC",
   '3-MMC_coupe' : "Analyse des produits de coupe sur la 3-MMC",
   'MDMA' : "Statistiques sur la pureté de la MDMA sous forme cristal/poudre",
   'Comprimés de MDMA' : "Statistiques sur la teneur en MDMA des cachets d'ecstasy",
   'Kétamine' : "Statistiques sur la pureté de la kétamine",
   'Speed' : "Statistiques sur la pureté du speed",
+  'Speed_coupe' : "Analyse des produits de coupe sur le speed", 
   'Résine de Cannabis' : "Statistiques sur la teneur en THC de la résine de cannabis",
   'Herbe de Cannabis' : "Statistiques sur la teneur en THC des fleurs séchées de cannabis"
 }
@@ -136,7 +138,7 @@ def supply_view(request):
       'page_title' : dict_title[page_name]
   })
 
-def cocaine_view(request):
+def coupe_cocaine_view(request):
 
   date_debut, date_fin = get_dates(request)
   
@@ -158,7 +160,7 @@ def cocaine_view(request):
     'presentation' : dict_pres[molecule_name]
   })
 
-def heroine_view(request):
+def coupe_heroine_view(request):
 
   date_debut, date_fin = get_dates(request)
   
@@ -170,6 +172,28 @@ def heroine_view(request):
   data = runScript("heroine/diagram_coupe_heroine", args)
   molecule_name = 'Héroïne'
   page_name = 'Héroïne_coupe'
+  
+  return render(request, 'pages/coupe.html', { 
+    'data_count' : data["count"][0],
+    'molecule_name': molecule_name,
+    'data' : json.dumps(data),
+    'page_title' : dict_title[page_name],
+    'url_wiki' : dict_urls[molecule_name],
+    'presentation' : dict_pres[molecule_name]
+  })
+
+def coupe_speed_view(request):
+
+  date_debut, date_fin = get_dates(request)
+  
+  args = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  
+  data = runScript("speed/diagram_coupe_speed", args)
+  molecule_name = 'Speed'
+  page_name = 'Speed_coupe'
   
   return render(request, 'pages/coupe.html', { 
     'data_count' : data["count"][0],
@@ -603,6 +627,28 @@ def histo_comprime_mdma_view(request):
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
     'unit' : "poids"
+  })
+
+def sous_produit_heroine_view(request):
+
+  date_debut, date_fin = get_dates(request)
+  
+  args = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  
+  data = runScript("heroine/diagram_sous_produit_heroine", args)
+  molecule_name = 'Héroïne'
+  page_name = 'Héroïne_sous_produit'
+  
+  return render(request, 'pages/sous_produit.html', { 
+    'data_count' : data["count"][0],
+    'molecule_name': molecule_name,
+    'data' : json.dumps(data),
+    'page_title' : dict_title[page_name],
+    'url_wiki' : dict_urls[molecule_name],
+    'presentation' : dict_pres[molecule_name]
   })
 
 def accueil_view(request):
