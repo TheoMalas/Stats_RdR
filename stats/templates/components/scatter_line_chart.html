@@ -12,22 +12,24 @@
                 responsive: true,
                 scales: {
                     x: {
-                        min: 215,
-                        max: 813,
+                        min: data.min_x,
+                        max: data.max_x,
                         title: {
                             display: true,
                             text: 'Masse du comprimé (mg)'
-                        }
-                    },
+                        },
+                        ticks: {
+    callback: value => Math.round(value)
+}},
                     x2: {
-                        min: 215,
-                        max: 813,
+                        min: data.min_x,
+                        max: data.max_x,
                         display: false
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Quantité de MDMA (mg)'
+                            text: 'Quantité de substance (mg)'
                         }
                     }
                 }

@@ -34,7 +34,9 @@ dict_title = {
   'Speed' : "Statistiques sur la pureté du speed",
   'Speed_coupe' : "Analyse des produits de coupe sur le speed", 
   'Résine de Cannabis' : "Statistiques sur la teneur en THC de la résine de cannabis",
-  'Herbe de Cannabis' : "Statistiques sur la teneur en THC des fleurs séchées de cannabis"
+  'Herbe de Cannabis' : "Statistiques sur la teneur en THC des fleurs séchées de cannabis",
+  '2C-B' : "Statistiques sur la pureté de la 2C-B",
+  'Comprimés de 2C-B' : "Statistiques sur la teneur en 2C-B des comprimés"
 }
 
 #Dictionary for the urls of the Psychowiki
@@ -47,7 +49,9 @@ dict_urls = {
   'Kétamine' : 'https://www.psychoactif.org/psychowiki/index.php?title=K%C3%A9tamine,_effets,_risques,_t%C3%A9moignages',
   'Speed' : 'https://www.psychoactif.org/psychowiki/index.php?title=Amph%C3%A9tamine-M%C3%A9thamph%C3%A9tamine,_effets,_risques,_t%C3%A9moignages',
   'Résine de Cannabis' : 'https://www.psychoactif.org/psychowiki/index.php?title=Cannabis,_effets,_risques,_t%C3%A9moignages',
-  'Herbe de Cannabis' : 'https://www.psychoactif.org/psychowiki/index.php?title=Cannabis,_effets,_risques,_t%C3%A9moignages'
+  'Herbe de Cannabis' : 'https://www.psychoactif.org/psychowiki/index.php?title=Cannabis,_effets,_risques,_t%C3%A9moignages',
+  '2C-B' : 'https://www.psychoactif.org/psychowiki/index.php?title=2C-B,_effets,_risques,_t%C3%A9moignages',
+  'Comprimés de 2C-B' : 'https://www.psychoactif.org/psychowiki/index.php?title=2C-B,_effets,_risques,_t%C3%A9moignages'
 }
 #Dictionary for the presentation of each substance
 dict_pres = {
@@ -80,6 +84,12 @@ dict_pres = {
                          à usage agricole (taux faible) ou pour ses effets psychoactives (taux élevé). Ces effets sont variés et dépendants de la variété : citons entre autres 
                          euphorie, excitation, relaxation, augmentation des sensations, sommeil, ... Le cannabis se présente sous différentes formes dont les plus fréquentes sont
                          la fleur séchée et la résine. Sur cette page, vous retrouverez l'analyse de les fleurs séchées de cannabis mais l'analyse de la résine possède aussi sa page dédiée.""",
+  '2C-B' :"""La 2C-B est une substance psychédélique synthétique de la classe des phénéthylamines recherchée pour ses  effets psychédéliques et entactogènes. Elle se présente sous la forme de poudre ou de comprimé.
+             Sur cette page, vous retrouverez l'analyse
+             pour la forme poudre. L'analyse des comprimés de 2C-B possède aussi sa <a href="http://psychotopia.psychoactif.org/histo-comprime-2cb/" target="_blank">page dédiée</a>.""",
+  'Comprimés de 2C-B' : """ La 2C-B est une substance psychédélique synthétique de la classe des phénéthylamines recherchée pour ses  effets psychédéliques et entactogènes. Elle se présente sous la forme de poudre ou de comprimé.
+                        Sur cette page, vous retrouverez l'analyse
+                        pour les comprimés de 2C-B. L'analyse des échantillons sous forme de poudre possède aussi sa <a href="http://psychotopia.psychoactif.org/purity-2cb/" target="_blank">page dédiée</a>.""",
 }
 
 # FrontEnd
@@ -270,7 +280,8 @@ def purity_cocaine_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })
 
 def purity_mdma_view(request):
@@ -316,7 +327,8 @@ def purity_mdma_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })
 
 def purity_heroine_view(request):
@@ -363,7 +375,8 @@ def purity_heroine_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })
 
 def purity_3mmc_view(request):
@@ -409,7 +422,8 @@ def purity_3mmc_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })
 
 def purity_ketamine_view(request):
@@ -455,7 +469,8 @@ def purity_ketamine_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })
   
 
@@ -503,7 +518,8 @@ def purity_speed_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })  
   
 
@@ -547,7 +563,8 @@ def purity_cannabis_THC_resine_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })  
   
 
@@ -592,8 +609,57 @@ def purity_cannabis_THC_herbe_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : default_unit
+    'unit' : default_unit,
+    'Delta' : Delta
   })
+
+def purity_2cb_view(request):
+
+  date_debut, date_fin = get_dates(request)
+  Delta = request.GET.get("range", default_Delta)
+  
+  args_1 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "moyenne"
+  }
+
+  data = runScript("2cb/histo_purity_2cb", args_1)
+
+  args_2 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+    "mode" : "médiane"
+  }
+
+  data_2 = runScript("2cb/histo_purity_2cb", args_2)
+  data_reg = runScript("2cb/regression_purity_supply_2cb", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+  }
+  map_data = runScript("2cb/purity_region_2cb", args_3)
+  reg_map_data = runScript("2cb/regression_purity_vs_region_fe_2cb", args_3)
+  molecule_name = "2C-B"
+  
+  return render(request, 'pages/purity.html', {
+    'data_count' : data["count"][0], 
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'regression_data' : json.dumps(data_reg),
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
+    'molecule_name': molecule_name,
+    'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
+    'url_wiki' : dict_urls[molecule_name],
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit,
+    'Delta' : Delta
+  })  
 
 def histo_comprime_mdma_view(request):
 
@@ -626,7 +692,43 @@ def histo_comprime_mdma_view(request):
     'page_title' : dict_title[molecule_name],
     'url_wiki' : dict_urls[molecule_name],
     'presentation' : dict_pres[molecule_name],
-    'unit' : "poids"
+    'unit' : "poids",
+    'Delta' : Delta
+  })
+
+def histo_comprime_2cb_view(request):
+
+  date_debut, date_fin = get_dates(request)
+  Delta = request.GET.get("range", default_Delta)
+
+  args = {    
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    }
+  
+  data_reg_dose_poids = runScript("2cb/regression_poids_comprime_quantite_2cb", args)
+  
+  args["Delta"] = Delta
+  args["mode"] = "moyenne"
+
+  data = runScript("2cb/histo_comprime_2cb", args)
+
+  args["mode"] = "médiane"
+  data_2 = runScript("2cb/histo_comprime_2cb", args)
+
+  molecule_name = "Comprimés de 2C-B"
+    
+  return render(request, 'pages/purity.html', { 
+    'data_count' : data["count"][0],
+    'data' : json.dumps(data),
+    'data_2' : json.dumps(data_2),
+    'data_reg_dose_poids' : json.dumps(data_reg_dose_poids),
+    'molecule_name': molecule_name,
+    'page_title' : dict_title[molecule_name],
+    'url_wiki' : dict_urls[molecule_name],
+    'presentation' : dict_pres[molecule_name],
+    'unit' : "poids",
+    'Delta' : Delta
   })
 
 def sous_produit_heroine_view(request):

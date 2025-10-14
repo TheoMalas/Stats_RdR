@@ -122,6 +122,20 @@
                 </li>
           </ul>
         </li>
+        <!-- Menu déroulant -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="2cbDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            2C-B
+          </a>
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="2cbDropdown">
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'purity_2cb_view' %}">Pureté de la forme poudre</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'histo_comprime_2cb_view' %}">Teneur des comprimés</a>
+                </li>
+          </ul>
+        </li>
         <li class="nav-item">
         <a class="nav-link" href="{% url 'faq' %}">F.A.Q.</a>
         </li>

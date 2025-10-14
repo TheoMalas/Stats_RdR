@@ -139,7 +139,8 @@
                     Jetons ensuite un coup d'œil à l'évolution temporelle de la pureté. Deux choix s'offrent à vous, vous pouvez soit visualiser
                     l'évolution de la moyenne et de l'écart-type de la distribution des échantillons, soit l'évolution de la médiane,
                     ainsi que le premier et troisième quartile. Chacune des grandeurs est calculées sur une fenêtre glissante de Δ
-                    jours autour de chaque échantillon reçu.
+                    jours autour de chaque échantillon reçu (actuellement Δ = {{Delta}} jours). Vous pouvez paramétrer la valeur de Δ 
+                    dans les "Options de visualisation".
                 </p>
             </div>
         </div>
@@ -244,17 +245,37 @@
         </div>
         {% endif %}
 
-        {% if molecule_name == "Comprimés de MDMA" %}
+        {% if data_reg_dose_poids %}
         <!-- MDMA comprime scatter-and-line plot -->
         <div class="card text-center">
             <div class="card-header">
-                Quantité de MDMA VS Masse des comprimés
+                Quantité de substance active VS Masse des comprimés
             </div>
             <div class="card-body">
                 {% include "components/scatter_line_chart.html" with id="scatter_mdma_comprime" chart_data=data_reg_dose_poids %}
             </div>
+            <p>
+                Ce nuage de points représente la relation entre la masse des comprimés envoyés (en milligrammes) 
+                et la quantité de substance psychoactive effectivement mesurée en laboratoire (en milligrammes). Chaque point correspond à un échantillon individuel. 
+                L’objectif est d’évaluer la cohérence entre la masse du comprimé et sa teneur réelle en substance active. 
+                La droite rouge représente le meilleur modèle linéaire pour lier la teneur en substance psychoactive au poids des comprimés.
+                La zone grisée décrit un intervalle de confiance à 95% sur ce modèle. 
+                <br>
+                On peut interpréter le graphe comme suit : si la masse de substance active
+                était une fonction linéaire de la masse des comprimés, alors la droite rouge est le meilleur modèle en fonction des échantillons et
+                la zone grisée représenterait l'intervalle de confiance à 95% sur ce modèle.
+                <br>
+                Dans les faits, la quantité de substance dans un comprimé ne dépend évidemment pas que de la masse de celui-ci donc la droite rouge n'est qu'une 
+                approximation de la relation entre ces deux grandeurs. Elle peut être utilisé pour estimer (grossièrement) la quantité de substance active dans un nouveau comprimé
+                si on connait uniquement la masse du comprimé. La zone grisée permet alors d'estimer l'erreur commise sur la prédiction donnée par la ligne rouge.
+                {% if molecule_name == "Comprimés de MDMA" %}
+                <br>
+                L'encart suivant permet d'effectuer une telle estimation.
+                {% endif %}
+            </p>
         </div>
-
+        {% endif %}
+        {% if molecule_name == "Comprimés de MDMA" %}
         <!-- MDMA quantity estimator -->
         <div class="card text-center">
             <div class="card-header">

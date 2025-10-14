@@ -4,11 +4,17 @@ library(stringr)
 source("scriptR/util/utilities.R")
 
 data = load_data()
-data = data %>% filter(molecule_simp=="MDMA")
-data = data %>% filter(comprime>0)
-data = data %>% select(date, forme,coupe, comprime)
+data = data %>% filter(molecule_simp=="2C-B")
 
-
+grey_list_coupe = list("Le comprimé de 193mg de 2C-B contient 6% de 2C-B (équivalent chlorhydrate). Il y a donc 12 mg de 2C-B au total dans le comprimé. "="12 mg de 2C-B et comprimé de 193mg") #Cas particulier
+data <- data %>%
+  mutate(
+    coupe = ifelse(
+      coupe %in% names(grey_list_coupe),
+      unlist(grey_list_coupe[coupe]),
+      coupe
+    ),
+  )
 ################################################################################
 # Selection de la fenêtre de temps #############################################
 ################################################################################
@@ -16,20 +22,26 @@ data = data %>% select(date, forme,coupe, comprime)
 args <- commandArgs(trailingOnly = TRUE)
 args_list <- extract_args(args)
 outputPath <- args_list$outputPath
+Delta <- args_list$Delta
+mode <- args_list$mode
 
 data <- filter_data(data, args_list)
 
 ################################################################################
-# Quantité de MDMA en fonction du poids des comprimés ##########################
+# Histogramme des dosages de comprimés #########################################
 ################################################################################
+
+data = data %>% filter(grepl("mg", coupe))
 
 extract_number_combined <- function(x) {
   x_clean <- gsub("\\s+", "", x)  # Supprimer tous les espaces
+  x_clean <- gsub('-','',x_clean)
+  x_clean <- tolower(x_clean)
   
   # Liste des regex à tester
   patterns <- c(
-    ".*?(\\d+[\\.,]?\\d*)mgdeMDMA.*",
-    ".*?(\\d+[\\.,]?\\d*)mgMDMA/.*",
+    ".*?(\\d+[\\.,]?\\d*)mgde2cb.*",
+    ".*?(\\d+[\\.,]?\\d*)mg2cb/.*",
     ".*?(\\d+[\\.,]?\\d*)mgeqbase.*"
   )
   
@@ -44,10 +56,11 @@ extract_number_combined <- function(x) {
   return(NA_real_)  # Aucun motif trouvé
 }
 
-data = data %>% 
+data <- data %>% 
   filter(forme=="comprimé") %>% 
-  mutate(dose = sapply(coupe, extract_number_combined))
-  #filter(!is.na(dose))
+  select(coupe) %>% 
+  mutate(dose = sapply(coupe, extract_number_combined)) %>% 
+  filter(!is.na(dose))
 
 data <- data %>%
   mutate(
@@ -64,7 +77,7 @@ data <- data %>%
       }
     )
   )
-data = data %>% select(coupe,comprime, poids, dose)
+data = data %>% select(coupe, poids, dose)
 data = data %>% filter(poids > dose/0.8) #permet d'éliminer les erreurs où le poids le plus grand est la masse de MDMA (eq base ou eq HCL)
 
 
