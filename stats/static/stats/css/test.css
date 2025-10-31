@@ -1,0 +1,35 @@
+#content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#header {
+    flex: 0 1 auto;
+    display: flex;
+    width: auto;
+
+    margin: 1rem;
+}
+
+#header-block-1 {
+    flex:2;
+    padding: 2rem;
+    border: 1px black dotted;
+}
+
+#header-block-2 {
+    flex:1;
+    padding: 2rem;
+    border: 1px black dotted;
+}
+
+#filter {
+    display: flex;
+    display: row;
+}
+
+#visualizations {
+    flex: 1 1 90vh;
+    margin: 1rem;
+}
