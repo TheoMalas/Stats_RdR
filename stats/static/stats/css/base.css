@@ -1,0 +1,26 @@
+body {
+    background-color: #f8f9fa;
+}
+canvas {
+    border: 1px solid #dee2e6;
+    width: 100%;
+    height: auto;
+}
+
+.navbar {
+    background-color: orange !important;
+}
+
+.navbar a{
+    color: black;
+}
+
+.footer-logos {
+    display: flex;
+    justify-content: space-between; /* spread logos evenly */
+    align-items: center;           /* vertical alignment */
+    padding: 20px;
+    background-color: #f8f9fa;     /* optional background */
+}
+
+.psychonaut-logo { color: #6485DE; }
