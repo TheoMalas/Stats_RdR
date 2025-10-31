@@ -1,26 +1,166 @@
-body {
-    background-color: #f8f9fa;
-}
-canvas {
-    border: 1px solid #dee2e6;
-    width: 100%;
-    height: auto;
+:root {
+  /* === Colors === */
+  --color-bg: #f8f9fa;
+  --color-text: #333;
+  --color-muted: #555;
+  --color-border: #dee2e6;
+
+  --color-primary: #d35400;  /* deep orange */
+  --color-accent: #e74c3c;   /* soft red */
+  
+  /* === Layout & Shadows === */
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  /* === Typography === */
+  --font-size-base: clamp(0.95rem, 1vw + 0.8rem, 1.1rem);
+  --font-size-lg: clamp(1.4rem, 2vw + 0.8rem, 1.8rem);
+  --font-size-xl: clamp(1.8rem, 3vw + 1rem, 2.6rem);
+  --line-height-base: 1.6;
 }
 
+
+/* === Base === */
+html, body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent accidental horizontal scroll */
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* === Navbar === */
 .navbar {
-    background-color: orange !important;
+  background-color: orange !important;
+}
+.navbar a {
+  color: black;
 }
 
-.navbar a{
-    color: black;
+/* === Canvas === */
+canvas {
+  display: block;              /* Removes inline gaps / whitespace */
+  border: 1px solid var(--color-border);
+  width: 100%;                 /* Fill its container */
+  height: auto;                /* Preserve aspect ratio */
+  max-width: 100%;             /* Never exceed parent/container width */
+  box-sizing: border-box;      /* Include border in total width */
 }
 
+/* === Footer === */
 .footer-logos {
-    display: flex;
-    justify-content: space-between; /* spread logos evenly */
-    align-items: center;           /* vertical alignment */
-    padding: 20px;
-    background-color: #f8f9fa;     /* optional background */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background-color: var(--color-bg);
 }
 
-.psychonaut-logo { color: #6485DE; }
+.psychonaut-logo {
+  color: #6485de;
+}
+
+/* === Shared Containers === */
+.home-container,
+.faq-container,
+.info-box {
+  max-width: 53rem; /* 850px */
+  margin: 2.5rem auto;
+  background: var(--color-bg);
+  padding: 2rem 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+/* === Home Container === */
+.home-container {
+  text-align: center;
+  margin-top: 3.75rem;
+}
+.home-container h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+.home-container h2 {
+  font-size: var(--font-size-lg);
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+.home-container p {
+  margin-bottom: 1.25rem;
+  font-size: 1.1rem;
+  text-align: justify;
+}
+
+/* === Masonry Grid === */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(20rem, 25%, 40rem), 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.card-body {
+  overflow-x: hidden;        /* Prevent scrollbars */
+}
+
+.card-body canvas {
+  display: block;            /* Removes inline gaps */
+  width: 100% !important;    /* Always fit parent width */
+  height: auto !important;   /* Keep aspect ratio */
+  max-width: 100%;           /* Prevent overflow */
+  box-sizing: border-box;
+}
+
+/* === FAQ Section === */
+.faq-container h2 {
+  color: var(--color-primary);
+  font-size: 1.6rem;
+  margin-top: 2rem;
+  border-left: 4px solid orange;
+  padding-left: 0.75rem;
+}
+.faq-container h2:first-of-type {
+  margin-top: 0;
+}
+.faq-container p {
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+/* === Info Box === */
+.info-box {
+  margin: 1.25rem auto 2.5rem auto;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+}
+
+/* === Alert Box === */
+.alert-box {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-bg);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 0.375rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
