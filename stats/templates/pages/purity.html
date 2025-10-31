@@ -94,8 +94,8 @@
                 <p>
                     Commençons par regarder le nombre d'échantillons en fonction de leur pureté.
                     Les analyses présentent la pureté de deux façons différentes : équivalent base et équivalent chlorhydrate.
-                    Les produits psychoactifs sont souvent vendus sous formes de poudre ou de cristal et ne contiennent pas uniquement
-                    la subustance psychoactive (cocaïne, héroïne, MDMA, ...). Le pourcentage d'une substance en équivalent base, 
+                    Les produits psychoactifs sont souvent vendus sous forme de poudre ou de cristal et ne contiennent pas uniquement
+                    la substance psychoactive (cocaïne, héroïne, MDMA, ...). Le pourcentage d'une substance en équivalent base, 
                     c'est le pourcentage de la dite molécule dans la poudre. Nous avons choisi de présenter le pourcentage en équivalent base 
                     car c'est celui directement mesuré par le laboratoire.
                     La pureté maximale (en masse) n'est pas 100% (car la poudre ne peut pas contenir que la molécule psychoactive) mais dépend 
@@ -138,7 +138,7 @@
                 <p>
                     Jetons ensuite un coup d'œil à l'évolution temporelle de la pureté. Deux choix s'offrent à vous, vous pouvez soit visualiser
                     l'évolution de la moyenne et de l'écart-type de la distribution des échantillons, soit l'évolution de la médiane,
-                    ainsi que le premier et troisième quartile. Chacune des grandeurs est calculées sur une fenêtre glissante de Δ
+                    ainsi que le premier et troisième quartile. Chacune des grandeurs est calculée sur une fenêtre glissante de Δ
                     jours autour de chaque échantillon reçu (actuellement Δ = {{Delta}} jours). Vous pouvez paramétrer la valeur de Δ 
                     dans les "Options de visualisation".
                 </p>
@@ -155,7 +155,7 @@
                 {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
                  <p>
                 Intéressons-nous ensuite à la dépendance de la pureté au mode d'approvisionnement. Pour cela, nous régressons
-                la pureté sur le mode d'approvisionnement. Pour ce faire, on choisi le mode d'approvisionnement privilégié (Deep web / dark web)
+                la pureté sur le mode d'approvisionnement. Pour ce faire, on choisit le mode d'approvisionnement privilégié (Deep web / dark web)
                 et on regarde si l'écart à ce premier mode est statistiquement significatif. Cette significativité est symbolisée 
                 par les "*" dans la colonne écart. "***" si la probabilité que l'écart soit simplement dû au hasard est plus petite
                 que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%. Cette probabilité
@@ -163,10 +163,10 @@
                 <br>
                 On peut aussi, de façon plus approximative, comparer
                 l'<a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a> à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
-                on ne peut pas détecté si l'écart observé est dû au hasard ou non. 
+                on ne peut pas détecter si l'écart observé est dû au hasard ou non. 
                 <br>
                 Enfin, nous présentons aussi le coefficient R² qui permet de quantifier à quel point le modèle de régression
-                permet d'expliquer les données observés. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
+                permet d'expliquer les données observées. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
                 mieux il explique les données. 
                 Pour de plus amples informations, voir <a href="https://fr.wikipedia.org/wiki/Coefficient_de_d%C3%A9termination" target="_blank">ici</a>.
             </p>
@@ -229,15 +229,15 @@
                     neutralisant les différences moyennes entre groupes. De cette façon, on isole l’effet des autres variables 
                     (comme la région) indépendamment de ces facteurs fixes.
                     <br>
-                    Pour créer ce tableau, nous devons choisir une région à laquelle comparée toutes les autres; nous avons choisi
-                    de prendre la région d'où provient la majorité des échantillons, soit l’Île-de-France. Le tableau se lit par exmple de la façon suivante :
+                    Pour créer ce tableau, nous devons choisir une région à laquelle comparer toutes les autres; nous avons choisi
+                    de prendre la région d'où provient la majorité des échantillons, soit l’Île-de-France. Le tableau se lit par exemple de la façon suivante :
                     pour un même mode d’approvisionnement et un même bimestre, la pureté moyenne des échantillons provenant du <i>Grand-Est</i> est en moyenne
-                    à un certain <i>écart</i>. Chaque écart est caractérisée par sa <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>
+                    à un certain <i>écart</i>. Chaque écart est caractérisé par sa <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>
                     (les potentielles astérisques) et par son <a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a>.
                     <br>
-                    Il se peut que pour une ou plusieurs régions, Le modèle ne puisse pas estimer un coefficient parce que la pureté de tous les échantillons
-                    sont déjà parfaitement déterminés par la combinaison des efferts fixes. Les échantillons provenant de cette région,
-                    (voire ces régions) ont tous une commbinaison <i>mode d'approvisionnement</i> x <i>bimestre</i> différente.
+                    Il se peut que pour une ou plusieurs régions, le modèle ne puisse pas estimer un coefficient parce que la pureté de tous les échantillons
+                    est déjà parfaitement déterminée par la combinaison des effets fixes. Les échantillons provenant de cette région,
+                    (voire ces régions) ont tous une combinaison <i>mode d'approvisionnement</i> x <i>bimestre</i> différente.
                 </p>
                 <div class="alert-box">
                     Point d'attention : Tout comme pour la carte précédente, les échantillons provenant du dark net ne sont pas pris en compte.
@@ -266,7 +266,7 @@
                 la zone grisée représenterait l'intervalle de confiance à 95% sur ce modèle.
                 <br>
                 Dans les faits, la quantité de substance dans un comprimé ne dépend évidemment pas que de la masse de celui-ci donc la droite rouge n'est qu'une 
-                approximation de la relation entre ces deux grandeurs. Elle peut être utilisé pour estimer (grossièrement) la quantité de substance active dans un nouveau comprimé
+                approximation de la relation entre ces deux grandeurs. Elle peut être utilisée pour estimer (grossièrement) la quantité de substance active dans un nouveau comprimé
                 si on connait uniquement la masse du comprimé. La zone grisée permet alors d'estimer l'erreur commise sur la prédiction donnée par la ligne rouge.
                 {% if molecule_name == "Comprimés de MDMA" %}
                 <br>

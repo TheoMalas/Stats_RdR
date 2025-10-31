@@ -61,7 +61,7 @@ dict_pres = {
                Elle est surtout recherchée pour le bien être psychique et physique qu'elle procure.
                En France, elle se présente généralement sous la forme de poudre allant du beige clair au brun foncé.""",
   '3-MMC' : """La 3-MMC est une molécule de synthèse de la famille des cathinones. Cette drogue psychostimulante et entactogène est 
-                apparu en 2011 et peut se présenter comme une poudre planche ou comme de petits cristaux blancs.""",
+                apparue en 2011 et peut se présenter comme une poudre planche ou comme de petits cristaux blancs.""",
   'MDMA' : """La MDMA est une molécule de synthèse de la famille des amphétamines et se présente sous deux formes : soit sous forme de cristaux/poudre
             translucide, soit sous forme de cachets de taille et de couleur variable appelés "ecstasy". Sur cette page, vous retrouverez l'analyse
              pour la forme cristal/poudre. L'analyse des cachets d'ecstasy possède aussi sa <a href="http://psychotopia.psychoactif.org/histo-comprime-mdma/" target="_blank">page dédiée</a>.""",
@@ -72,7 +72,7 @@ dict_pres = {
                Elle provoque une anesthésie dissociative (dissociation entre le cortex frontal et le reste du cerveau), ainsi que des possibles hallucinations lors de la période de réveil.
                 Elle se présente sous la forme d'une poudre cristalline ou d'un liquide incolore, inodore et sans saveur.""",
   'Speed' : """Le "speed" est une appellation généraliste pour désigner principalement l'amphétamine et la méthamphétamine. Il s'agit
-             d'une drogue euphorisantes et stimulantes et peut se présenter sous la forme de poudre jaunâtre avec une forte odeur chimique, mais aussi sous la forme de cristaux ou de cachets. 
+             d'une drogue euphorisante et stimulante qui peut se présenter sous la forme de poudre jaunâtre avec une forte odeur chimique, mais aussi sous la forme de cristaux ou de cachets. 
              L'analyse présentée ici se restreint aux formes poudre et cristal.""",
   'Résine de Cannabis' : """Le cannabis est un genre botanique qui rassemble des plantes annuelles de la famille des Cannabaceae.
                          C'est le taux de THC présent dans chaque variété botanique qui détermine si elle est utilisée comme chanvre 
