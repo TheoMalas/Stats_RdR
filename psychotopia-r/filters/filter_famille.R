@@ -1,13 +1,12 @@
 filter_description <- list(
   name = "Filtre Famille",
   args = list(
-    mf = list(required = TRUE, help = "Liste de familles de molécule")
+    molecule_families = list(required = TRUE, help = "Liste de familles de molécule", alias = "mf")
   ),
   help = "Filtre les lignes d’un data.frame entre deux dates"
 )
 
 filter_function <- function(data, args) {
-    molecule_families <- strsplit(args$mf, ",")[[1]]
-    print(molecule_families)
+    molecule_families <- strsplit(args$molecule_families, ",")[[1]]
     data %>% filter(famille %in% !! molecule_families)
 }

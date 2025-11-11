@@ -31,18 +31,26 @@ parser <- ArgumentParser(description = 'Pipeline d’analyse de données')
 for (f in filters) {
   for (arg_name in names(f$description$args)) {
     arg_def <- f$description$args[[arg_name]]
-    arg_flag <- paste0("--", arg_name)
+
+    arg_list <- list(paste0("--", arg_name))
+
+    if (!is.null(arg_def$alias)) {
+      arg_list <- c(paste0("-", arg_def$alias), arg_list)
+    }
+
+    arg_list$help <- arg_def$help
+    arg_list$dest <- arg_name
 
     if (!is.null(arg_def$action) && arg_def$action == "store_true") {
-      # Cas d’un flag booléen (ex: --np)
-      parser$add_argument(arg_flag, help=arg_def$help, action="store_true")
-    } else {
-      # Cas standard : argument avec valeur
-      parser$add_argument(arg_flag, help=arg_def$help)
+      arg_list$action <- "store_true"
     }
+
+    do.call(parser$add_argument, arg_list)
   }
 }
 
+parser$add_argument("--output", help = "Dossier de sortie pour sauvegarder les résultats", default = NULL)
+parser$add_argument("--format", help = "Formats de sortie séparés par des virgules (ex: csv,json,txt)", default = NULL)
 
 load_analyses <- function(path = "analysis") {
   files <- list.files(path, full.names = TRUE, pattern = "\\.R$")
@@ -58,7 +66,7 @@ load_analyses <- function(path = "analysis") {
   analyses
 }
 
-save_result <- function(result, name, output_dir, formats = c("csv")) {
+save_result <- function(result, name, output_dir = "results", formats = c("csv")) {
   if (is.null(output_dir)) {
     message("💬 Aucun dossier de sortie précisé → affichage dans la console :")
     print(result)
@@ -90,7 +98,7 @@ save_result <- function(result, name, output_dir, formats = c("csv")) {
   }
 }
 
-subparsers <- parser$add_subparsers(dest="analysis", help="Analyse à exécuter")
+subparsers <- parser$add_subparsers(dest="analysis", help="Analyse à exécuter", required=TRUE)
 
 analyses <- load_analyses()
 for (a in analyses) {
@@ -102,9 +110,6 @@ for (a in analyses) {
         sub_parser$add_argument(paste0("--", arg_name), help = arg_def$help)
     }
 }
-
-parser$add_argument("--output", help = "Dossier de sortie pour sauvegarder les résultats", default = NULL)
-parser$add_argument("--format", help = "Formats de sortie séparés par des virgules (ex: csv,json,txt)", default = NULL)
 
 args <- parser$parse_args()
 args <- as.list(args)
