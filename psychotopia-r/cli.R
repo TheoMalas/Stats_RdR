@@ -2,6 +2,7 @@
 
 suppressPackageStartupMessages({
   library(argparse)
+  library(crayon)
 })
 
 source("util/utilities.R")
@@ -67,12 +68,12 @@ load_analyses <- function(path = "analysis") {
   analyses
 }
 
-save_result <- function(result, name, output_dir = "results", formats = c("csv"), verbose) {
+save_result <- function(result, name, output_dir = "results", formats , verbose) {
  
   if (is.null(output_dir)) {
     
     if (verbose) {
-      message("💬 Aucun dossier de sortie précisé → affichage dans la console :")
+      cat(yellow$bold("💬 Aucun dossier de sortie précisé\n\n"))
     }
 
     print(result)
@@ -82,11 +83,13 @@ save_result <- function(result, name, output_dir = "results", formats = c("csv")
 
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
+  if (is.null(formats)) formats <- c("json")
+  
   for (fmt in formats) {
     file_path <- file.path(output_dir, paste0(name, ".", fmt))
 
     if (verbose) {
-      message("💾 Sauvegarde de ", name, " au format ", fmt)
+      cat(green$bold(paste0("💾 Sauvegarde de ", name, " au format ", fmt, "\n\n")))
     }
 
     tryCatch({
@@ -123,6 +126,11 @@ for (a in analyses) {
 args <- parser$parse_args()
 args <- as.list(args)
 
+if (args$verbose){
+  cat(blue$bold("##### Applications des filtres #####"))
+  cat("\n\n")
+}
+
 for (f in filters) {
   arg_defs <- f$description$args
   arg_names <- names(arg_defs)
@@ -142,14 +150,19 @@ for (f in filters) {
 
   if (should_run) {
     if (args$verbose){
-      message("Application du filtre : ", f$description$name)
+      cat(green$bold("✅  Filtre appliqué : "), bold(f$description$name), "\n")
     }
 
     data <- f$fn(data, args)
   } else if (args$verbose) {
-    message("Filtre ignoré : ", f$description$name)
+    cat(yellow$bold("⚠️  Filtre ignoré : "), yellow(f$description$name), "\n")
   }
 }
+
+if (args$verbose){
+  cat("\n")
+}
+
 
 selected_analyse <- args$analysis
 
@@ -159,7 +172,7 @@ output_dir <- args$output
 if (selected_analyse %in% names(analyses)) {
 
     if (args$verbose) {
-      message("Exécution de l’analyse : ", selected_analyse)
+      cat(green$bold("🚀 Exécution de l’analyse : "), bold(selected_analyse), "\n\n")
     }
 
     a <- analyses[[selected_analyse]]
