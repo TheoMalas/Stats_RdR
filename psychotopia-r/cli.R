@@ -4,7 +4,6 @@ suppressPackageStartupMessages({
   library(argparse)
 })
 
-
 source("util/utilities.R")
 
 data = load_data()
@@ -52,6 +51,8 @@ for (f in filters) {
 parser$add_argument("--output", help = "Dossier de sortie pour sauvegarder les résultats", default = NULL)
 parser$add_argument("--format", help = "Formats de sortie séparés par des virgules (ex: csv,json,txt)", default = NULL)
 
+parser$add_argument("--verbose", "-v", help = "Activer le mode verbeux", action = "store_true", dest = "verbose")
+
 load_analyses <- function(path = "analysis") {
   files <- list.files(path, full.names = TRUE, pattern = "\\.R$", recursive = TRUE)
   analyses <- list()
@@ -66,10 +67,16 @@ load_analyses <- function(path = "analysis") {
   analyses
 }
 
-save_result <- function(result, name, output_dir = "results", formats = c("csv")) {
+save_result <- function(result, name, output_dir = "results", formats = c("csv"), verbose) {
+ 
   if (is.null(output_dir)) {
-    message("💬 Aucun dossier de sortie précisé → affichage dans la console :")
+    
+    if (verbose) {
+      message("💬 Aucun dossier de sortie précisé → affichage dans la console :")
+    }
+
     print(result)
+    
     return(invisible(NULL))
   }
 
@@ -78,7 +85,9 @@ save_result <- function(result, name, output_dir = "results", formats = c("csv")
   for (fmt in formats) {
     file_path <- file.path(output_dir, paste0(name, ".", fmt))
 
-    message("💾 Sauvegarde de ", name, " au format ", fmt)
+    if (verbose) {
+      message("💾 Sauvegarde de ", name, " au format ", fmt)
+    }
 
     tryCatch({
       if (fmt == "csv" && is.data.frame(result)) {
@@ -132,9 +141,12 @@ for (f in filters) {
   }
 
   if (should_run) {
-    message("Application du filtre : ", f$description$name)
+    if (args$verbose){
+      message("Application du filtre : ", f$description$name)
+    }
+
     data <- f$fn(data, args)
-  } else {
+  } else if (args$verbose) {
     message("Filtre ignoré : ", f$description$name)
   }
 }
@@ -145,10 +157,14 @@ formats <- if (!is.null(args$format)) unlist(strsplit(args$format, ",")) else NU
 output_dir <- args$output
 
 if (selected_analyse %in% names(analyses)) {
-    message("Exécution de l’analyse : ", selected_analyse)
+
+    if (args$verbose) {
+      message("Exécution de l’analyse : ", selected_analyse)
+    }
+
     a <- analyses[[selected_analyse]]
     res <- a$fn(data, args)
-    save_result(res, selected_analyse, output_dir, formats)
+    save_result(res, selected_analyse, output_dir, formats, args$verbose)
 } else {
     warning("Analyse inconnue : ", selected_analyse)
 }
