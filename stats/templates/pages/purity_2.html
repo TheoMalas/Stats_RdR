@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %} Pureté - {{ molecule_name }} {% endblock %}
+{% block centerText %} {{ page_title }} {% endblock %}
+
+{% block body %}
+
+<div class="d-flex align-items-center gap-3 m-3">
+    
+    <!-- Infos sur le nombre total d'observations -->
+    <div>
+        <small>Nombre total d'échantillons observés :</small>
+        <p class="display-6 mb-0">{{ data_count }}</p>
+    </div>
+
+    <!-- Bouton pour ouvrir le formulaire -->
+    <button class="btn btn-primary flex-shrink-0" style="width: 200px;" 
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#formOffcanvas" 
+            aria-controls="formOffcanvas">
+        Options de visualisation
+    </button>
+</div>
+
+<!-- Offcanvas gauche -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="formOffcanvas" aria-labelledby="formOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="formOffcanvasLabel">Formulaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% include "components/form_purity.html" %}
+    </div>
+</div>
+
+<div class="info-box">
+    <p>
+        {{ presentation | safe }}
+        Pour plus d'informations, vous pouvez regarder la 
+        <a href="{{ url_wiki }}" target="_blank">page Wiki de cette substance</a>.
+    </p>
+    {% if molecule_name == "3-MMC" %}
+    <div class="alert-box">
+        Point d'attention : De nombreux échantillons vendus comme de la 3-MMC n'en sont pas (cf le nombre élevé d'échantillons
+        dont la pureté est nulle). Ainsi, vous pouvez choisir dans les options de ne regarder que les échantillons qui contiennent de la 3-MMC 
+        d'après l'analyse en laboratoire.
+    </div>
+    {% endif %}
+</div>
+
+
+<div class="container py-3">
+    <div class="masonry-grid">
+
+        <!-- Carte 1 : Histogramme de pureté -->
+        <div class="card text-center">
+            <div class="card-header">
+                Histogramme de la pureté
+            </div>
+            <div class="card-body">
+                {% include "components/bar_y_chart.html" with id="bar_chart" chart_data=data unit=unit%}
+                <p>
+                    Commençons par regarder le nombre d'échantillons en fonction de leur pureté.
+                    Les analyses présentent la pureté de deux façons différentes : équivalent base et équivalent chlorhydrate.
+                    Les produits psychoactifs sont souvent vendus sous forme de poudre ou de cristal et ne contiennent pas uniquement
+                    la substance psychoactive (cocaïne, héroïne, MDMA, ...). Le pourcentage d'une substance en équivalent base, 
+                    c'est le pourcentage de la dite molécule dans la poudre. Nous avons choisi de présenter le pourcentage en équivalent base 
+                    car c'est celui directement mesuré par le laboratoire.
+                    La pureté maximale (en masse) n'est pas 100% (car la poudre ne peut pas contenir que la molécule psychoactive) mais dépend 
+                    de la molécule considérée et est représentée par la barre verticale rouge en pointillé.
+                    Certains échantillons se situent au-delà de cette limite car les résultats d'analyse sont donnés avec une incertitude de +/- 10%.
+                    Pour plus d'information, vous pouvez consultez la <a href="https://www.psychoactif.org/forum/viewtopic.php?id=79748" target="_blank">F.A.Q.</a>
+                    sur l'analyse de drogues à distance.
+                </p>
+            </div>
+        </div>
+
+        <!-- Carte 2 : Évolution temporelle -->
+        <div class="card text-center">
+            <div class="card-header">
+                Évolution temporelle de la pureté
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="chartTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="chart1-tab" data-bs-toggle="tab" data-bs-target="#chart1" type="button" role="tab">
+                            Moyenne et écarts type
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="chart2-tab" data-bs-toggle="tab" data-bs-target="#chart2" type="button" role="tab">
+                            Médianes et quartiles
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="chart1" role="tabpanel">
+                        <p>La ligne bleue représente la moyenne et la zone grisée est l'espace autour de la moyenne à +/- 1 écart-type.</p>
+                        {% include "components/line_chart.html" with id="line_1" chart_data=data is_stacked='false' %}
+                    </div>
+                    <div class="tab-pane fade" id="chart2" role="tabpanel">
+                        <p>La ligne bleue représente la médiane, la zone grisée s'étend du premier quartile au troisième quartile.</p>
+                        <!--{% include "components/line_chart.html" with id="line_2" chart_data=data_2 is_stacked='false' %}-->
+                    </div>
+                </div>
+                <p>
+                    Jetons ensuite un coup d'œil à l'évolution temporelle de la pureté. Deux choix s'offrent à vous, vous pouvez soit visualiser
+                    l'évolution de la moyenne et de l'écart-type de la distribution des échantillons, soit l'évolution de la médiane,
+                    ainsi que le premier et troisième quartile. Chacune des grandeurs est calculée sur une fenêtre glissante de Δ
+                    jours autour de chaque échantillon reçu (actuellement Δ = {{Delta}} jours). Vous pouvez paramétrer la valeur de Δ 
+                    dans les "Options de visualisation".
+                </p>
+            </div>
+        </div>
+        
+        {% if regression_data %}
+        <!-- Carte 3 : Régression par mode d'approvisionnement -->
+        <div class="card text-center">
+            <div class="card-header">
+                Influence du mode d'approvisionnement
+            </div>
+            <div class="card-body">
+                {% include "components/regression_table.html" with id="supply_regression" table_data=regression_data %}
+                 <p>
+                Intéressons-nous ensuite à la dépendance de la pureté au mode d'approvisionnement. Pour cela, nous régressons
+                la pureté sur le mode d'approvisionnement. Pour ce faire, on choisit le mode d'approvisionnement privilégié (Deep web / dark web)
+                et on regarde si l'écart à ce premier mode est statistiquement significatif. Cette significativité est symbolisée 
+                par les "*" dans la colonne écart. "***" si la probabilité que l'écart soit simplement dû au hasard est plus petite
+                que 1%, "**" si elle est plus petite que 5% et "*" si cette probabilité est plus petite que 10%. Cette probabilité
+                se nomme la <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>.
+                <br>
+                On peut aussi, de façon plus approximative, comparer
+                l'<a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a> à son coefficient respectif, si l'écart est moins que le double de l'erreur standard, alors
+                on ne peut pas détecter si l'écart observé est dû au hasard ou non. 
+                <br>
+                Enfin, nous présentons aussi le coefficient R² qui permet de quantifier à quel point le modèle de régression
+                permet d'expliquer les données observées. Ce coefficient est compris entre 0 et 1 : plus le R² est élevé,
+                mieux il explique les données. 
+                Pour de plus amples informations, voir <a href="https://fr.wikipedia.org/wiki/Coefficient_de_d%C3%A9termination" target="_blank">ici</a>.
+            </p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if molecule_name == "Héroïne" %}
+        <!-- Carte 4 : Cas particulier héroïne -->
+        <div class="card text-center">
+            <div class="card-header">
+                Pureté après première consommation
+            </div>
+            <div class="card-body">
+                <p>Pour l'héroïne, les échantillons envoyés après première consommation présentent un écart significatif de pureté.</p>
+                {% include "components/regression_table.html" with id="conso_regression" table_data=regression_data_consommation %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if map_data_color %}
+        <!-- Carte 5 : Carte de la pureté par région -->
+        <div class="card text-center">
+            <div class="card-header">
+                Pureté moyenne par région
+            </div>
+            <div class="card-body">
+                {% include "components/map.html" with id="map_chart" chart_data=map_data color_data=map_data_color %}
+                <p>
+                    Désormais, regardons la géographie de la pureté. Sur la carte suivante est présentée la pureté moyenne
+                    par région parmi les échantillons qui ne proviennent pas du dark net. Nous choisissons de retirer ces échantillons
+                    car il ne doivent pas différer entre régions de France, le marché se passant à l'échelle internationale.
+                </p>
+                <div class="alert-box">
+                    Point d'attention : La représentation sous forme de carte pour la pureté a certes le bénéfice d'être très visuelle, mais 
+                    possède d'importants défauts. Tout d'abord, il est difficile de savoir si les différences de puretés moyennes entre les régions sont 
+                    significatives ou le simple fruit du hasard. Deuxièmement, des comportements de consommation différents entre régions peuvent créer les différences
+                    observées dans la pureté (le mode d'approvisionnement diffère par exemple entre les régions). Ainsi, nous conseillons de plutôt regarder le tableau qui suit.
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if reg_map_data %}
+        <!-- Carte 6 : Analyse de la carte de la pureté -->
+        <div class="card text-center">
+            <div class="card-header">
+                Analyse de la carte de la pureté
+            </div>
+            <div class="card-body">
+                {% include "components/regression_table_fe.html" with id="region_regression" table_data=reg_map_data %}
+                <p>
+                    Demandons-nous comment analyser la carte de France présentant la pureté par région. Pour certaines
+                    molécules, on peut remarquer de fortes différences de couleurs, et ainsi de pureté moyenne, entre
+                    les différentes régions. Cependant, l'image est incomplète : les différences pourraient très bien être
+                    dues à différents modes d'approvisionnement ou bien à différentes dates d'achat. Pour prendre cela en compte,
+                    nous réalisons une <a href="https://en.wikipedia.org/wiki/Fixed_effects_model"  target="_blank">régression à effets fixes</a>
+                    en choisissant comme effets fixes le mode d'approvisionnement et le bimestre d'achat. Concrètement, cela revient à comparer
+                    uniquement les variations de qualité à l’intérieur d’un même mode d’approvisionnement et d’un même bimestre, en
+                    neutralisant les différences moyennes entre groupes. De cette façon, on isole l’effet des autres variables 
+                    (comme la région) indépendamment de ces facteurs fixes.
+                    <br>
+                    Pour créer ce tableau, nous devons choisir une région à laquelle comparer toutes les autres; nous avons choisi
+                    de prendre la région d'où provient la majorité des échantillons, soit l’Île-de-France. Le tableau se lit par exemple de la façon suivante :
+                    pour un même mode d’approvisionnement et un même bimestre, la pureté moyenne des échantillons provenant du <i>Grand-Est</i> est en moyenne
+                    à un certain <i>écart</i>. Chaque écart est caractérisé par sa <a href="https://fr.wikipedia.org/wiki/Valeur_p" target="_blank">p-value</a>
+                    (les potentielles astérisques) et par son <a href="https://fr.wikipedia.org/wiki/Erreur_type" target="_blank"> erreur standard</a>.
+                    <br>
+                    Il se peut que pour une ou plusieurs régions, le modèle ne puisse pas estimer un coefficient parce que la pureté de tous les échantillons
+                    est déjà parfaitement déterminée par la combinaison des effets fixes. Les échantillons provenant de cette région,
+                    (voire ces régions) ont tous une combinaison <i>mode d'approvisionnement</i> x <i>bimestre</i> différente.
+                </p>
+                <div class="alert-box">
+                    Point d'attention : Tout comme pour la carte précédente, les échantillons provenant du dark net ne sont pas pris en compte.
+            </div>
+        </div>
+        {% endif %}
+
+        {% if data_reg_dose_poids %}
+        <!-- MDMA comprime scatter-and-line plot -->
+        <div class="card text-center">
+            <div class="card-header">
+                Quantité de substance active VS Masse des comprimés
+            </div>
+            <div class="card-body">
+                {% include "components/scatter_line_chart.html" with id="scatter_mdma_comprime" chart_data=data_reg_dose_poids %}
+            </div>
+            <p>
+                Ce nuage de points représente la relation entre la masse des comprimés envoyés (en milligrammes) 
+                et la quantité de substance psychoactive effectivement mesurée en laboratoire (en milligrammes). Chaque point correspond à un échantillon individuel. 
+                L’objectif est d’évaluer la cohérence entre la masse du comprimé et sa teneur réelle en substance active. 
+                La droite rouge représente le meilleur modèle linéaire pour lier la teneur en substance psychoactive au poids des comprimés.
+                La zone grisée décrit un intervalle de confiance à 95% sur ce modèle. 
+                <br>
+                On peut interpréter le graphe comme suit : si la masse de substance active
+                était une fonction linéaire de la masse des comprimés, alors la droite rouge est le meilleur modèle en fonction des échantillons et
+                la zone grisée représenterait l'intervalle de confiance à 95% sur ce modèle.
+                <br>
+                Dans les faits, la quantité de substance dans un comprimé ne dépend évidemment pas que de la masse de celui-ci donc la droite rouge n'est qu'une 
+                approximation de la relation entre ces deux grandeurs. Elle peut être utilisée pour estimer (grossièrement) la quantité de substance active dans un nouveau comprimé
+                si on connait uniquement la masse du comprimé. La zone grisée permet alors d'estimer l'erreur commise sur la prédiction donnée par la ligne rouge.
+                {% if molecule_name == "Comprimés de MDMA" %}
+                <br>
+                L'encart suivant permet d'effectuer une telle estimation.
+                {% endif %}
+            </p>
+        </div>
+        {% endif %}
+        {% if molecule_name == "Comprimés de MDMA" %}
+        <!-- MDMA quantity estimator -->
+        <div class="card text-center">
+            <div class="card-header">
+                Estimation de la quantité de MDMA
+            </div>
+            <div class="card-body">
+                {% include "components/MDMA_calculator.html" with id="mdma_calculator" data=data_reg_dose_poids %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('shown.bs.tab', function (event) {
+    setTimeout(() => {
+        if (window.line_1_chart && event.target.id === 'chart1-tab') {
+            window.line_1_chart.resize();
+        } else if (window.line_2_chart && event.target.id === 'chart2-tab') {
+            window.line_2_chart.resize();
+        }
+    }, 100);
+});
+</script>
+
+{% endblock %}

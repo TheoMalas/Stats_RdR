@@ -4,8 +4,6 @@
 <p>Estimation de la quantité de MDMA : <span id="result"></span> mg</p>
 <p>Intervalle de confiance à 95% de l'estimation : <span id="low_lim"></span> mg - <span id="up_lim"></span> mg</p>
 
-<canvas id="{{ id|safe }}" width="400" height="400"></canvas>
-
 <script>
 (function () {
     const data = JSON.parse(`{{ data|safe }}`);

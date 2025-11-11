@@ -1,5 +1,11 @@
  <style>
 
+    .table-container {
+        overflow-y: hidden;
+        overflow-x: auto;
+        width: 100%;
+    }
+
     table {
         border-collapse: collapse;
         width: 100%;
@@ -20,6 +26,7 @@
         padding: 8px 12px;
         text-align: left;
         vertical-align: top;
+        white-space: nowrap;
     }
 
     th {
@@ -45,26 +52,29 @@
     }
 </style>
 
-<table id="{{ id|safe }}">
-  <thead>
-    <tr>
-      <th>Voie d'approvisionnement</th>
-      <th class="coef">Pureté moyenne</th>
-      <th class="coef"> Écart </th>
-      <th class="coef">(Erreur standard)</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
+<div class="table-container">
+    <table id="{{ id|safe }}">
+    <thead>
+        <tr>
+        <th>Voie d'approvisionnement</th>
+        <th class="coef">Pureté moyenne</th>
+        <th class="coef"> Écart </th>
+        <th class="coef">(Erreur standard)</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+</div>
 
 <div class="footer">
-  <div id="observations"></div>
-  <div id="r2"></div>
-  <div class="note">
+<div id="observations"></div>
+<div id="r2"></div>
+<div class="note">
     <em>Note :</em> <span class="stars">*</span>p&lt;0.1; <span class="stars">**</span>p&lt;0.05; <span class="stars">***</span>p&lt;0.01
-  </div>
 </div>
+</div>
+
 
 <script>
 (function() {

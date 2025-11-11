@@ -5,7 +5,7 @@
   --color-muted: #555;
   --color-border: #dee2e6;
 
-  --color-primary: #d35400;  /* deep orange */
+  --color-primary: orange;  /* deep orange */
   --color-accent: #e74c3c;   /* soft red */
   
   /* === Layout & Shadows === */
@@ -58,11 +58,22 @@ a:hover {
 
 /* === Navbar === */
 .navbar {
-  background-color: orange !important;
+  background-color: var(--color-primary) !important;
 }
 .navbar a {
   color: black;
 }
+
+#logo {
+  height: 40px;
+}
+
+@media (min-width: 600px) {
+  #logo {
+      padding-right: 50px;
+  }
+}
+
 
 /* === Canvas === */
 canvas {
@@ -155,7 +166,7 @@ canvas {
   color: var(--color-primary);
   font-size: 1.6rem;
   margin-top: 2rem;
-  border-left: 4px solid orange;
+  border-left: 4px solid var(--color-primary);
   padding-left: 0.75rem;
 }
 .faq-container h2:first-of-type {

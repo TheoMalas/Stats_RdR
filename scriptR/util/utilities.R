@@ -61,8 +61,42 @@ extract_args <- function(args_string){
     mode = mode,
     no_cut = no_cut
   ))
+}
+
+
+extract_args_2 <- function(args_string){
+  args <- strsplit(args_string, " ")[[1]]
+  args_list <- setNames(
+    lapply(strsplit(args, "="), `[`, 2),
+    sapply(strsplit(args, "="), `[`, 1)
+  )
+  # Extraction
+  molecule_name <- args_list[["molecule_name"]]
+  date_debut <- as.Date(args_list[["date_debut"]])
+  date_fin   <- as.Date(args_list[["date_fin"]])
+  outputPath <- args_list[["outputPath"]]
+  if (!is.null(args_list[["familles_list"]])){
+  familles_vec <- strsplit(args_list[["familles_list"]],",")[[1]]}
+  else{familles_vec <- NULL}
+  if (!is.null(args_list[["Delta"]])){Delta=as.numeric(args_list[["Delta"]])}
+  else{Delta<- NULL}
+  if (!is.null(args_list[["mode"]])){mode=args_list[["mode"]]}
+  else{mode<- NULL}
+  no_cut<- "false"
+  if (args_list["no_cut"]=="true"){no_cut=args_list[["no_cut"]]}
+  return(list(
+    molecule_name = molecule_name,
+    date_debut = date_debut,
+    date_fin = date_fin,
+    outputPath = outputPath,
+    familles_list = familles_vec,
+    Delta = Delta,
+    mode = mode,
+    no_cut = no_cut
+  ))
   
 }
+
 filter_data <- function(data, args_list){
   date_debut <- args_list$date_debut
   date_fin   <- args_list$date_fin
@@ -303,3 +337,6 @@ save_ouput_as_json <- function(json_obj,outputPath, auto_unbox=FALSE){
   
   write_json(json_obj, outputPath, pretty = TRUE, auto_unbox = auto_unbox)
 }
+
+ratio_base_sel_dict = c("Cocaïne" = 303.352/(303.352+35.453))
+black_list_percent_dict = c("Cocaïne" = c("NQ","NQ ","", "nq"))

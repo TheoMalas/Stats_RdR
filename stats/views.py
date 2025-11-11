@@ -284,6 +284,45 @@ def purity_cocaine_view(request):
     'Delta' : Delta
   })
 
+def purity_cocaine_view_2(request):
+  molecule_name = "Cocaïne"
+
+  date_debut, date_fin = get_dates(request)
+  Delta = request.GET.get("range", default_Delta)
+  
+  args_1 = {
+    "molecule_name" : molecule_name,
+    "date_debut" : date_debut,
+    "date_fin" : date_fin,
+    "Delta" : Delta,
+  }
+  data = runScript("pages/purity", args_1)
+
+  data_reg = runScript("cocaine/regression_purity_supply_cocaine", args_1)
+
+  args_3 = {
+    "date_debut" : date_debut,
+    "date_fin" : date_fin
+  }
+  map_data = runScript("cocaine/purity_region_cocaine", args_3)
+
+  reg_map_data = runScript("cocaine/regression_purity_vs_region_fe_cocaine", args_3)
+
+  return render(request, 'pages/purity_2.html', { 
+    'data_count' : data["count"][0],
+    'data' : json.dumps(data),
+    'regression_data' : json.dumps(data_reg),
+    'molecule_name': molecule_name,
+    'map_data' : json.dumps(map_data),
+    'map_data_color' : json.dumps(generate_color_map(map_data, (120,60,85), (200,100,30))),
+    'reg_map_data' : json.dumps(reg_map_data),
+    'page_title' : dict_title[molecule_name],
+    'url_wiki' : dict_urls[molecule_name],
+    'presentation' : dict_pres[molecule_name],
+    'unit' : default_unit,
+    'Delta' : Delta
+  })
+
 def purity_mdma_view(request):
 
   date_debut, date_fin = get_dates(request)
@@ -758,6 +797,9 @@ def accueil_view(request):
 
 def faq_view(request):
   return render(request, 'pages/faq.html',{})
+
+def estimator_view(request):
+  return render(request, 'pages/estimator.html',{})
 
 # Map Functions
 
