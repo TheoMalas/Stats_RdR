@@ -10,7 +10,7 @@ source("util/utilities.R")
 data = load_data()
 
 load_filters <- function(path = "filters") {
-  filter_files <- list.files(path, full.names = TRUE, pattern = "\\.R$")
+  filter_files <- list.files(path, full.names = TRUE, pattern = "\\.R$", recursive = TRUE)
   filters <- list()
   for (file in filter_files) {
     env <- new.env()
@@ -53,7 +53,7 @@ parser$add_argument("--output", help = "Dossier de sortie pour sauvegarder les r
 parser$add_argument("--format", help = "Formats de sortie séparés par des virgules (ex: csv,json,txt)", default = NULL)
 
 load_analyses <- function(path = "analysis") {
-  files <- list.files(path, full.names = TRUE, pattern = "\\.R$")
+  files <- list.files(path, full.names = TRUE, pattern = "\\.R$", recursive = TRUE)
   analyses <- list()
   for (file in files) {
     env <- new.env()
@@ -98,7 +98,7 @@ save_result <- function(result, name, output_dir = "results", formats = c("csv")
   }
 }
 
-subparsers <- parser$add_subparsers(dest="analysis", help="Analyse à exécuter", required=TRUE)
+subparsers <- parser$add_subparsers(dest="analysis", help="Analyse à exécuter", required=TRUE, metavar="analysis")
 
 analyses <- load_analyses()
 for (a in analyses) {

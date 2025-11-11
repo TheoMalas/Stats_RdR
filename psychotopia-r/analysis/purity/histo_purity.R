@@ -1,7 +1,7 @@
 analysis_description <- list(
   name = "histo",
   help = "Affiche le résumé statistique du dataset",
-  args = list()  # pas d'arguments spécifiques ici
+  args = list()
 )
 
 analysis_function <- function(data, args) {
@@ -26,5 +26,5 @@ analysis_function <- function(data, args) {
   mutate(occurence = ifelse(is.na(occurence), 0, occurence)) %>% 
   arrange(classe)
   
-  return(data_histo)
+  data_histo
 }

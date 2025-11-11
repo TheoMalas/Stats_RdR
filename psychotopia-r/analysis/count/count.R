@@ -1,7 +1,7 @@
 analysis_description <- list(
-  name = "summary",
+  name = "count",
   help = "Affiche le résumé statistique du dataset",
-  args = list()  # pas d'arguments spécifiques ici
+  args = list()
 )
 
 analysis_function <- function(data, args) {
