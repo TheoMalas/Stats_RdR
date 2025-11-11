@@ -865,7 +865,7 @@ def runScript(scriptID, args):
   if cachedData != None:
      return cachedData
   
-  cmd=["Rscript","scriptR/" + scriptID + ".R"] + [obj_to_string(args)]
+  cmd=["Rscript","psychotopia-r/" + scriptID + ".R"] + [obj_to_string(args)]
 
   subprocess.run(cmd)
 

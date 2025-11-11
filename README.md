@@ -13,7 +13,7 @@ Ce projet est une application Django permettant d’exécuter des scripts **R** 
 │   └── processed/          # Données nettoyées / formatées
 ├── output/                 # Résultats produits par les scripts R
 │   └── output.png              # Exemple de visualisation générée
-├── scriptR/                # Scripts R principaux
+├── psychotopia-r/                # Scripts R principaux
 │   ├── code_psychoactif_cocaine.R
 │   ├── code_psychoactif_inter_substance.R
 │   └── simple.R
@@ -64,7 +64,7 @@ python manage.py runserver
 4. **Tester l’exécution d’un script R :**
 
 ```bash
-Rscript scriptR/simple.R
+Rscript psychotopia-r/simple.R
 ```
 
 ---
