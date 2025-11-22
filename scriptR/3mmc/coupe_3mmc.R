@@ -29,27 +29,19 @@ data <- filter_data(data, args_list)
 # Histogramme sur les produits de coupe ########################################
 ################################################################################
 
-black_list_maj <- c("3MMC","SINTES","NQ","HPLC", "HPLCDAD", "ATTENTION", "C", "HCL",
-"MISE", "A", "JOUR", "DU", "NOVEMBRE", "L", "PSYCHO241187", "CCM", "EDIT", "CP", "MMC", "NE", "PAS",
-"UTILISER", "DE", "SCOTCH", "POUR", "LE", "KAPA", "ENI", "YOUHOU")
-# Risque de ne pas prendre en compte les écritures comme "2 MMC"
-
+white_list <- c("2MMC", "3CMC", "4CMC", "4MMC", "4BMC", "2CMC", "MDMA", "NEP", "4MEC", "DMBDP", "4DMMC")
 data_coupe <- data %>%
   mutate(
-    # on enlève les tirets
     coupe = gsub("-", "", coupe),
-    # on extrait les mots majuscules
     coupe = lapply(
       str_extract_all(coupe, "\\b[A-Z0-9]+\\b"),
-      function(x){ 
-        # on enlève les mots faits uniquement de chiffres
-        x <- x[!grepl("^[0-9]+$", x)]
-        # on enlève les mots qui ne sont pas des molécules ou ceux qui correspondent à la 3MMC
-        x<-setdiff(x, black_list_maj)}
+      function(x){
+        x <- x[!grepl("^[0-9]+$", x)]        # remove pure numbers
+        x <- intersect(x, white_list)        # keep only allowed terms
+      }
     )
-  )%>%
-  # on enlève les lignes où rien n'est capturé
-  subset(sapply(coupe, length) > 0)
+  ) %>%
+  subset(sapply(coupe, length) > 0)          # keep rows with at least one match
 
 # 3ème graphique pour l'évolution temporelle
 data_bimestre <- data_coupe %>%

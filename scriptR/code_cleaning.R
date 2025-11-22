@@ -40,10 +40,13 @@ correct_dict <- list(
   `3-MMC` = c("3-MMC", "3mmc"),
   `3-MMA` = c("3MMA", "3mma", "3-MMA (cathinone)", "3-MMA","3-mma"),
   `4-FMA`= c("4FMA"),
+  `3-FA` = c("3-fluoro-amphétamine (3-fa)"),
   `4-MMC (mephedrone)` = c("4-MMC", "4MMC", "4-mmc"),
   `6-APB` = c("6-APB", "6 APB", "6-APB Succinate"),
   `Alpha-PiHP` = c("alpha pihp", "ALPHA PIHP", "Alpha PIHP", "ALPHA-PIHP","Alpha-PiHP" ),
-  Alprazolam = c("alprazolam", "Alprazolam"),
+  `Alpha-PHP`= c("alpha-php"),
+  `Alpha-PVP`= c("a-PVP (Flakka)", "alpha-PVP"),
+  Alprazolam = c("alprazolam", "Alprazolam", "Alprazolam (Xanax)"),
   Baclofène = c("baclofene", "Baclofen "),
   Bromazolam = c("Bromazolam", "bromazolam", "Bromazolam (comprimé écrasé)"),
   Cocaïne = c("Cocaine ", "Cocaine"),
@@ -51,11 +54,12 @@ correct_dict <- list(
   DMT = c("dmt"),
   Kétamine = c("kétamine"),
   `1-cp-LSD`= c( "1cp-LSD", "1cp-lsd", "1cp-lsd ", "1cP-LSD"),
-  Mescaline = c("Mescaline", "mescaline", "Mescaline "),
+  Mescaline = c("Mescaline", "mescaline", "Mescaline ", "MESCALINE"),
   Méthamphétamine = c("methamphetamine", "Méthamphétamine"),
   Modafinil = c("modafinil"),
-  Morphine = c("morphine", "Morphine", "Morphine "),
+  Morphine = c("morphine", "Morphine", "Morphine ", "Morphine 50mg/ml", "Morphine (comprimé écrasé)"),
   NEH = c("N-ethylHexedrone","N-Ethylhexedrone"),
+  Oxycodone = c("Oxycodone (comprimé écrasé)"), 
   Prégabaline = c("pregabaline", "prégabaline", "Prégabaline"),
   `RC opioids: cychlorphine`=c("RC opioids: cyclorphine "),
   sildénafil = c(" sildénafil")
@@ -94,21 +98,17 @@ alias_dict <- list(
   Speed = c("speed","Speed (amphétamine)"),
   Synthacaïne = c("syntacaïne","Strong Synthcaine Colombia"),
   Tramadol = c("Tramadol", "tramadol hydrochloride"),
-  `Viagra (Sildénafil)` = c("viagra", "sildénafil"),
-  Problème = c("pas de la drogue","","aucun nom","ne sait pas","ne sais pas","autre élément","Un hallucinogène : ce n'est pas une molécule ça...","aucune indications","produit de coupe insoluble dans l'lsopropanol","Mélange","Coupe?","Ne sait pas","inconnu","mélange","stimulant")
+  `Viagra (Sildénafil)` = c("viagra", "sildénafil")
 )
 
 alias_df <- bind_rows(lapply(names(alias_dict), function(nom_canonique) {
   data.frame(alias = alias_dict[[nom_canonique]], canonique = nom_canonique, stringsAsFactors = FALSE)
 }))
 
-
-
 data_canonique <- data_correct %>%
   left_join(alias_df, by = c("molecule_correct" = "alias")) %>%
   mutate(molecule_simp = ifelse(is.na(canonique), molecule_correct, canonique)) %>%
   select(-canonique)
-
 
 familles_psychotropes <- list(
   Amphétamines = c("Amphétamines", "Méthamphétamine", "fluoroamphetamine", 
@@ -137,6 +137,21 @@ familles_psychotropes_df <- bind_rows(lapply(names(familles_psychotropes), funct
 data_f <- data_canonique %>%
   left_join(familles_psychotropes_df, by = c("molecule_simp" = "init"))
 
+
+# Cleaning pourcentage
+data_f <- data_f %>%
+  mutate(pourcentage = tolower(pourcentage)) %>%
+  mutate(pourcentage = gsub(",",".",pourcentage)) %>%
+  mutate(pourcentage = gsub("%","",pourcentage)) %>%
+  mutate(pourcentage = gsub("eq","",pourcentage)) %>%
+  mutate(pourcentage = gsub("équivalent","",pourcentage)) %>%
+  mutate(pourcentage = gsub("base","",pourcentage)) %>%
+  mutate(pourcentage = gsub("sel","",pourcentage)) %>%
+  mutate(pourcentage = gsub("chlorhydrate","",pourcentage)) %>%
+  mutate(pourcentage = sub(".*thc ([0-9]{2}).*", "\\1", pourcentage)) %>%
+  mutate(pourcentage = sub(".*thc ([0-9]{1}).*", "\\1", pourcentage)) %>%
+  mutate(pourcentage = gsub(" ","",pourcentage)) %>%
+  mutate(pourcentage = as.numeric(pourcentage))
 
 # 2. Write the cleaned data into the MySQL database
 col_defs <- paste0(
