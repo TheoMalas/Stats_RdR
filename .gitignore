@@ -12,3 +12,5 @@ db.sqlite3
 test_comp_mdma.csv
 2025-07-22_resultats_analyse.sql
 output.log
+updateDB.log
+updateDB.sh
